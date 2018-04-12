@@ -1,0 +1,29 @@
+---
+  server:
+    port: 8080
+    
+  spring:
+    messages:
+      basename: messages
+      cache-seconds: -1
+      encoding: UTF-8
+
+    jackson:
+      serialization:
+        wrap_root_value: false
+      deserialization:
+        unwrap_root_value: true
+
+  services:
+    persistence:
+      invitedata:
+        url: "http://localhost:8282/invitedata"
+      formdata:
+        url: "http://localhost:8282/formdata"
+    notify:
+      apiKey: "probate_test_key-fce47f9c-7bbe-4f41-829e-5144a3820768-4b461773-72e0-465e-868a-91482cfc8aa4"
+      invitedata:
+        templateId: "3b8d806e-cc80-4729-b99a-19854ff60ad2"
+        inviteLink: "http://localhost:3000/executors/invitation/"
+      pin:
+        templateId: "c0e11486-b8b3-4c22-a1ae-805a0ad2f641"

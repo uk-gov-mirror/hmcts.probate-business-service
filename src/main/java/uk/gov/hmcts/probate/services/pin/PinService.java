@@ -1,0 +1,37 @@
+package uk.gov.hmcts.probate.services.pin;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.services.idgeneration.IdGeneratorService;
+import uk.gov.service.notify.NotificationClient;
+import uk.gov.service.notify.NotificationClientException;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Component
+public class PinService {
+
+    @Value("${services.notify.pin.templateId}")
+    String templateId;
+
+    @Autowired
+    private NotificationClient notificationClient;
+
+    @Autowired
+    private IdGeneratorService pinGeneratorService;
+
+
+    public String generateAndSend(String phoneNumber) throws NotificationClientException {
+        String pin = pinGeneratorService.generate();
+        notificationClient.sendSms(templateId, phoneNumber, createPersonalisation(pin), pin);
+        return pin;
+    }
+
+    private Map<String, String> createPersonalisation(String pin) {
+        HashMap<String, String> personalisation = new HashMap<>();
+        personalisation.put("pin", pin);
+        return personalisation;
+    }
+}

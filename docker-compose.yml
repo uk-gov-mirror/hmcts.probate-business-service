@@ -1,0 +1,16 @@
+version: '2.1'
+
+services:
+  business-service:
+    build:
+      context: .
+    image: probate/business-service
+    container_name: business-service
+    environment:
+      - SERVER_PORT=8080
+      - http_proxy=
+      - https_proxy=
+      - no_proxy=
+    ports:
+     - 8080:8080
+
