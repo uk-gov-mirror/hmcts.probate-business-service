@@ -1,8 +1,6 @@
 package uk.gov.hmcts.probate.services.invitation;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -14,8 +12,6 @@ import uk.gov.hmcts.probate.services.invitation.model.InviteData;
 
 @Component
 public class PersistenceClient {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Value("${services.persistence.invitedata.url}")
     private String inviteDataPersistenceUrl;
