@@ -46,7 +46,7 @@ public class InvitationController {
     }
 
     @GetMapping(path = "/invites/allAgreed/{formdataId:.+}")
-    public Boolean invitesAllAgreed(@PathVariable String formdataId) throws NotificationClientException {
+    public Boolean invitesAllAgreed(@PathVariable String formdataId) {
 
         boolean allInvitedAgreed = invitationService.checkAllInvitedAgreed(formdataId);
         boolean mainApplicantAgreed = invitationService.checkMainApplicantAgreed(formdataId);

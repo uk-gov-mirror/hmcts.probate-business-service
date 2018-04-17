@@ -3,6 +3,8 @@
     port: 8080
     
   spring:
+    application:
+      name: probate-business-service
     messages:
       basename: messages
       cache-seconds: -1
@@ -27,3 +29,9 @@
         inviteLink: "http://localhost:3000/executors/invitation/"
       pin:
         templateId: "c0e11486-b8b3-4c22-a1ae-805a0ad2f641"
+
+  appinsights:
+    intrumentationkey: false
+
+  azure:
+    app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
