@@ -8,7 +8,6 @@ packages_version = "3.0.0"
 
 probate_frontend_hostname = "probate-frontend-aat.service.core-compute-aat.internal"
 
-external_host_name = "probate.business.aat.platform.hmcts.net"
 outbound_proxy = ""
 
 proxy_host = "proxyout.reform"

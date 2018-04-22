@@ -25,9 +25,11 @@ data "vault_generic_secret" "business_services_notify_pin_templateId" {
 locals {
   aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
   java_proxy_variables: "-Dhttp.proxyHost=${var.proxy_host} -Dhttp.proxyPort=${var.proxy_port} -Dhttps.proxyHost=${var.proxy_host} -Dhttps.proxyPort=${var.proxy_port}"
+
+  probate_frontend_hostname = "probate-frontend-aat.service.core-compute-aat.internal"
 }
 
-module "business-service" {
+module "probate-business-service" {
   source = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
   product = "${var.product}-${var.microservice}"
   location = "${var.location}"
@@ -35,7 +37,6 @@ module "business-service" {
   ilbIp = "${var.ilbIp}"
   is_frontend  = false
   subscription = "${var.subscription}"
-  additional_host_name = "${var.external_host_name}"
 
   app_settings = {
 
@@ -46,7 +47,7 @@ module "business-service" {
   
 
     DEPLOYMENT_ENV= "${var.deployment_env}"
-    JAVA_OPTS = "${local.java_proxy_variables}"
+    //JAVA_OPTS = "${local.java_proxy_variables}"
 
     SERVER_PORT = "${var.business_server_port}"
     SERVICES_PERSISTENCE_INVITEDATA_URL = "${var.business_services_persistence_invitedata_url}"

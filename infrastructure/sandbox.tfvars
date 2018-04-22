@@ -7,7 +7,7 @@ packages_environment = "test"
 packages_version = "3.0.0"
 
 probate_frontend_hostname = "probate-frontend-sandbox.service.core-compute-sandbox.internal"
-external_host_name = "probate.business.sandbox.platform.hmcts.net"
+
 outbound_proxy = ""
 
 proxy_host = "proxyout.reform"

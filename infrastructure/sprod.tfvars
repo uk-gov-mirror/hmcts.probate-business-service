@@ -7,7 +7,7 @@ packages_environment = "test"
 packages_version = "3.0.0"
 
 probate_frontend_hostname = "probate-frontend-saat.service.core-compute-saat.internal"
-external_host_name = "probate.sprod.platform.hmcts.net"
+
 outbound_proxy = ""
 
 probate_google_track_id = "UA-93598808-1"

@@ -7,7 +7,7 @@ packages_environment = "preprod"
 packages_version = "3.0.0"
 
 probate_frontend_hostname = "probate-frontend-preview.service.core-compute-preview.internal"
-external_host_name = "probate.business.preview.platform.hmcts.net"
+
 outbound_proxy = ""
 
 proxy_host = "proxyout.reform"
