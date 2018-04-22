@@ -13,7 +13,7 @@ outbound_proxy = ""
 proxy_host = "proxyout.reform"
 proxy_port = "8080"
 
-business_server_port = '4101'
+
 log_level = "INFO"
 
 business_services_persistence_invitedata_url  = "http://betaDevBprobateApp01.reform.hmcts.net:4103/invitedata"

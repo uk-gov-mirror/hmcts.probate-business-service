@@ -49,7 +49,7 @@ module "probate-business-service" {
     DEPLOYMENT_ENV= "${var.deployment_env}"
     //JAVA_OPTS = "${local.java_proxy_variables}"
 
-    SERVER_PORT = "${var.business_server_port}"
+
     SERVICES_PERSISTENCE_INVITEDATA_URL = "${var.business_services_persistence_invitedata_url}"
     SERVICES_PERSISTENCE_FORMDATA_URL = "${var.business_services_persistence_formdata_url}"
     SERVICES_NOTIFY_APIKEY = "${data.vault_generic_secret.probate_notify_invite_apikey.data["value"]}"
