@@ -24,9 +24,9 @@ data "vault_generic_secret" "business_services_notify_pin_templateId" {
 
 locals {
   aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
-  java_proxy_variables: "-Dhttp.proxyHost=${var.proxy_host} -Dhttp.proxyPort=${var.proxy_port} -Dhttps.proxyHost=${var.proxy_host} -Dhttps.proxyPort=${var.proxy_port}"
+  //java_proxy_variables: "-Dhttp.proxyHost=${var.proxy_host} -Dhttp.proxyPort=${var.proxy_port} -Dhttps.proxyHost=${var.proxy_host} -Dhttps.proxyPort=${var.proxy_port}"
 
-  probate_frontend_hostname = "probate-frontend-aat.service.core-compute-aat.internal"
+  //probate_frontend_hostname = "probate-frontend-aat.service.core-compute-aat.internal"
 }
 
 module "probate-business-service" {
