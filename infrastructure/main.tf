@@ -65,7 +65,7 @@ module "probate-business-service" {
 
 module "probate-business-service-vault" {
   source              = "git@github.com:hmcts/moj-module-key-vault?ref=master"
-  name                = "probate-business-service-${var.env}"
+  name                = "pro-business-ser-${var.env}"
   product             = "${var.product}"
   env                 = "${var.env}"
   tenant_id           = "${var.tenant_id}"
