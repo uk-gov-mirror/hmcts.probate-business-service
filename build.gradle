@@ -77,6 +77,16 @@ dependencyCheck {
 }
 
 
+jar {
+  archiveName = 'business-service.jar'
+  manifest {
+
+    attributes 'Implementation-Title': project.name,
+      'Implementation-Version': project.version
+  }
+}
+
+
 repositories {
     mavenLocal()
     mavenCentral()
