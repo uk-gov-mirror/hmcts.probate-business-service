@@ -37,7 +37,8 @@ module "probate-business-service" {
   ilbIp = "${var.ilbIp}"
   is_frontend  = false
   subscription = "${var.subscription}"
-
+  asp_name     = ${var.product}-${var.env}-asp
+  
   app_settings = {
 
 	  // Logging vars
