@@ -61,6 +61,7 @@ findbugs{
 
 sonarqube {
     properties {
+        property "sonar.projectName", "Probate :: Business Service"
         property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
         property "sonar.host.url", "https://sonar.reform.hmcts.net/"
     }
@@ -120,6 +121,35 @@ jar {
 
     attributes 'Implementation-Title': project.name,
       'Implementation-Version': project.version
+  }
+}
+
+sourceSets {
+  functionalTest {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/functionalTest/java')
+    }
+    resources.srcDir file('src/functionalTest/resources')
+  }
+
+  integrationTest {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/integrationTest/java')
+    }
+    resources.srcDir file('src/integrationTest/resources')
+  }
+
+  smokeTest {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/smokeTest/java')
+    }
+    resources.srcDir file('src/smokeTest/resources')
   }
 }
 
