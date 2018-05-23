@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.client.RestTemplate;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -24,16 +27,16 @@ import uk.gov.service.notify.NotificationClient;
 import java.util.ArrayList;
 import java.util.List;
 
-@Configuration
 @SpringBootApplication
+@Configuration
 @EnableSwagger2
 @EnableAutoConfiguration
+@PropertySource(value = "git.properties", ignoreResourceNotFound = true)
 public class BusinessApplication {
-
 
     @Value("${services.notify.apiKey}")
     String notificationApiKey;
-
+    
     @Autowired
     private ValidationRule dobBeforeDodRule, netIHTLessThanGrossRule;
 
@@ -90,6 +93,11 @@ public class BusinessApplication {
                 .apis(RequestHandlerSelectors.basePackage("uk.gov.hmcts.probate.services.invitation.controllers"))
                 .paths(PathSelectors.any())
                 .build();
+    }
+    
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
+          return new PropertySourcesPlaceholderConfigurer();
     }
 
     private ApiInfo apiInfo() {
