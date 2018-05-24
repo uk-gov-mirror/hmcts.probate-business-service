@@ -94,11 +94,6 @@ public class BusinessApplication {
                 .paths(PathSelectors.any())
                 .build();
     }
-    
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
-          return new PropertySourcesPlaceholderConfigurer();
-    }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
