@@ -1,5 +1,8 @@
 package uk.gov.hmcts.probate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -7,7 +10,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.client.RestTemplate;
+
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -21,19 +26,16 @@ import uk.gov.hmcts.probate.services.idgeneration.strategy.PinStrategy;
 import uk.gov.hmcts.probate.services.idgeneration.strategy.ProbateStrategy;
 import uk.gov.service.notify.NotificationClient;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Configuration
 @SpringBootApplication
+@Configuration
 @EnableSwagger2
 @EnableAutoConfiguration
+@PropertySource(value = "git.properties", ignoreResourceNotFound = true)
 public class BusinessApplication {
-
 
     @Value("${services.notify.apiKey}")
     String notificationApiKey;
-
+    
     @Autowired
     private ValidationRule dobBeforeDodRule, netIHTLessThanGrossRule;
 

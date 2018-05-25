@@ -1,11 +1,16 @@
 .idea/
 .gradle
+.project
+.classpath
+.settings
 build/
 /target/
 /nbproject/
 nbactions.xml
 .sonar/
+git.properties
 sonar-project.properties
 *.iml
+bin/
 out/
 .nb-gradle/

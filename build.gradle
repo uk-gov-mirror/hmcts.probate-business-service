@@ -16,11 +16,19 @@ plugins {
     id 'org.springframework.boot' version '1.5.8.RELEASE'
     id 'org.owasp.dependencycheck' version '3.0.2'
     id 'com.github.ben-manes.versions' version '0.15.0'
+    id 'com.gorylenko.gradle-git-properties' version '1.4.21'
 }
 
 apply plugin: 'org.sonarqube'
 apply plugin: 'findbugs'
 apply plugin: 'jacoco'
+
+gitProperties {
+	gitPropertiesDir = new File("${project.rootDir}/src/main/resources/uk/gov/hmcts/probate/services/business")
+    keys = ['git.commit.id','git.commit.time']
+    dateFormat = "yyyy-MM-dd'T'HH:mmZ"
+    dateFormatTimeZone = "GMT"
+}
 
 group = 'uk.gov.hmcts.probate'
 version = "3.0.0"
@@ -108,6 +116,8 @@ dependencies {
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    testCompile group: 'org.springframework.security', name: 'spring-security-config'
+    testCompile group: 'org.springframework.security', name: 'spring-security-test'        
 }
 
 compileJava {
