@@ -77,6 +77,34 @@ dependencyCheck {
     suppressionFile = 'dependency-check-suppressions.xml'
 }
 
+sourceSets {
+  functionalTest {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/functionalTest/java')
+    }
+    resources.srcDir file('src/functionalTest/resources')
+  }
+
+  integrationTest {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/integrationTest/java')
+    }
+    resources.srcDir file('src/integrationTest/resources')
+  }
+
+  smokeTest {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/smokeTest/java')
+    }
+    resources.srcDir file('src/smokeTest/resources')
+  }
+}
 
 repositories {
     mavenLocal()
@@ -109,6 +137,10 @@ dependencies {
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+
+    testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.7'
+    smokeTestCompile sourceSets.main.runtimeClasspath
+    smokeTestCompile sourceSets.test.runtimeClasspath
 }
 
 compileJava {
@@ -121,35 +153,6 @@ jar {
 
     attributes 'Implementation-Title': project.name,
       'Implementation-Version': project.version
-  }
-}
-
-sourceSets {
-  functionalTest {
-    java {
-      compileClasspath += main.output
-      runtimeClasspath += main.output
-      srcDir file('src/functionalTest/java')
-    }
-    resources.srcDir file('src/functionalTest/resources')
-  }
-
-  integrationTest {
-    java {
-      compileClasspath += main.output
-      runtimeClasspath += main.output
-      srcDir file('src/integrationTest/java')
-    }
-    resources.srcDir file('src/integrationTest/resources')
-  }
-
-  smokeTest {
-    java {
-      compileClasspath += main.output
-      runtimeClasspath += main.output
-      srcDir file('src/smokeTest/java')
-    }
-    resources.srcDir file('src/smokeTest/resources')
   }
 }
 
