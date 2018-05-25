@@ -106,6 +106,19 @@ sourceSets {
   }
 }
 
+task smoke(type: Test) {
+  description = "Runs Smoke Tests"
+  testClassesDirs = sourceSets.smokeTest.output.classesDirs
+  classpath = sourceSets.smokeTest.runtimeClasspath
+}
+
+task functional(type: Test) {
+    description = "Runs functional Tests"
+    testClassesDirs = sourceSets.functionalTest.output.classesDirs
+    classpath = sourceSets.functionalTest.runtimeClasspath
+    finalizedBy aggregate
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
