@@ -14,7 +14,8 @@ String product = "probate"
 String component = "business-service"
 
 List<LinkedHashMap<String, Object>> secrets = [
-
+    secret('probatePersistenceUrl', 'TEST_PERSISTENCE_URL'),
+    secret('probateNotifyMobile', 'TEST_MOBILE')
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
