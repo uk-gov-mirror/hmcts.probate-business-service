@@ -29,12 +29,14 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 withParameterizedPipeline('java', product, component, params.ENVIRONMENT, 'sandbox') {
     loadVaultSecrets(secrets)
     after('test') {
-        archiveArtifacts 'build/reports/jacoco/index.html'
+        sh 'cp build/reports/jacoco/index.html build/reports/jacoco/index_jacoco.html'
+        archiveArtifacts 'build/reports/jacoco/index_jacoco.html'
         archiveArtifacts 'build/reports/tests/test/index.html'
         archiveArtifacts 'build/reports/findbugs/test.html'
     }
 
     after('functionalTest:saat') {
-        archiveArtifacts 'target/site/serenity/index.html'
+        sh 'cp target/site/serenity/index.html target/site/serenity/index_serenity.html'
+        archiveArtifacts 'target/site/serenity/index_serenity.html'
     }
 }
