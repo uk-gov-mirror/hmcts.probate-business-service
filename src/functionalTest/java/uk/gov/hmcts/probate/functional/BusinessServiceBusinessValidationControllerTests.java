@@ -31,7 +31,7 @@ public class BusinessServiceBusinessValidationControllerTests extends Integratio
     }
 
     private void validateSuccess(String sessionId, String jsonFileName) {
-        SerenityRest.given()
+        SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders(sessionId))
                 .body(utils.getJsonFromFile(jsonFileName))
                 .when().post(businessServiceUrl + "/validate")
@@ -39,7 +39,7 @@ public class BusinessServiceBusinessValidationControllerTests extends Integratio
     }
 
     private void validateFailure(String jsonFileName, int errorCode, String errorMsg) {
-        Response response = SerenityRest.given()
+        Response response = SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders(SESSION_ID))
                 .body(utils.getJsonFromFile(jsonFileName))
                 .when().post(businessServiceUrl + "/validate")

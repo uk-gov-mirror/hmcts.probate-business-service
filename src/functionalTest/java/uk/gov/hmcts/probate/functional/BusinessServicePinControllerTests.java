@@ -27,14 +27,14 @@ public class BusinessServicePinControllerTests extends IntegrationTestBase {
     }
 
     private void validatePinSuccess(String phoneNumber) {
-        SerenityRest.given()
+        SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders(SESSION_ID))
                 .when().get(businessServiceUrl + "/pin/" + phoneNumber)
                 .then().assertThat().statusCode(200);
     }
 
     private void validatePinFailure(String phoneNumber) {
-        Response response = SerenityRest.given()
+        Response response = SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders(SESSION_ID))
                 .when().get(businessServiceUrl + "/pin/" + phoneNumber)
                 .thenReturn();

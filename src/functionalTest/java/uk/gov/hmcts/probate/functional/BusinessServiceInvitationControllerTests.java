@@ -60,7 +60,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
     }
 
     private void validateInviteSuccess(String sessionId, String jsonFileName) {
-        SerenityRest.given()
+        SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders(sessionId))
                 .body(utils.getJsonFromFile(jsonFileName))
                 .when().post(businessServiceUrl + "/invite")
@@ -68,7 +68,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
     }
 
     private void validateInviteFailure(String sessionId, String jsonFileName) {
-        Response response = SerenityRest.given()
+        Response response = SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders(sessionId))
                 .body(utils.getJsonFromFile(jsonFileName))
                 .when().post(businessServiceUrl + "/invite")
@@ -80,13 +80,13 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
     }
 
     private void validateInvitesAllAgreedSuccess(String formdataId) {
-        SerenityRest.given()
+        SerenityRest.given().relaxedHTTPSValidation()
                 .when().get(businessServiceUrl + "/invites/allAgreed/" + formdataId)
                 .then().assertThat().statusCode(200);
     }
 
     private void validateInvitesAllAgreedFailure() {
-        Response response = SerenityRest.given()
+        Response response = SerenityRest.given().relaxedHTTPSValidation()
                 .when().get(businessServiceUrl + "/invites/allAgreed/invalid_id")
                 .thenReturn();
 
