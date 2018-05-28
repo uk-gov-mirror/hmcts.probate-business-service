@@ -1,10 +1,6 @@
+import java.util.stream.Collectors
+
 buildscript {
-    repositories {
-        mavenLocal()
-        maven { url "http://artifactory.reform.hmcts.net/artifactory/libs-release" }
-        maven { url "http://repo1.maven.org/maven2/" }
-        maven { url "https://plugins.gradle.org/m2/" }
-    }
     dependencies {
         classpath group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: '2.5'
         classpath("net.serenity-bdd:serenity-gradle-plugin:1.5.2")
@@ -13,6 +9,7 @@ buildscript {
 
 plugins {
     id 'application'
+    id 'pmd'
     id 'org.springframework.boot' version '1.5.8.RELEASE'
     id 'org.owasp.dependencycheck' version '3.1.2'
     id 'com.github.ben-manes.versions' version '0.15.0'
@@ -51,9 +48,6 @@ tasks.withType(FindBugs) {
     }
 }
 
-dependencyCheck {
-    suppressionFiles = ['dependency-check-suppressions.xml']
-}
 
 findbugs{
     ignoreFailures=true
@@ -75,12 +69,15 @@ dependencyCheck {
     // Specifies if the build should be failed if a CVSS score above a specified level is identified.
     // range of 0-10 fails the build, anything greater and it doesn't fail the build
     failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
-    suppressionFile = 'dependency-check-suppressions.xml'
+    suppressionFiles = ['config/owasp/suppressions.xml']
+    analyzers {
+        // Disable scanning of .NET related binaries
+        assemblyEnabled = false
+    }
 }
 
 sourceSets {
-
-  functionalTest {
+  testFunctional {
     java {
       compileClasspath += main.output
       runtimeClasspath += main.output
@@ -89,7 +86,7 @@ sourceSets {
     resources.srcDir file('src/functionalTest/resources')
   }
 
-  smokeTest {
+  testSmoke {
     java {
       compileClasspath += main.output
       runtimeClasspath += main.output
@@ -101,27 +98,44 @@ sourceSets {
 
 task smoke(type: Test) {
   description = "Runs Smoke Tests"
-  testClassesDirs = sourceSets.smokeTest.output.classesDirs
-  classpath = sourceSets.smokeTest.runtimeClasspath
+  testClassesDirs = sourceSets.testSmoke.output.classesDirs
+  classpath = sourceSets.testSmoke.runtimeClasspath
 }
 
 task functional(type: Test) {
     description = "Runs functional Tests"
-    testClassesDirs = sourceSets.functionalTest.output.classesDirs
-    classpath = sourceSets.functionalTest.runtimeClasspath
+    testClassesDirs = sourceSets.testFunctional.output.classesDirs
+    classpath = sourceSets.testFunctional.runtimeClasspath
     finalizedBy aggregate
+}
+
+pmd {
+    toolVersion = "6.3.0"
+    ignoreFailures = true
+    sourceSets = [sourceSets.main, sourceSets.test, sourceSets.testFunctional, sourceSets.testSmoke]
+    reportsDir = file("$project.buildDir/reports/pmd")
+    ruleSetFiles = files("config/pmd/ruleset.xml")
+}
+
+jacocoTestReport {
+    executionData(test)
+    reports {
+        xml.enabled = true
+        csv.enabled = false
+        xml.destination = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+    }
 }
 
 
 repositories {
     mavenLocal()
-    mavenCentral()
+    maven {
+      url "https://dl.bintray.com/hmcts/hmcts-maven"
+    }
+    maven {
+      url 'https://repo.spring.io/libs-milestone'
+    }
     jcenter()
-    maven { url "http://artifactory.reform.hmcts.net/artifactory/libs-release" }
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-    maven { url "http://repo1.maven.org/maven2/" }
-    maven { url "https://plugins.gradle.org/m2/" }
-    maven { url  "https://dl.bintray.com/hmcts/hmcts-maven" }
 }
 
 def versions = [
@@ -145,18 +159,17 @@ dependencies {
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
-    functionalTestCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '1.5.2'
-    functionalTestCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '1.5.2'
-    functionalTestCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '1.5.2'
-    functionalTestCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '1.0.26'
-    functionalTestCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
-    functionalTestCompile sourceSets.main.runtimeClasspath
-    functionalTestCompile sourceSets.test.runtimeClasspath
+    testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '1.5.2'
+    testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '1.5.2'
+    testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '1.5.2'
+    testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '1.0.26'
+    testFunctionalCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+    testFunctionalCompile sourceSets.main.runtimeClasspath
+    testFunctionalCompile sourceSets.test.runtimeClasspath
 
     testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.7'
-    smokeTestCompile sourceSets.main.runtimeClasspath
-    smokeTestCompile sourceSets.test.runtimeClasspath
-
+    testSmokeCompile sourceSets.main.runtimeClasspath
+    testSmokeCompile sourceSets.test.runtimeClasspath
 }
 
 compileJava {
@@ -170,26 +183,6 @@ jar {
     attributes 'Implementation-Title': project.name,
       'Implementation-Version': project.version
   }
-}
-
-sourceSets {
-    integrationTest {
-        java {
-            compileClasspath += main.output
-            runtimeClasspath += main.output
-            srcDir file('src/integrationTest/java')
-        }
-        resources.srcDir file('src/integrationTest/resources')
-    }
-
-    smokeTest {
-        java {
-            compileClasspath += main.output
-            runtimeClasspath += main.output
-            srcDir file('src/smokeTest/java')
-        }
-        resources.srcDir file('src/smokeTest/resources')
-    }
 }
 
 task printVersion {
