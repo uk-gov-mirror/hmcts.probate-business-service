@@ -14,7 +14,8 @@ String product = "probate"
 String component = "business-service"
 
 List<LinkedHashMap<String, Object>> secrets = [
-
+    secret('probatePersistenceUrl', 'TEST_PERSISTENCE_URL'),
+    secret('probateNotifyMobile', 'TEST_MOBILE')
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
@@ -29,14 +30,34 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 withParameterizedPipeline('java', product, component, params.ENVIRONMENT, 'sandbox') {
     loadVaultSecrets(secrets)
     after('test') {
-        sh 'cp build/reports/jacoco/index.html build/reports/jacoco/index_jacoco.html'
-        archiveArtifacts 'build/reports/jacoco/index_jacoco.html'
-        archiveArtifacts 'build/reports/tests/test/index.html'
-        archiveArtifacts 'build/reports/findbugs/test.html'
+        publishHTML target: [
+                alwaysLinkToLastBuild: true,
+                reportDir            : "build/reports/tests/test",
+                reportFiles          : "index.html",
+                reportName           : "sol-ccd-service Test Report"
+        ]
+
+        publishHTML target: [
+                alwaysLinkToLastBuild: true,
+                reportDir            : "build/reports/jacoco",
+                reportFiles          : "index.html",
+                reportName           : "sol-ccd-service Code Coverage Report"
+        ]
+
+        publishHTML target: [
+                alwaysLinkToLastBuild: true,
+                reportDir            : "build/reports/findbugs",
+                reportFiles          : "main.html",
+                reportName           : "sol-ccd-service find Bugs Report"
+        ]
     }
 
     after('functionalTest:saat') {
-        sh 'cp target/site/serenity/index.html target/site/serenity/index_serenity.html'
-        archiveArtifacts 'target/site/serenity/index_serenity.html'
+        publishHTML target: [
+                reportDir            : "target/site/serenity/",
+                reportFiles          : "index.html",
+                reportName           : "SAAT Functional Tests",
+                alwaysLinkToLastBuild: true
+        ]
     }
 }
