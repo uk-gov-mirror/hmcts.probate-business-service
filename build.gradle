@@ -7,8 +7,8 @@ buildscript {
     }
     dependencies {
         classpath group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: '2.5'
+        classpath("net.serenity-bdd:serenity-gradle-plugin:1.5.2")
     }
-
 }
 
 plugins {
@@ -21,6 +21,7 @@ plugins {
 apply plugin: 'org.sonarqube'
 apply plugin: 'findbugs'
 apply plugin: 'jacoco'
+apply plugin: 'net.serenity-bdd.aggregator'
 
 group = 'uk.gov.hmcts.probate'
 version = "3.0.0"
@@ -78,6 +79,7 @@ dependencyCheck {
 }
 
 sourceSets {
+
   functionalTest {
     java {
       compileClasspath += main.output
@@ -85,15 +87,6 @@ sourceSets {
       srcDir file('src/functionalTest/java')
     }
     resources.srcDir file('src/functionalTest/resources')
-  }
-
-  integrationTest {
-    java {
-      compileClasspath += main.output
-      runtimeClasspath += main.output
-      srcDir file('src/integrationTest/java')
-    }
-    resources.srcDir file('src/integrationTest/resources')
   }
 
   smokeTest {
@@ -110,6 +103,13 @@ task smoke(type: Test) {
   description = "Runs Smoke Tests"
   testClassesDirs = sourceSets.smokeTest.output.classesDirs
   classpath = sourceSets.smokeTest.runtimeClasspath
+}
+
+task functional(type: Test) {
+    description = "Runs functional Tests"
+    testClassesDirs = sourceSets.functionalTest.output.classesDirs
+    classpath = sourceSets.functionalTest.runtimeClasspath
+    finalizedBy aggregate
 }
 
 
@@ -145,9 +145,18 @@ dependencies {
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
+    functionalTestCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '1.5.2'
+    functionalTestCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '1.5.2'
+    functionalTestCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '1.5.2'
+    functionalTestCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '1.0.26'
+    functionalTestCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+    functionalTestCompile sourceSets.main.runtimeClasspath
+    functionalTestCompile sourceSets.test.runtimeClasspath
+
     testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.7'
     smokeTestCompile sourceSets.main.runtimeClasspath
     smokeTestCompile sourceSets.test.runtimeClasspath
+
 }
 
 compileJava {
@@ -161,6 +170,26 @@ jar {
     attributes 'Implementation-Title': project.name,
       'Implementation-Version': project.version
   }
+}
+
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/integrationTest/java')
+        }
+        resources.srcDir file('src/integrationTest/resources')
+    }
+
+    smokeTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/smokeTest/java')
+        }
+        resources.srcDir file('src/smokeTest/resources')
+    }
 }
 
 task printVersion {
