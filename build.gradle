@@ -131,8 +131,6 @@ jacocoTestReport {
     }
 }
 
-def reformsJavaLoggingVersion = '2.0.2'
-
 repositories {
     mavenLocal()
     maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
@@ -160,6 +158,7 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     compile group: 'org.springframework.retry', name: 'spring-retry'
     compile group: 'org.hibernate', name: 'hibernate-validator'
+    compile group: 'org.springframework.hateoas', name: 'spring-hateoas'
 
     compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.8.0-RELEASE'
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging', version: versions.logging
@@ -170,8 +169,6 @@ dependencies {
 
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
-
-    compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
