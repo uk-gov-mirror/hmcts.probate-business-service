@@ -131,16 +131,24 @@ jacocoTestReport {
     }
 }
 
+def reformsJavaLoggingVersion = '2.0.2'
 
 repositories {
     mavenLocal()
-    maven {
-      url "https://dl.bintray.com/hmcts/hmcts-maven"
-    }
-    maven {
-      url 'https://repo.spring.io/libs-milestone'
-    }
+    maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
+    maven { url 'https://repo.spring.io/libs-milestone' }
+    maven { url "http://repo.maven.apache.org/maven2" }
     jcenter()
+}
+
+distributions {
+    main {
+        contents {
+            from(file("$projectDir/libs/AI-Agent.xml")) {
+                into "lib"
+            }
+        }
+    }
 }
 
 def versions = [
@@ -157,10 +165,13 @@ dependencies {
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging', version: versions.logging
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: versions.logging
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: versions.logging
+    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: versions.logging
     compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.0.1'
 
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
+
+    compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
 
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
