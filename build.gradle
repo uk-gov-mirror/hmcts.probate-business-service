@@ -20,6 +20,8 @@ apply plugin: 'org.sonarqube'
 apply plugin: 'findbugs'
 apply plugin: 'jacoco'
 apply plugin: 'net.serenity-bdd.aggregator'
+apply plugin: 'distribution'
+
 
 gitProperties {
 	gitPropertiesDir = new File("${project.rootDir}/src/main/resources/uk/gov/hmcts/probate/services/business")
@@ -139,13 +141,9 @@ repositories {
     jcenter()
 }
 
-distributions {
-    main {
-        contents {
-            from(file("$projectDir/libs/AI-Agent.xml")) {
-                into "libs"
-            }
-        }
+processResources {
+    from ('src/lib/AI-Agent.xml') {
+        into 'lib'
     }
 }
 
