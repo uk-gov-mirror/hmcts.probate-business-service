@@ -20,7 +20,6 @@ apply plugin: 'org.sonarqube'
 apply plugin: 'findbugs'
 apply plugin: 'jacoco'
 apply plugin: 'net.serenity-bdd.aggregator'
-apply plugin: 'distribution'
 
 
 gitProperties {
