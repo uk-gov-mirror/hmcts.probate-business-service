@@ -18,4 +18,4 @@ log_level = "INFO"
 
 business_services_persistence_invitedata_url  = "http://betaPreProdprobateApp01.reform.hmcts.net:4103/invitedata"
 business_services_persistence_formdata_url  = "http://betaPreProdprobateApp01.reform.hmcts.net:4103/formdata"
-business_services_notify_invitedata_inviteLink = "https://probate-frontend-aat.service.core-compute-aat.internal/executors/invitation/"
+business_services_notify_invitedata_inviteLink = "http://probate-frontend-aat-staging.service.core-compute-aat.internal/executors/invitation/"
