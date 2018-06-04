@@ -18,4 +18,4 @@ log_level = "INFO"
 
 business_services_persistence_invitedata_url  = "http://probate-persistence-service-saat-staging.service.core-compute-saat.internal/invitedata"
 business_services_persistence_formdata_url  = "http://probate-persistence-service-saat-staging.service.core-compute-saat.internal/formdata"
-business_services_notify_invitedata_inviteLink = "https://probate-frontend-saat-staging.service.core-compute-saat.interna/executors/invitation/"
+business_services_notify_invitedata_inviteLink = "http://probate-frontend-saat-staging.service.core-compute-saat.internal/executors/invitation/"
