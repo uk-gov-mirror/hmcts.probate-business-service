@@ -1,7 +1,15 @@
 ---
+  security:
+    basic:
+      enabled: false
+
+  management:
+    security:
+      enabled: false
+
   server:
     port: 8080
-    
+          
   spring:
     application:
       name: probate-business-service
@@ -18,10 +26,11 @@
 
   services:
     persistence:
+      baseUrl: http://localhost:8282
       invitedata:
-        url: "http://localhost:8282/invitedata"
+        url: ${services.persistence.baseUrl}/invitedata
       formdata:
-        url: "http://localhost:8282/formdata"
+        url: ${services.persistence.baseUrl}/formdata
     notify:
       apiKey: "dummykey"
       invitedata:
