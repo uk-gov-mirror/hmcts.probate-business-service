@@ -21,6 +21,7 @@ apply plugin: 'findbugs'
 apply plugin: 'jacoco'
 apply plugin: 'net.serenity-bdd.aggregator'
 
+
 gitProperties {
 	gitPropertiesDir = new File("${project.rootDir}/src/main/resources/uk/gov/hmcts/probate/services/business")
     keys = ['git.commit.id','git.commit.time']
@@ -131,16 +132,18 @@ jacocoTestReport {
     }
 }
 
-
 repositories {
     mavenLocal()
-    maven {
-      url "https://dl.bintray.com/hmcts/hmcts-maven"
-    }
-    maven {
-      url 'https://repo.spring.io/libs-milestone'
-    }
+    maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
+    maven { url 'https://repo.spring.io/libs-milestone' }
+    maven { url "http://repo.maven.apache.org/maven2" }
     jcenter()
+}
+
+processResources {
+    from ('src/lib/AI-Agent.xml') {
+        into 'lib'
+    }
 }
 
 def versions = [
@@ -152,11 +155,13 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     compile group: 'org.springframework.retry', name: 'spring-retry'
     compile group: 'org.hibernate', name: 'hibernate-validator'
+    compile group: 'org.springframework.hateoas', name: 'spring-hateoas'
 
     compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.8.0-RELEASE'
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging', version: versions.logging
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: versions.logging
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: versions.logging
+    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: versions.logging
     compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.0.1'
 
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
