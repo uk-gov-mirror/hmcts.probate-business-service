@@ -10,4 +10,4 @@ divorce_frontend_hostname = "probate.platform.hmcts.net"
 outbound_proxy = ""
 
 probate_google_track_id: 'UA-93598808-2'
-
+capacity = "2"
