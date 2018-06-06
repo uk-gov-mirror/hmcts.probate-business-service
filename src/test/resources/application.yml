@@ -39,6 +39,13 @@
       pin:
         templateId: "c0e11486-b8b3-4c22-a1ae-805a0ad2f641"
 
+  logging:
+    level:
+      org.springframework.web: ERROR
+      uk.gov.hmcts.probate: DEBUG
+    pattern:
+      console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
+
   appinsights:
     intrumentationkey: false
 
