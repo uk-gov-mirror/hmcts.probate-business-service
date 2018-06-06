@@ -1,4 +1,12 @@
 ---
+  security:
+    basic:
+      enabled: false
+
+  management:
+    security:
+      enabled: false
+      
   server:
     port: 8080
     
@@ -18,10 +26,11 @@
 
   services:
     persistence:
+      baseUrl: http://localhost:8282
       invitedata:
-        url: "http://localhost:8282/invitedata"
+        url: ${services.persistence.baseUrl}/invitedata
       formdata:
-        url: "http://localhost:8282/formdata"
+        url: ${services.persistence.baseUrl}/formdata
     notify:
       apiKey: "probate_test_key-fce47f9c-7bbe-4f41-829e-5144a3820768-4b461773-72e0-465e-868a-91482cfc8aa4"
       invitedata:
