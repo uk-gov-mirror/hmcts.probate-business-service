@@ -1,8 +1,18 @@
 ---
+  security:
+    basic:
+      enabled: false
+
+  management:
+    security:
+      enabled: false
+      
   server:
     port: 8080
     
   spring:
+    application:
+      name: probate-business-service
     messages:
       basename: messages
       cache-seconds: -1
@@ -16,10 +26,11 @@
 
   services:
     persistence:
+      baseUrl: http://localhost:8282
       invitedata:
-        url: "http://localhost:8282/invitedata"
+        url: ${services.persistence.baseUrl}/invitedata
       formdata:
-        url: "http://localhost:8282/formdata"
+        url: ${services.persistence.baseUrl}/formdata
     notify:
       apiKey: "probate_test_key-fce47f9c-7bbe-4f41-829e-5144a3820768-4b461773-72e0-465e-868a-91482cfc8aa4"
       invitedata:
@@ -27,3 +38,16 @@
         inviteLink: "http://localhost:3000/executors/invitation/"
       pin:
         templateId: "c0e11486-b8b3-4c22-a1ae-805a0ad2f641"
+
+  logging:
+    level:
+      org.springframework.web: ERROR
+      uk.gov.hmcts.probate: DEBUG
+    pattern:
+      console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
+
+  appinsights:
+    intrumentationkey: false
+
+  azure:
+    app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}

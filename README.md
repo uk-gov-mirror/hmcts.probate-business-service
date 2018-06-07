@@ -3,6 +3,25 @@
 
 The probate business service provides useful business logic to thefrontend service and others via RESTful APIs.
 
+## Getting Started
+### Prerequisites
+- Java 8
+- Gradle
+- Docker
+
+### Running the application
+#### Building and Running the Business Service
+Install dependencies and build the service by executing the following command:  
+```
+$ ./gradlew clean build
+```
+
+Once the build has completed, you will find the new *.jar* in `build/libs`. You can run the *.jar* with the following command:  
+```
+$ java -jar build/libs/business-service-1.0.1.jar
+```
+
+
 ### API documentation
 
 API documentation is provided with Swagger:

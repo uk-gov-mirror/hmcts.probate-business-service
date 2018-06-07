@@ -1,8 +1,18 @@
 ---
+  security:
+    basic:
+      enabled: false
+
+  management:
+    security:
+      enabled: false
+
   server:
     port: 8080
-    
+          
   spring:
+    application:
+      name: probate-business-service
     messages:
       basename: messages
       cache-seconds: -1
@@ -16,10 +26,11 @@
 
   services:
     persistence:
+      baseUrl: http://localhost:8282
       invitedata:
-        url: "http://localhost:8282/invitedata"
+        url: ${services.persistence.baseUrl}/invitedata
       formdata:
-        url: "http://localhost:8282/formdata"
+        url: ${services.persistence.baseUrl}/formdata
     notify:
       apiKey: "dummykey"
       invitedata:
@@ -27,3 +38,9 @@
         inviteLink: "http://localhost:3000/executors/invitation/"
       pin:
         templateId: "dummykey"
+
+  appinsights:
+    intrumentationkey: false
+
+  azure:
+    app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}

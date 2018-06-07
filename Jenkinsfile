@@ -1,6 +1,6 @@
 #!groovy
 properties([
-    [$class: 'GithubProjectProperty', projectUrlStr: 'https://git.reform.hmcts.net/probate/business-service.git'],
+    [$class: 'GithubProjectProperty', projectUrlStr: 'https://github.com/hmcts/probate-business-service.git'],
     parameters([ 
         string(description: 'Store RPM variable for branches than master or develop (other than "no" stores rpm)', defaultValue: 'no', name: 'store_rpm'),
         string(description: 'Store docker from Branches other than master (other than "no" create docker)', defaultValue: 'no', name: 'create_docker')
@@ -36,6 +36,9 @@ node {
         stage('Checkout') {
             deleteDir()
             checkout scm
+            dir('ansible-management') {
+                git url: "https://github.com/hmcts/ansible-management", branch: "master", credentialsId: "jenkins-public-github-api-token"
+            }
         }
 
         if ("master"  != "${env.BRANCH_NAME}") {
