@@ -66,7 +66,7 @@ module "probate-business-service" {
     SERVICES_NOTIFY_PIN_TEMPLATEID = "${data.vault_generic_secret.business_services_notify_pin_templateId.data["value"]}"
     java_app_name = "${var.microservice}"
     LOG_LEVEL = "${var.log_level}"
-    ROOT_APPENDER = "JSON_CONSOLE"
+    //ROOT_APPENDER = "JSON_CONSOLE"  //remove json output
 
   }
 }
