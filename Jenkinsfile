@@ -90,9 +90,9 @@ node {
 
         if(create_docker != 'no' || "master"  == "${env.BRANCH_NAME}") {
             stage('Package (Docker)') {
-                businessServiceVersion = dockerImage imageName: 'probate/business-service'
+                //businessServiceVersion = dockerImage imageName: 'probate/business-service'
             }
-            println(businessServiceVersion)
+            //println(businessServiceVersion)
         }
 
         if(storeRPMToArtifactory) {
