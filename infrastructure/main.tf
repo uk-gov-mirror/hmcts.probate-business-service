@@ -27,7 +27,7 @@ locals {
   //java_proxy_variables: "-Dhttp.proxyHost=${var.proxy_host} -Dhttp.proxyPort=${var.proxy_port} -Dhttps.proxyHost=${var.proxy_host} -Dhttps.proxyPort=${var.proxy_port}"
 
   //probate_frontend_hostname = "probate-frontend-aat.service.core-compute-aat.internal"
-  previewVaultName = "pro-business-ser"
+  previewVaultName = "pro-business-ser-aat"
   nonPreviewVaultName = "pro-business-ser-${var.env}"
   vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
 
