@@ -30,7 +30,7 @@ locals {
   vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
 
   nonPreviewVaultUri = "${module.probate-business-service-vault.key_vault_uri}"
-  previewVaultUri = "https://pro-business-ser-aat.vault.azure.net/"
+  previewVaultUri = "https://pro-bus-ser-aat.vault.azure.net/"
   vaultUri = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultUri : local.nonPreviewVaultUri}"
 }
 
