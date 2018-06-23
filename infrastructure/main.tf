@@ -24,10 +24,8 @@ data "vault_generic_secret" "business_services_notify_pin_templateId" {
 
 locals {
   aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
-  //java_proxy_variables: "-Dhttp.proxyHost=${var.proxy_host} -Dhttp.proxyPort=${var.proxy_port} -Dhttps.proxyHost=${var.proxy_host} -Dhttps.proxyPort=${var.proxy_port}"
 
-  //probate_frontend_hostname = "probate-frontend-aat.service.core-compute-aat.internal"
-  previewVaultName = "pro-business-ser-aat"
+  previewVaultName = "pro-business-ser"
   nonPreviewVaultName = "pro-business-ser-${var.env}"
   vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
 

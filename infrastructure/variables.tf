@@ -44,28 +44,12 @@ variable "jenkins_AAD_objectId" {
 }
 
 
-variable "outbound_proxy" {
-  default = "http://proxyout.reform.hmcts.net:8080/"
-}
-
-variable "no_proxy" {
-  default = "localhost,127.0.0.0/8,127.0.0.1,127.0.0.1*,local.home,reform.hmcts.net,*.reform.hmcts.net,betaDevBprobateApp01.reform.hmcts.net,betaDevBprobateApp02.reform.hmcts.net,betaDevBccidamAppLB.reform.hmcts.net,*.internal,*.platform.hmcts.net"
-}
-
 variable "business_services_persistence_baseUrl" {
   default = "/"
 }
 
 variable "business_services_notify_invitedata_inviteLink" {
   default = "./executors/invitation/"
-}
-
-variable "proxy_host" {
-  type = "string"
-}
-
-variable "proxy_port" {
-  type = "string"
 }
 
 variable "log_level" {
