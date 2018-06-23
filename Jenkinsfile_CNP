@@ -20,9 +20,6 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 }
 
 withPipeline("java", product, component) {
-  before('buildinfra:prod') {
-    error 'Deliberately breaking pipeline to prevent prod deployment'
-  }
   loadVaultSecrets(secrets)
   //enableSlackNotifications('#probate-jenkins')
   after('test') {
@@ -31,6 +28,27 @@ withPipeline("java", product, component) {
     } finally {
       steps.archiveArtifacts "build/reports/pitest/**/*.*"
     }
+  
+    publishHTML target: [
+            alwaysLinkToLastBuild: true,
+            reportDir            : "build/reports/tests/test",
+            reportFiles          : "index.html",
+            reportName           : "sol-ccd-service Test Report"
+    ]
+
+    publishHTML target: [
+            alwaysLinkToLastBuild: true,
+            reportDir            : "build/reports/jacoco",
+            reportFiles          : "index.html",
+            reportName           : "sol-ccd-service Code Coverage Report"
+    ]
+
+    publishHTML target: [
+            alwaysLinkToLastBuild: true,
+            reportDir            : "build/reports/findbugs",
+            reportFiles          : "main.html",
+            reportName           : "sol-ccd-service find Bugs Report"
+    ]
   }
 
 }
