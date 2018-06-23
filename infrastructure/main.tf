@@ -25,8 +25,8 @@ data "vault_generic_secret" "business_services_notify_pin_templateId" {
 locals {
   aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
 
-  previewVaultName = "pro-business-ser"
-  nonPreviewVaultName = "pro-business-ser-${var.env}"
+  previewVaultName = "pro-bus-ser"
+  nonPreviewVaultName = "pro-bus-ser-${var.env}"
   vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
 
   nonPreviewVaultUri = "${module.probate-business-service-vault.key_vault_uri}"
