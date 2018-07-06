@@ -44,6 +44,7 @@ module "probate-business-service" {
   subscription = "${var.subscription}"
   asp_name     = "${var.product}-${var.env}-asp"
   capacity     = "${var.capacity}"
+  common_tags  = "${var.common_tags}"
   
   app_settings = {
 
