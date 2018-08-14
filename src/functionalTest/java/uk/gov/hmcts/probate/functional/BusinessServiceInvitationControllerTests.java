@@ -93,7 +93,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
         SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders(sessionId))
                 .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(businessServiceUrl + "/resendInvite/" + sessionId)
+                .when().post(businessServiceUrl + "/invite/" + sessionId)
                 .then().assertThat().statusCode(200);
     }
 
@@ -101,7 +101,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
         Response response = SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders(sessionId))
                 .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(businessServiceUrl + "/resendInvite/invalid_id")
+                .when().post(businessServiceUrl + "/invite/invalid_id")
                 .thenReturn();
 
         response.then().assertThat().statusCode(500)

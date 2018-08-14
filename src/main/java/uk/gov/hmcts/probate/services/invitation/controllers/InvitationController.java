@@ -45,7 +45,7 @@ public class InvitationController {
         return linkId;
     }
 
-    @RequestMapping(path = "/resendInvite/{inviteId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
+    @RequestMapping(path = "/invite/{inviteId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
     public String invite(@PathVariable("inviteId") String inviteId,
                          @Valid @RequestBody Invitation invitation,
                          BindingResult bindingResult,
