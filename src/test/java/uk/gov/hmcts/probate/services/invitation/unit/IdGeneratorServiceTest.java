@@ -39,11 +39,11 @@ public class IdGeneratorServiceTest {
     public void removeSpecialCharactersFromGeneratedId() {
         IdGeneratorService idGeneratorService = new IdGeneratorService(new ProbateStrategy());
         Map<String, String> data = new HashMap<>();
-        data.put("firstName", "Dumitru!£$%^&*():@~");
-        data.put("lastName", "Panaghiea");
+        data.put("firstName", "Fred!£$%^&*():@~");
+        data.put("lastName", "Wood-Wood");
 
         String id = idGeneratorService.generate(data);
 
-        assertThat(id, containsString("dumitru-panaghiea"));
+        assertThat(id, containsString("fred-wood-wood"));
     }
 }
