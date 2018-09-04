@@ -28,7 +28,10 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 public class PinControllerTest {
 
     private static final String SERVICE_URL = "/pin";
-    private static final String TEST_PHONE_NUMBER = "07700900111";
+    private static final String TEST_SESSION_ID = "1234567890";
+    private static final String TEST_UK_PHONE_NUMBER = "(0)7700900111";
+    private static final String TEST_INT_PHONE_NUMBER = "%2B447700900111";
+    private static final String TEST_BAD_PHONE_NUMBER = "$447700900111"; 
 
     private MediaType contentType = new MediaType(MediaType.TEXT_PLAIN.getType(),
             MediaType.TEXT_PLAIN.getSubtype(),
@@ -58,11 +61,39 @@ public class PinControllerTest {
     }
 
     @Test
-    public void generatePin() throws Exception {
-        ResultActions resultActions = mockMvc.perform(get(SERVICE_URL + "/" + TEST_PHONE_NUMBER)
-                .header("Session-Id", "1234567890")
+    public void generatePinFromUkNumber() throws Exception {
+        mockMvc.perform(get(SERVICE_URL + "?phoneNumber=" + TEST_UK_PHONE_NUMBER)
+                .header("Session-Id", TEST_SESSION_ID)
                 .contentType(contentType))
                 .andExpect(status().isOk())
                 .andExpect(content().string(lessThanOrEqualTo("999999")));
     }
+    @Test
+    public void generatePinFromInternationalNumber() throws Exception {
+        mockMvc.perform(get(SERVICE_URL + "?phoneNumber=" + TEST_INT_PHONE_NUMBER)
+                .header("Session-Id", TEST_SESSION_ID)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(content().string(lessThanOrEqualTo("999999")));
+    }
+    @Test
+    public void generatePinFromBadNumber() throws Exception {
+        mockMvc.perform(get(SERVICE_URL + "?phoneNumber=" + TEST_BAD_PHONE_NUMBER)
+                .header("Session-Id", TEST_SESSION_ID)
+                .contentType(contentType))
+                .andExpect(status().isBadRequest());
+    }
+    @Test
+    public void generatePinFromBadParameterName() throws Exception {
+        mockMvc.perform(get(SERVICE_URL + "?number=" + TEST_UK_PHONE_NUMBER)
+                .header("Session-Id", TEST_SESSION_ID)
+                .contentType(contentType))
+                .andExpect(status().isBadRequest());
+    }
+    @Test
+    public void generatePinFromMissingSessionId() throws Exception {
+        mockMvc.perform(get(SERVICE_URL + "?phoneNumber=" + TEST_UK_PHONE_NUMBER)
+                .contentType(contentType))
+                .andExpect(status().isBadRequest());
+    }    
 }
