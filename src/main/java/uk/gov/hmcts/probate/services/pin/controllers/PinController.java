@@ -16,6 +16,7 @@ import uk.gov.service.notify.NotificationClientException;
 public class PinController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PinController.class);
+    
     @Autowired
     private PinService pinService;
 
@@ -23,12 +24,17 @@ public class PinController {
     public ResponseEntity<String> invite(@RequestParam String phoneNumber,
                          @RequestHeader("Session-Id") String sessionId) throws NotificationClientException, UnsupportedEncodingException {
  	
+		if ( null == sessionId ) {
+			LOGGER.error("Session-Id request header not found");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+    	LOGGER.info("Processing session id " + sessionId);
+    	
 		phoneNumber = URLDecoder.decode(phoneNumber, java.nio.charset.StandardCharsets.UTF_8.toString());
-		
-		phoneNumber = phoneNumber.replaceAll("[ \\(\\)\\[\\]-]", "");		
+		phoneNumber = phoneNumber.replaceAll("[ \\(\\)\\[\\]-]", "");			
 		
 		if ( !phoneNumber.matches("(\\+)*[0-9]+") ) {
-			LOGGER.error("Unable to validate phoneNumber");
+			LOGGER.error("Unable to validate phoneNumber parameter");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 		
