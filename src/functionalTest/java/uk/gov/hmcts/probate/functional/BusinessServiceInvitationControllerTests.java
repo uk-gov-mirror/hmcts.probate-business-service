@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
 @RunWith(SerenityRunner.class)
@@ -56,7 +57,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
 
     @Test
     public void testInviteResendFailure() {
-        validateInviteResendFailure("invalid_id", "inviteDataInvalid.json");
+        validateInviteResendFailure("invalid_id", "emptyInviteData.json");
     }
 
     @Test
@@ -106,7 +107,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
 
         response.then().assertThat().statusCode(500)
                 .and().body("error", equalTo("Internal Server Error"))
-                .and().body("message", equalTo("500 null"));
+                .and().body("message", containsString("ValidationError"));
     }
 
     private void validateInvitesAllAgreedSuccess(String formdataId) {
