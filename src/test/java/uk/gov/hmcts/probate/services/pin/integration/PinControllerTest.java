@@ -10,7 +10,6 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.services.businessvalidation.util.TestUtils;
 
@@ -48,7 +47,6 @@ public class PinControllerTest {
 
     @Autowired
     void setConverters(HttpMessageConverter<?>[] converters) {
-
         Arrays.stream(converters)
                 .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
                 .findFirst()
@@ -62,7 +60,7 @@ public class PinControllerTest {
 
     @Test
     public void generatePinFromUkNumber() throws Exception {
-        mockMvc.perform(get(SERVICE_URL + "?phoneNumber=" + TEST_UK_PHONE_NUMBER)
+        mockMvc.perform(get(SERVICE_URL+"?phoneNumber="+TEST_UK_PHONE_NUMBER)
                 .header("Session-Id", TEST_SESSION_ID)
                 .contentType(contentType))
                 .andExpect(status().isOk())
