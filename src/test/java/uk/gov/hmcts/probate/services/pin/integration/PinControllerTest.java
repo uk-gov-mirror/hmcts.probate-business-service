@@ -11,7 +11,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.services.businessvalidation.util.TestUtils;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
@@ -37,10 +36,8 @@ public class PinControllerTest {
             Charset.forName("utf8"));
 
     private MockMvc mockMvc;
-    private HttpMessageConverter mappingJackson2HttpMessageConverter;
-
-    @Autowired
-    private TestUtils utils;
+    @SuppressWarnings("unused")
+	private HttpMessageConverter<?> mappingJackson2HttpMessageConverter;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
