@@ -30,6 +30,7 @@ public class PinControllerTest {
     private static final String TEST_UK_PHONE_NUMBER = "(0)7700900111";
     private static final String TEST_INT_PHONE_NUMBER = "%2B447700900111";
     private static final String TEST_BAD_PHONE_NUMBER = "$447700900111"; 
+    private static final String TEST_LARGE_PHONE_NUMBER = "%2B10900111000111000111";
 
     private MediaType contentType = new MediaType(MediaType.TEXT_PLAIN.getType(),
             MediaType.TEXT_PLAIN.getSubtype(),
@@ -66,6 +67,14 @@ public class PinControllerTest {
     @Test
     public void generatePinFromInternationalNumber() throws Exception {
         mockMvc.perform(get(SERVICE_URL + "?phoneNumber=" + TEST_INT_PHONE_NUMBER)
+                .header("Session-Id", TEST_SESSION_ID)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(content().string(lessThanOrEqualTo("999999")));
+    }
+    @Test
+    public void generatePinFromLargeInternationalNumber() throws Exception {
+        mockMvc.perform(get(SERVICE_URL+"?phoneNumber="+TEST_LARGE_PHONE_NUMBER)
                 .header("Session-Id", TEST_SESSION_ID)
                 .contentType(contentType))
                 .andExpect(status().isOk())
