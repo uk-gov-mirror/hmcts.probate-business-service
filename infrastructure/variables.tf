@@ -1,8 +1,10 @@
 // Infrastructural variables
+variable "product" {}  //get from jenkins file
 
-variable "product" {
-  default = "probate"
+variable "raw_product" {
+  default = "probate" // jenkins-library overrides product for PRs and adds e.g. pr-118-cmc
 }
+
 
 variable "microservice" {
   default = "business-service"
@@ -24,6 +26,11 @@ variable "deployment_env" {
 
 variable "tenant_id" {
   description = "(Required) The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault. This is usually sourced from environemnt variables and not normally required to be specified."
+}
+
+variable "appinsights_instrumentation_key" {
+  description = "Instrumentation key of the App Insights instance this webapp should use. Module will create own App Insights resource if this is not provided"
+  default = ""
 }
 
 variable "component" {
@@ -62,4 +69,12 @@ variable "capacity" {
 
 variable "common_tags" {
   type = "map"
+}
+
+variable "asp_rg" {
+  
+}
+
+variable "asp_name" {
+  
 }
