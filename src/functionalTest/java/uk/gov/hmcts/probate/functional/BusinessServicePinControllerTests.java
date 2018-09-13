@@ -18,7 +18,7 @@ public class BusinessServicePinControllerTests extends IntegrationTestBase {
 
     @Test
     public void testInviteSuccess() {
-        validatePinSuccess(mobileNumber);
+    	validatePinSuccess(mobileNumber);
     }
 
     @Test
@@ -29,17 +29,15 @@ public class BusinessServicePinControllerTests extends IntegrationTestBase {
     private void validatePinSuccess(String phoneNumber) {    	
         SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders(SESSION_ID))
-                .when().get(businessServiceUrl + "/pin?phoneNumber=" + phoneNumber)
+                .when().get(businessServiceUrl + "/pin/?phoneNumber=" + phoneNumber)
                 .then().assertThat().statusCode(200);
     }
 
     private void validatePinFailure(String phoneNumber) {
         Response response = SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders(SESSION_ID))
-                .when().get(businessServiceUrl + "/pin?phoneNumber=" + phoneNumber)
+                .when().get(businessServiceUrl + "/pin/?phoneNumber=" + phoneNumber)
                 .thenReturn();
-        response.then().assertThat().statusCode(500)
-                .and().body("error", equalTo("Internal Server Error"))
-                .and().body("message", containsString("Status code: 400"));
+        response.then().assertThat().statusCode(400);
     }
 }
