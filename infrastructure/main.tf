@@ -51,7 +51,7 @@ module "probate-business-service" {
   ilbIp = "${var.ilbIp}"
   is_frontend  = false
   subscription = "${var.subscription}"
-  asp_name     = "${var.product}-${var.env}"
+  asp_name     = "${var.asp_name}"
   capacity     = "${var.capacity}"
   common_tags  = "${var.common_tags}"
   asp_rg       = "${var.asp_rg}"
