@@ -9,7 +9,7 @@
 
   server:
     port: 8080
-          
+
   spring:
     application:
       name: probate-business-service
@@ -38,6 +38,13 @@
         inviteLink: "http://localhost:3000/executors/invitation/"
       pin:
         templateId: "dummykey"
+
+  pdf.service:
+    url: http://localhost:5500
+    pdfApi: /api/v2/pdf-generator/html
+    templatesDirectory: templates/pdf/
+    defaultDisplayFilename: dummy.pdf
+    grantSignatureBase64: dummy_hash
 
   appinsights:
     intrumentationkey: false
