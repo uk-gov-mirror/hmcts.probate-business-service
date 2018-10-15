@@ -1,23 +1,26 @@
 package uk.gov.hmcts.probate.services.businessdocuments;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import uk.gov.hmcts.probate.services.businessdocuments.DocumentType;
-import uk.gov.hmcts.probate.services.businessdocuments.PDFGenerationService;
+import uk.gov.hmcts.probate.services.businessvalidation.model.CheckAnswersSummary;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import javax.validation.Valid;
+import java.util.Base64;
 
 @RequiredArgsConstructor
-@RequestMapping(value = "/businessDocument", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/businessDocument")
 @RestController
 public class BusinessDocumentController {
 
     private final PDFGenerationService pdfDocumentGenerationService;
 
-    @PostMapping (path = "/generate-check-answers", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = "application/pdf")
-    public byte[] generatePDFDocument(@RequestBody String json) {
 
-        return pdfDocumentGenerationService.generatePdf(json, DocumentType.CHECK_ANSWERS_SUMMARY);
+    @PostMapping(path = "/generateCheckAnswersSummaryPDF", consumes = javax.ws.rs.core.MediaType.APPLICATION_JSON, produces = "application/pdf")
+    public byte[] generateCheckAnswersSummaryPDF(@Valid @RequestBody CheckAnswersSummary checkAnswersSummary, @RequestHeader("ServiceAuthorization") String authorization) {
+
+        final byte[] bytes = pdfDocumentGenerationService.generatePdf(authorization, checkAnswersSummary,DocumentType.CHECK_ANSWERS_SUMMARY);
+        return Base64.getEncoder().encode(bytes);
     }
+
+
 }

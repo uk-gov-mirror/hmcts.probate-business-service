@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties("pdf.service")
+@ConfigurationProperties("services.pdf.service")
 public class PDFServiceConfiguration {
 
     private String url;
