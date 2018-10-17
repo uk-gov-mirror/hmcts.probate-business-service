@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import uk.gov.hmcts.probate.services.businessvalidation.model.CheckAnswersSummary;
 
 import javax.validation.Valid;
-import java.util.Base64;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/businessDocument")
@@ -19,7 +18,7 @@ public class BusinessDocumentController {
     public byte[] generateCheckAnswersSummaryPDF(@Valid @RequestBody CheckAnswersSummary checkAnswersSummary, @RequestHeader("ServiceAuthorization") String authorization) {
 
         final byte[] bytes = pdfDocumentGenerationService.generatePdf(authorization, checkAnswersSummary,DocumentType.CHECK_ANSWERS_SUMMARY);
-        return Base64.getEncoder().encode(bytes);
+        return bytes;
     }
 
 

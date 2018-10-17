@@ -1,0 +1,145 @@
+{
+    "template": "<!DOCTYPE html>\n<html xmlns:th=\"http://www.thymeleaf.org\">\n    <head>\n        <title th:remove=\"all\" th:text=\"${title}\">Probate application</title>\n        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n        <style type=\"text/css\">\n\n            body {\n                font-family: Verdana, Arial;\n                margin-top: 100px;\n                margin-bottom: 100px;\n                margin-right: 250px;\n                margin-left: 160px;\n            }\n            .table-content{\n                display: block;\n                cellpadding: 0px;\n            }\n            tr.border_bottom td {\n                border-bottom:1pt solid black;\n            }\n\n        </style>\n    </head>\n    <body>\n        <table>\n            <tbody class=\"table-content\">\n            <tr>\n                <td colspan=\"2\" style=\"height: 15px;\">\n                </td>\n            </tr>\n            <tr>\n                <td colspan=\"2\" style=\"height: 15px;\">\n                </td>\n            </tr>\n            <tr>\n              <td colspan=\"2\" valign=\"top\" style=\"font-weight: bold\"><h1>Check your answers</h1></td>\n            </tr>\n            <tr>\n              <td colspan=\"2\">\n                <p>Check the information below carefully. This will form a record of your application for probate. It will be also be stored as a public record, and will be able to be viewed online.</p>\n              </td>\n            </tr>\n\n            <tr class=\"border_bottom\">\n                <td colspan=\"2\" valign=\"top\" style=\"font-weight: bold\"><h2>The will</h2></td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>Did the person who died leave a will?</h3></td>\n                <td>{{ willIsLeft }} </td>\n            </tr>\n\n            <tr class=\"border_bottom\">\n                <td><h3>Do you have the original will?</h3></td>\n                <td>{{ willIsOriginal }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>Were any updates('codicils') made to the will?</h3></td>\n                <td>{{ willCodicils }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>Do you have a death certificate?</h3></td>\n                <td>{{ deceasedDeathCertificate }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>Are you named as an executor on the will?</h3></td>\n                <td>{{ applicantIsExecutor }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>Are all the executors able to make their own decisions?</h3></td>\n                <td>{{ executorsMentalCapacity }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td colspan=\"2\" valign=\"top\" style=\"font-weight: bold\"><h2>Inheritance tax</h2></td>\n            </tr>\n            <tr class=\"border_bottom\">\n                 <td><h3>Has an inheritance Tax (IHT) form been filled in?</h3></td>\n                 <td>{{ ihtIsCompleted }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>How was the Inheritance Tax (IHT) form submitted?</h3></td>\n                <td>{{ ihtSubmissionMethod }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>Which paper form was filled in?</h3></td>\n                <td>{{ ihtSubmissionMethod }} </td>\n            </tr>\n\n             <tr class=\"border_bottom\">\n                 <td><h3>Gross value of the estate in £</h3></td>\n                 <td>{{ ihtGrossValue }} </td>\n             </tr>\n             <tr class=\"border_bottom\">\n                 <td><h3>Net value of the estate in £</h3></td>\n                 <td>{{ ihtNetValue }} </td>\n             </tr>\n             <tr class=\"border_bottom\">\n                 <td colspan=\"2\" valign=\"top\" style=\"font-weight: bold\"><h2>The executors</h2></td>\n             </tr>\n             <tr class=\"border_bottom\">\n                 <td><h3>How many past and present executors are named on the will and any updates ('codicils')?</h3></td>\n                 <td>{{ executorsNumber }} </td>\n             </tr>\n            <tr class=\"border_bottom\">\n                <td colspan=\"2\"><h3> About you</h3></td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>First name(s)</h3></td>\n                <td>{{ applicantFirstName }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>Last name(s)</h3></td>\n                <td>{{ applicantLastName }} </td>\n            </tr>\n\n            <tr class=\"border_bottom\">\n                <td><h3>Is your name '{{ applicantFirstName }} {{ applicantLastName }}' exaclty what appears on the will?</h3></td>\n                <td>{{ applicantNameAsOnTheWill }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>Phone number</h3></td>\n                <td>{{ applicantPhoneNumber }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>What is your address?</h3></td>\n                <td>{{ applicantAddress }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td colspan=\"2\" valign=\"top\" style=\"font-weight: bold\"><h2>About the person who died</h2></td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>First name(s)</h3></td>\n                <td>{{ deceasedForename }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>Last name(s)</h3></td>\n                <td>{{ deceasedSurname }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>Did {{ deceasedForename }} {{ deceasedSurname }} have assets in another name?</h3></td>\n                <td>{{ deceasedHadAlias }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>Did {{ deceasedForename }} {{ deceasedSurname }} get married or enter into a civil partnership after the will was signed?</h3></td>\n                <td>{{ deceasedMarriedAfterWill }} </td>\n            </tr>\n\n            <tr class=\"border_bottom\">\n                <td><h3>What was the date that they died?</h3></td>\n                <td>{{ deceasedDateOfDeath }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>What was their date of birth?</h3></td>\n                <td>{{ deceasedDob }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>At the time of their death the person who died:</h3></td>\n                <td>{{ deceasedDomicileStatus }} </td>\n            </tr>\n            <tr class=\"border_bottom\">\n                <td><h3>What was the permanent address at the time of thier death?</h3></td>\n                <td>{{ deceasedAddress}} </td>\n            </tr>\n\n            </tbody>\n        </table>\n    </body>\n</html>\n\n",
+    "values": {
+      "checkAnswersSummary": {
+        "pageTitle": "\n        Check your answers\n    ",
+        "mainParagraph": "Check the information below carefully. This will form a record of your application for probate. It will also be stored as a public record, and will be able to be viewed online.",
+        "sections": [
+          {
+            "title": "\n            The will\n        ",
+            "type": "heading-medium",
+            "questionAndAnswers": [
+              {
+                "question": "Did the person who died leave a will?",
+                "answer": "Yes"
+              },
+              {
+                "question": "Do you have the original will?",
+                "answer": "Yes"
+              },
+              {
+                "question": "Were any updates (‘codicils’) made to the will?",
+                "answer": "Yes"
+              },
+              {
+                "question": "How many updates (‘codicils’) were made to the will?",
+                "answer": "1"
+              },
+              {
+                "question": "Do you have a death certificate?",
+                "answer": "Yes"
+              },
+              {
+                "question": "Are you named as an executor on the will?",
+                "answer": "Yes"
+              },
+              {
+                "question": "Are all the executors able to make their own decisions?",
+                "answer": "Yes"
+              }
+            ]
+          },
+          {
+            "title": "Inheritance tax",
+            "type": "heading-medium",
+            "questionAndAnswers": [
+              {
+                "question": "Has an Inheritance Tax (IHT) form been filled in?",
+                "answer": "Yes"
+              },
+              {
+                "question": "How was the Inheritance Tax (IHT) form submitted?",
+                "answer": "By post"
+              },
+              {
+                "question": "Which paper form was filled in?",
+                "answer": "IHT 207 - there was no inheritance tax to pay and the person who died lived abroad"
+              },
+              {
+                "question": "Gross value of the estate in £",
+                "answer": "65656565"
+              },
+              {
+                "question": "Net value of the estate in £",
+                "answer": "776767"
+              }
+            ]
+          },
+          {
+            "title": "The executors",
+            "type": "heading-medium",
+            "questionAndAnswers": [
+              {
+                "question": "How many past and present executors are named on the will and any updates (‘codicils’)?",
+                "answer": "1"
+              }
+            ]
+          },
+          {
+            "title": "About you",
+            "type": "heading-small",
+            "questionAndAnswers": [
+              {
+                "question": "First name(s)",
+                "answer": "RYRT"
+              },
+              {
+                "question": "Last name(s)",
+                "answer": "HKJKH"
+              },
+              {
+                "question": "Is your name ‘RYRT HKJKH’ exactly what appears on the will?",
+                "answer": "Yes"
+              },
+              {
+                "question": "Phone number",
+                "answer": "8757578"
+              },
+              {
+                "question": "What is your address?",
+                "answer": "54345354"
+              }
+            ]
+          },
+          {
+            "title": "About the person who died",
+            "type": "heading-medium",
+            "questionAndAnswers": [
+              {
+                "question": "First name(s)",
+                "answer": "YTYTR"
+              },
+              {
+                "question": "Last name(s)",
+                "answer": "JGHJ"
+              },
+              {
+                "question": "Did YTYTR JGHJ have assets in another name?",
+                "answer": "No"
+              },
+              {
+                "question": "Did YTYTR JGHJ get married or enter into a civil partnership after the latest codicil was signed?",
+                "answer": "No"
+              },
+              {
+                "question": "What was the date that they died?",
+                "answer": "23 December 2017"
+              },
+              {
+                "question": "What was their date of birth?",
+                "answer": "4 March 1963"
+              },
+              {
+                "question": "At the time of their death did the person who died:",
+                "answer": "live (domicile) permanently in England or Wales"
+              },
+              {
+                "question": "What was the permanent address at the time of their death?",
+                "answer": "YRYT"
+              }
+            ]
+          }
+        ]
+      }
+    }
+}
