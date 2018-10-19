@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 @RunWith(SerenityRunner.class)
 public class BusinessDocumentControllerTest extends IntegrationTestBase {
 
-    private static final String JSON_FILE_NAME = "checkAnswersSummary.json";
+    private static final String JSON_FILE_NAME = "checkAnswersMultipleExecutorsSummary.json";
 
 
     @Test

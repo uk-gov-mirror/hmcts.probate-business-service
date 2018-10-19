@@ -10,6 +10,7 @@ import java.util.List;
 public class CheckAnswersSummary implements Serializable {
 
     @JsonProperty("pageTitle")
+
     private String pageTitle;
     @JsonProperty("mainParagraph")
     private String mainParagraph;
