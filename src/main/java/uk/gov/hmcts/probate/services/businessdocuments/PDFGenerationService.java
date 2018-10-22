@@ -32,19 +32,18 @@ public class PDFGenerationService {
 
     public byte[] generatePdf(String serviceAuthToken, CheckAnswersSummary checkAnswersSummary, DocumentType documentType) {
 
-
         byte[] postResult;
 
         try {
             postResult = generateFromHtml(serviceAuthToken, checkAnswersSummary, documentType.getTemplateName());
-        } catch (Exception e) {
+        } catch (JsonProcessingException e) {
             log.error(e.getMessage(), e);
             throw new BusinessDocumentException(e.getMessage(), e);
         }
         return postResult;
     }
 
-    private byte[] generateFromHtml(String serviceAuthToken, CheckAnswersSummary checkAnswersSummary, String templateName) {
+    private byte[] generateFromHtml(String serviceAuthToken, CheckAnswersSummary checkAnswersSummary, String templateName) throws JsonProcessingException {
         URI uri = URI.create(String.format("%s%s", pdfServiceConfiguration.getUrl(), pdfServiceConfiguration.getPdfApi()));
 
         Supplier<String> supplier = () -> serviceAuthToken;
@@ -54,15 +53,12 @@ public class PDFGenerationService {
         String templatePath = pdfServiceConfiguration.getTemplatesDirectory() + templateName + ".html";
         String templateAsString = fileSystemResourceService.getFileFromResourceAsString(templatePath);
         byte[] bytes;
-        try {
 
-            Map<String, Object> paramMap = asMap(objectMapper.writeValueAsString(checkAnswersSummary));
+
+        Map<String, Object> paramMap = asMap(objectMapper.writeValueAsString(checkAnswersSummary));
             bytes = pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
 
-        } catch (JsonProcessingException e) {
-            log.error(e.getMessage(), e);
-            throw new BusinessDocumentException(e.getMessage(), e);
-        }
+
         return bytes;
 
     }
@@ -75,7 +71,6 @@ public class PDFGenerationService {
                     new TypeReference<HashMap<String, Object>>() {
                     });
         } catch (IOException e) {
-
             log.error(e.getMessage(), e);
             throw new BusinessDocumentException(e.getMessage(), e);
         }

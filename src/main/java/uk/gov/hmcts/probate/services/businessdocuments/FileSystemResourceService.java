@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.services.exceptions.BusinessDocumentException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,6 +16,8 @@ import java.util.Optional;
 @Slf4j
 @Component
 public class FileSystemResourceService {
+
+    public static final String BUSINESS_DOCUMENT_TEMPLATE_COULD_NOT_BE_FOUND = "Business Document template could not be found";
 
     public Optional<FileSystemResource> getFileSystemResource(String resourcePath) {
 
@@ -27,23 +30,23 @@ public class FileSystemResourceService {
                         IOUtils.copy(in, out);
                         return new FileSystemResource(tempFile);
                     } catch (IOException e) {
-                        log.warn("File system [ {} ] could not be found", resourcePath, e);
-                        return null;
+                        log.error("File system [ {} ] could not be found", resourcePath, e);
+                        throw new BusinessDocumentException(BUSINESS_DOCUMENT_TEMPLATE_COULD_NOT_BE_FOUND, e);
                     }
                 });
     }
 
     public String getFileFromResourceAsString(String resourcePath) {
-        try {
-            Optional<FileSystemResource> fileSystemResource = getFileSystemResource(resourcePath);
-            if (fileSystemResource.isPresent()) {
+        Optional<FileSystemResource> fileSystemResource = getFileSystemResource(resourcePath);
+        if (fileSystemResource.isPresent()) {
+            try {
                 return FileUtils.readFileToString(fileSystemResource.get().getFile(), Charset.defaultCharset());
+            } catch (IOException e) {
+                throw new BusinessDocumentException(BUSINESS_DOCUMENT_TEMPLATE_COULD_NOT_BE_FOUND, e);
             }
-            return null;
-        } catch (IOException e) {
-            log.error("Cannot read file system resource: " + resourcePath, e);
-            return null;
         }
+        log.error("File system [ {} ] could not be found", fileSystemResource);
+        throw new BusinessDocumentException(BUSINESS_DOCUMENT_TEMPLATE_COULD_NOT_BE_FOUND, null);
     }
 
 }
