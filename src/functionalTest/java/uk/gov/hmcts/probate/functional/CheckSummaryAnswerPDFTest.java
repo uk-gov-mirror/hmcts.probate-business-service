@@ -69,6 +69,7 @@ public class CheckSummaryAnswerPDFTest extends IntegrationTestBase {
 
     private void assertAnswers(String pdfContentAsString, QuestionAndAnswerRow questionAndAnswer) {
         String question = questionAndAnswer.getQuestion();
+
         for (String answer : questionAndAnswer.getAnswers()) {
             question = question + answer;
             assertThat(pdfContentAsString, containsString(parsedString(question)));

@@ -1,7 +1,10 @@
 package uk.gov.hmcts.probate.services.businessvalidation.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,6 +12,7 @@ public class Section implements Serializable {
 
     @JsonProperty("title")
     private String title;
+
     @JsonProperty("type")
     private String type;
 
