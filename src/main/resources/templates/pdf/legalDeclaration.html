@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:remove="all" th:text="${title}">Probate application</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <style type="text/css">
+
+            .inset-page {
+                border-width: 0.15789em;
+                border-style: none;
+                background-color: #f8f8f8;
+                margin: 0 0 30px 0;
+                padding: 2.63158em;
+                padding-top: 1.84211em;
+            }
+            .header {
+                text-align: center;
+                text-transform: uppercase;
+                font-family: sans-serif;
+                font-weight: 700;
+                font-size: 22px;
+                line-height: 1.2;
+                margin-top: 0.2em;
+                margin-bottom: 0.0em;
+            }
+            .section-title-large {
+                text-align: left;
+                font-family: "nta", sans-serif;
+                font-weight: 600;
+                font-size: 20px;
+                line-height: 1.0;
+            }
+            .section-title-medium {
+                text-align: left;
+                font-family: "nta", sans-serif;
+                font-weight: 600;
+                font-size: 16px;
+            }
+            .section-title-small {
+                text-align: left;
+                font-family: "nta", sans-serif;
+                font-weight: 500;
+                font-size: 14px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="inset-page">
+            {% for header in headers %}
+            <div class="header">
+                {{ header }}
+            </div>
+            {% endfor %}
+            {% for section in sections %}
+                {% if section.headingType == "large" %}
+                    <p class="section-title-large">
+                        {{ section.title }}
+                    </p>
+                {% else %}
+                    <p class="section-title-medium">
+                        {{ section.title }}
+                    </p>
+                {% endif %}
+                {% for declarationItem in section.declarationItems %}
+                    <p class="section-title-small">
+                        {{ declarationItem.title }}
+                        <ul>
+                        {% for value in declarationItem.values %}
+                            <li>{{ value }}</li>
+                        {% endfor %}
+                        </ul>
+                    </p>
+                    {% endfor %}
+
+            {% endfor %}
+
+        </div>
+    </body>
+</html>
+
