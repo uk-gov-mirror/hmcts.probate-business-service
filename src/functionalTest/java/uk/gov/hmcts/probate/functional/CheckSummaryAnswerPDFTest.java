@@ -9,8 +9,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import uk.gov.hmcts.probate.services.businessvalidation.model.CheckAnswersSummary;
-import uk.gov.hmcts.probate.services.businessvalidation.model.QuestionAndAnswerRow;
+import uk.gov.hmcts.probate.services.businessdocuments.model.CheckAnswersSummary;
+import uk.gov.hmcts.probate.services.businessdocuments.model.QuestionAndAnswerRow;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

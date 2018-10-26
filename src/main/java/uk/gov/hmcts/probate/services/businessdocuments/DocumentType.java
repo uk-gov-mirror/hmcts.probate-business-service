@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum DocumentType {
-
-    CHECK_ANSWERS_SUMMARY("checkAnswersSummary");
+    CHECK_ANSWERS_SUMMARY("checkAnswersSummary"),
+    LEGAL_DECLARATION("legalDeclaration");
 
     private final String templateName;
 

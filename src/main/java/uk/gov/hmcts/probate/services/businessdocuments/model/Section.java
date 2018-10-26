@@ -1,10 +1,7 @@
-package uk.gov.hmcts.probate.services.businessvalidation.model;
+package uk.gov.hmcts.probate.services.businessdocuments.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.List;
 

@@ -8,7 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
-import uk.gov.hmcts.probate.services.businessvalidation.model.CheckAnswersSummary;
+import uk.gov.hmcts.probate.services.businessdocuments.model.BusinessDocument;
+import uk.gov.hmcts.probate.services.businessdocuments.model.CheckAnswersSummary;
 import uk.gov.hmcts.probate.services.exceptions.BusinessDocumentException;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 
@@ -30,12 +31,12 @@ public class PDFGenerationService {
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final ObjectMapper objectMapper;
 
-    public byte[] generatePdf(String serviceAuthToken, CheckAnswersSummary checkAnswersSummary, DocumentType documentType) {
+    public byte[] generatePdf(String serviceAuthToken, BusinessDocument businessDocument, DocumentType documentType) {
 
         byte[] postResult;
 
         try {
-            postResult = generateFromHtml(serviceAuthToken, checkAnswersSummary, documentType.getTemplateName());
+            postResult = generateFromHtml(serviceAuthToken, businessDocument, documentType.getTemplateName());
         } catch (JsonProcessingException e) {
             log.error(e.getMessage(), e);
             throw new BusinessDocumentException(e.getMessage(), e);
@@ -43,7 +44,7 @@ public class PDFGenerationService {
         return postResult;
     }
 
-    private byte[] generateFromHtml(String serviceAuthToken, CheckAnswersSummary checkAnswersSummary, String templateName) throws JsonProcessingException {
+    private byte[] generateFromHtml(String serviceAuthToken, BusinessDocument businessDocument, String templateName) throws JsonProcessingException {
         URI uri = URI.create(String.format("%s%s", pdfServiceConfiguration.getUrl(), pdfServiceConfiguration.getPdfApi()));
 
         Supplier<String> supplier = () -> serviceAuthToken;
@@ -55,7 +56,7 @@ public class PDFGenerationService {
         byte[] bytes;
 
 
-        Map<String, Object> paramMap = asMap(objectMapper.writeValueAsString(checkAnswersSummary));
+        Map<String, Object> paramMap = asMap(objectMapper.writeValueAsString(businessDocument));
             bytes = pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
 
 
