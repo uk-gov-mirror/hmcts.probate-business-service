@@ -5,11 +5,10 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import java.io.Serializable;
 import java.util.List;
 
 @JsonRootName(value = "checkAnswersSummary")
-public class CheckAnswersSummary implements Serializable {
+public class CheckAnswersSummary extends BusinessDocument {
 
     @NotBlank
     @JsonProperty("pageTitle")
