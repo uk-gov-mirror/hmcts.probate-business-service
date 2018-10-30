@@ -88,7 +88,6 @@ public class CheckSummaryAnswerPDFTest extends IntegrationTestBase {
                 .body(utils.getJsonFromFile(JSONFileName))
                 .when().post(businessServiceUrl + documentURL)
                 .then().assertThat().statusCode(200);
-        assertThat(response.extract().contentType(), equalTo("application/pdf"));
 
         PDDocument pdfDocument = PDDocument.load(new ByteArrayInputStream(response.extract().asByteArray()));
         try {
