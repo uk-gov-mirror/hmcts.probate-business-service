@@ -19,16 +19,29 @@
             tr.border_bottom td {
                 border-bottom: 0.5pt solid black;
             }
-
+            .no-page-break {
+                page-break-inside : avoid;
+                -fs-keep-with-inline : keep;
+                -fs-table-paginate: paginate;
+            }
+            td.column1 {
+                width: 50%;
+            }
+            td.column2 {
+                width: 10%;
+            }
+            td.column3{
+                width: 40%;
+            }
         </style>
     </head>
     <body>
         <table>
             <tbody class="table-content">
             <tr>
-                <td width="50%"></td>
-                <td width="10%"></td>
-                <td width="40%"></td>
+                <td class="column1"></td>
+                <td class="column2"></td>
+                <td class="column3"></td>
             </tr>
             <tr>
                 <td colspan="3" valign="top" style="font-weight: bold"><h1>{{pageTitle}}</h1></td>
@@ -40,14 +53,15 @@
             </tr>
 
             {% for section in sections %}
+            <div class="no-page-break">
             <tr class="border_bottom">
                 <td colspan="3" valign="top" style="font-weight: bold"><h2>{{ section.title}}</h2></td>
             </tr>
             {% for questionAndAnswerRow in section.questionAndAnswers %}
             <tr class="border_bottom">
-                <td>{{ questionAndAnswerRow.question }}</td>
-                <td/>
-                <td>
+                <td class="column1">{{ questionAndAnswerRow.question }}</td>
+                <td class="column2"/>
+                <td class="column3">
 
                     {% for ans in questionAndAnswerRow.answers %}
                     <div>
@@ -58,6 +72,7 @@
                 </td>
             </tr>
             {% endfor %}
+            </div>
             {% endfor %}
             </tbody>
         </table>
