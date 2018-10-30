@@ -30,7 +30,7 @@ public class BusinessDocumentController {
     @PostMapping(path = "/generateLegalDeclarationPDF", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = "application/pdf")
     public byte[] generateLegalDeclarationPDF(@Valid @RequestBody LegalDeclaration legalDeclaration, @RequestHeader("ServiceAuthorization") String authorization) {
 
-        log.info("call to generateCheckAnswersSummaryPDF()");
+        log.info("call to generateLegalDeclarationPDF()");
 
         final byte[] bytes = pdfDocumentGenerationService.generatePdf(authorization, legalDeclaration,DocumentType.LEGAL_DECLARATION);
         return bytes;

@@ -89,16 +89,17 @@
             padding: 5px;
             padding-left: 10px;
         }
-        .section-content {
-            margin:0;
-            padding:0;
-        }
 
         div.header img {
             width: 200px;
             height: 100px;
         }
-        .line{border-bottom: 1px solid black}
+        .line{
+            border-top: 1px solid black;
+            padding:0;
+            margin:0;
+            /*border: 1px solid yellow;*/
+        }
         .alignleft {
             float: left;
         }
@@ -118,6 +119,7 @@
     <div class="line">&#160;</div>
     <p class="alignleft">For further details on probate visit www.gov.uk/probate</p>
     <p class="alignright">@Crown Copyright Page <span id="pagenumber"></span> of <span id="pagecount"></span></p>
+    <p class="alignleft">Declaration: {{deceased}} {{dateCreated}}</p>
 </div>
 <div style="clear: both;"></div>
 <div class='content'>
