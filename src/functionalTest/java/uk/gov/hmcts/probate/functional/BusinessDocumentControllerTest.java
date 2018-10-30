@@ -15,7 +15,7 @@ public class BusinessDocumentControllerTest extends IntegrationTestBase {
     public void verifyEmptyRequestReturnsError() {
         SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeadersWithServiceToken())
                 .body("")
-                .when().post(businessServiceUrl + "/businessDocument/generateSummaryPDF")
+                .when().post(businessServiceUrl + "/businessDocument/generateCheckAnswersSummaryPDF")
                 .then().assertThat().statusCode(400);
     }
 
@@ -24,9 +24,8 @@ public class BusinessDocumentControllerTest extends IntegrationTestBase {
     public void verifyValidJSONIsAccepted() {
         SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeadersWithServiceToken())
                 .body(utils.getJsonFromFile(JSON_FILE_NAME))
-                .when().post(businessServiceUrl + "/businessDocument/generateSummaryPDF")
+                .when().post(businessServiceUrl + "/businessDocument/generateCheckAnswersSummaryPDF")
                 .then().assertThat().statusCode(200);
     }
-
 
 }
