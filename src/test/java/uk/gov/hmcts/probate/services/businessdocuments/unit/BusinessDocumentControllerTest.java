@@ -82,7 +82,7 @@ public class BusinessDocumentControllerTest {
                 .header("serviceAuthorization", "dummyKey")
                 .content(utils.getJSONFromFile("businessdocument/invalidCheckAnswersSummary.json"))
                 .contentType(contentType))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -100,7 +100,7 @@ public class BusinessDocumentControllerTest {
                 .header("serviceAuthorization", "dummyKey")
                 .content(utils.getJSONFromFile("businessdocument/invalidLegalDeclaration.json"))
                 .contentType(contentType))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isUnprocessableEntity());
     }
 
 }

@@ -39,7 +39,7 @@ public class CheckSummaryAnswerPDFTest extends PDFIntegrationBase<CheckAnswersSu
     @Test
     public void shouldPassAliasNamesSummary() throws Exception {
         String pdfContentAsString = pdfContentAsString(CHECK_ANSWERS_WITH_ALIAS, CHECK_ANSWERS_SUMMARY_PDF_URL);
-        CheckAnswersSummary checkAnswersSummary = getCheckAnswersSummaryFromJSON(CHECK_ANSWERS_WITH_ALIAS);
+        CheckAnswersSummary checkAnswersSummary = getJSONObject(CHECK_ANSWERS_WITH_ALIAS, CheckAnswersSummary.class);
         validatePDFContent(pdfContentAsString, checkAnswersSummary);
     }
 
