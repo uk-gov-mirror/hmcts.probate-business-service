@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DeclarationItem implements Serializable {
@@ -13,7 +14,7 @@ public class DeclarationItem implements Serializable {
     private String title;
 
     @JsonProperty("values")
-    private List<String> values;
+    private List<String> values = new ArrayList<>();
 
     public String getTitle() {
         return title;

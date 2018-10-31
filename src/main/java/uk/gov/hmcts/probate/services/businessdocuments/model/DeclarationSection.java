@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DeclarationSection implements Serializable {
@@ -17,7 +18,7 @@ public class DeclarationSection implements Serializable {
     private String headingType;
 
     @JsonProperty("declarationItems")
-    private List<DeclarationItem> declarationItems;
+    private List<DeclarationItem> declarationItems = new ArrayList<>();
 
     public String getTitle() {
         return title;

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonRootName(value = "checkAnswersSummary")
@@ -14,11 +15,12 @@ public class CheckAnswersSummary extends BusinessDocument {
     @JsonProperty("pageTitle")
     private String pageTitle;
 
+    @NotBlank
     @JsonProperty("mainParagraph")
     private String mainParagraph;
 
     @JsonProperty("sections")
-    private List<Section> sections;
+    private List<Section> sections = new ArrayList<>();
 
     public String getMainParagraph() {
         return mainParagraph;

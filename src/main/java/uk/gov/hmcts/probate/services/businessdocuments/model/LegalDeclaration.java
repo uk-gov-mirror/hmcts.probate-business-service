@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonRootName(value = "legalDeclaration")
@@ -17,7 +18,7 @@ public class LegalDeclaration extends BusinessDocument {
     private List<String> headers;
 
     @JsonProperty("sections")
-    private List<DeclarationSection> sections;
+    private List<DeclarationSection> sections = new ArrayList<>();
 
     @NotBlank
     @JsonProperty("dateCreated")
@@ -51,6 +52,12 @@ public class LegalDeclaration extends BusinessDocument {
         this.headers = headers;
     }
 
+    public List<DeclarationSection> getSections() {
+        return sections;
+    }
 
+    public void setSections(List<DeclarationSection> sections) {
+        this.sections = sections;
+    }
 
 }
