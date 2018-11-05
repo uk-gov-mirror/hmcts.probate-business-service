@@ -6,6 +6,7 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.services.exceptions.BusinessDocumentException;
+import uk.gov.hmcts.probate.services.exceptions.FileSystemException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,7 +32,7 @@ public class FileSystemResourceService {
                         return new FileSystemResource(tempFile);
                     } catch (IOException e) {
                         log.error("File system [ {} ] could not be found", resourcePath, e);
-                        throw new BusinessDocumentException(BUSINESS_DOCUMENT_TEMPLATE_COULD_NOT_BE_FOUND, e);
+                        throw new FileSystemException(BUSINESS_DOCUMENT_TEMPLATE_COULD_NOT_BE_FOUND, e);
                     }
                 });
     }
@@ -42,11 +43,11 @@ public class FileSystemResourceService {
             try {
                 return FileUtils.readFileToString(fileSystemResource.get().getFile(), Charset.defaultCharset());
             } catch (IOException e) {
-                throw new BusinessDocumentException(BUSINESS_DOCUMENT_TEMPLATE_COULD_NOT_BE_FOUND, e);
+                throw new FileSystemException(BUSINESS_DOCUMENT_TEMPLATE_COULD_NOT_BE_FOUND, e);
             }
         }
         log.error("File system [ {} ] could not be found", fileSystemResource);
-        throw new BusinessDocumentException(BUSINESS_DOCUMENT_TEMPLATE_COULD_NOT_BE_FOUND, null);
+        throw new FileSystemException(BUSINESS_DOCUMENT_TEMPLATE_COULD_NOT_BE_FOUND, null);
     }
 
 }

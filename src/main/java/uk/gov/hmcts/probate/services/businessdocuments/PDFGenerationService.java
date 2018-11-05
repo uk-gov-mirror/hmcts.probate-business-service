@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
 import uk.gov.hmcts.probate.services.businessvalidation.model.CheckAnswersSummary;
 import uk.gov.hmcts.probate.services.exceptions.BusinessDocumentException;
+import uk.gov.hmcts.probate.services.exceptions.PDFGenerationException;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class PDFGenerationService {
             postResult = generateFromHtml(serviceAuthToken, checkAnswersSummary, documentType.getTemplateName());
         } catch (JsonProcessingException e) {
             log.error(e.getMessage(), e);
-            throw new BusinessDocumentException(e.getMessage(), e);
+            throw new PDFGenerationException(e.getMessage(), e);
         }
         return postResult;
     }
@@ -72,7 +73,7 @@ public class PDFGenerationService {
                     });
         } catch (IOException e) {
             log.error(e.getMessage(), e);
-            throw new BusinessDocumentException(e.getMessage(), e);
+            throw new PDFGenerationException(e.getMessage(), e);
         }
     }
 
