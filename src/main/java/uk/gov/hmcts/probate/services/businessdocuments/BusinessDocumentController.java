@@ -23,8 +23,7 @@ public class BusinessDocumentController {
 
         log.info("call to generateCheckAnswersSummaryPDF()");
 
-        final byte[] bytes = pdfDocumentGenerationService.generatePdf(authorization, checkAnswersSummary, DocumentType.CHECK_ANSWERS_SUMMARY);
-        return bytes;
+        return pdfDocumentGenerationService.generatePdf(authorization, checkAnswersSummary,DocumentType.CHECK_ANSWERS_SUMMARY);
     }
 
     @PostMapping(path = "/generateLegalDeclarationPDF", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

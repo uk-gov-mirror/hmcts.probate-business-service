@@ -9,8 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
 import uk.gov.hmcts.probate.services.businessdocuments.model.BusinessDocument;
-import uk.gov.hmcts.probate.services.businessdocuments.model.CheckAnswersSummary;
 import uk.gov.hmcts.probate.services.exceptions.BusinessDocumentException;
+import uk.gov.hmcts.probate.services.exceptions.PDFGenerationException;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class PDFGenerationService {
             postResult = generateFromHtml(serviceAuthToken, businessDocument, documentType.getTemplateName());
         } catch (JsonProcessingException e) {
             log.error(e.getMessage(), e);
-            throw new BusinessDocumentException(e.getMessage(), e);
+            throw new PDFGenerationException(e.getMessage(), e);
         }
         return postResult;
     }
@@ -53,15 +53,9 @@ public class PDFGenerationService {
 
         String templatePath = pdfServiceConfiguration.getTemplatesDirectory() + templateName + ".html";
         String templateAsString = fileSystemResourceService.getFileFromResourceAsString(templatePath);
-        byte[] bytes;
-
 
         Map<String, Object> paramMap = asMap(objectMapper.writeValueAsString(businessDocument));
-            bytes = pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
-
-
-        return bytes;
-
+        return pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
     }
 
     private Map<String, Object> asMap(String placeholderValues) {

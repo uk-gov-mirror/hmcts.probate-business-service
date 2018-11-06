@@ -20,7 +20,8 @@ public class CheckSummaryAnswerPDFTest extends PDFIntegrationBase<CheckAnswersSu
 
     private static final String SIMPLE_SUMMARY = "checkAnswersSimpleSummary.json";
     private static final String MULTITIPLE_EXECUTORS = "checkAnswersMultipleExecutorsSummary.json";
-    private final String CHECK_ANSWERS_SUMMARY_PDF_URL = "/businessDocument/generateCheckAnswersSummaryPDF";
+    private static final String CHECK_ANSWERS_SUMMARY_PDF_URL = "/businessDocument/generateCheckAnswersSummaryPDF";
+    private static final String CHECK_ANSWERS_WITH_ALIAS = "checkAnswersWithAliasNames.json";
 
 
     @Test
@@ -34,6 +35,13 @@ public class CheckSummaryAnswerPDFTest extends PDFIntegrationBase<CheckAnswersSu
     public void shouldPassMultipleExecutorsSummary() throws Exception {
         String pdfContentAsString = pdfContentAsString(MULTITIPLE_EXECUTORS, CHECK_ANSWERS_SUMMARY_PDF_URL);
         CheckAnswersSummary checkAnswersSummary = getJSONObject(MULTITIPLE_EXECUTORS, CheckAnswersSummary.class);
+        validatePDFContent(pdfContentAsString, checkAnswersSummary);
+    }
+
+    @Test
+    public void shouldPassAliasNamesSummary() throws Exception {
+        String pdfContentAsString = pdfContentAsString(CHECK_ANSWERS_WITH_ALIAS, CHECK_ANSWERS_SUMMARY_PDF_URL);
+        CheckAnswersSummary checkAnswersSummary = getJSONObject(CHECK_ANSWERS_WITH_ALIAS, CheckAnswersSummary.class);
         validatePDFContent(pdfContentAsString, checkAnswersSummary);
     }
 

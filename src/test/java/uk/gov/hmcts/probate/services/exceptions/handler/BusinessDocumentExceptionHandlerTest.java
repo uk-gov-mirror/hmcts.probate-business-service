@@ -16,6 +16,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.request.WebRequest;
 import uk.gov.hmcts.probate.services.exceptions.BusinessDocumentException;
+import uk.gov.hmcts.probate.services.exceptions.FileSystemException;
+import uk.gov.hmcts.probate.services.exceptions.PDFGenerationException;
 import uk.gov.hmcts.probate.services.exceptions.model.ErrorResponse;
 import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
@@ -37,11 +39,16 @@ public class BusinessDocumentExceptionHandlerTest {
 
     private static final String EXCEPTION_MESSAGE = "Message";
 
-    @Mock
     private PDFServiceClientException pdfClientException;
 
     @Mock
+    Exception exception;
+
+    private FileSystemException fileSystemException;
+
     private BusinessDocumentException businessDocumentException;
+
+    private PDFGenerationException pdfGenerationException;
 
     @Mock
     private MethodArgumentNotValidException methodArgumentNotValidException;
@@ -60,7 +67,7 @@ public class BusinessDocumentExceptionHandlerTest {
 
     @Test
     public void shouldConvertPDFServiceClientExceptionsToInternalServerErrorCodes() {
-        when(pdfClientException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
+        pdfClientException = new PDFServiceClientException(EXCEPTION_MESSAGE, exception);
 
         ResponseEntity<ErrorResponse> response = businessDocumentExceptionHandler.handle(pdfClientException);
 
@@ -71,12 +78,31 @@ public class BusinessDocumentExceptionHandlerTest {
 
     @Test
     public void shouldConvertBusinessDocumentExceptionsToInternalServerErrorCodes() {
-        when(businessDocumentException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
-
+        businessDocumentException = new BusinessDocumentException(EXCEPTION_MESSAGE, exception);
         ResponseEntity<ErrorResponse> response = businessDocumentExceptionHandler.handle(businessDocumentException);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertEquals(BusinessDocumentExceptionHandler.BUSINESS_DOC_ERROR, response.getBody().getError());
+        assertEquals(EXCEPTION_MESSAGE, response.getBody().getMessage());
+    }
+
+    @Test
+    public void shouldConvertFileSytemExceptionsToInternalServerErrorCodes() {
+        fileSystemException = new FileSystemException(EXCEPTION_MESSAGE, exception);
+        ResponseEntity<ErrorResponse> response = businessDocumentExceptionHandler.handle(fileSystemException);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals(BusinessDocumentExceptionHandler.FILE_SYSTEM_ERROR, response.getBody().getError());
+        assertEquals(EXCEPTION_MESSAGE, response.getBody().getMessage());
+    }
+
+    @Test
+    public void shouldConvertPDFGenerationExceptionsToInternalServerErrorCodes() {
+        pdfGenerationException = new PDFGenerationException(EXCEPTION_MESSAGE, exception);
+        ResponseEntity<ErrorResponse> response = businessDocumentExceptionHandler.handle(pdfGenerationException);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals(BusinessDocumentExceptionHandler.PDF_GENERATION_EXCEPTION, response.getBody().getError());
         assertEquals(EXCEPTION_MESSAGE, response.getBody().getMessage());
     }
 
