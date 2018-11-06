@@ -5,7 +5,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.services.exceptions.BusinessDocumentException;
 import uk.gov.hmcts.probate.services.exceptions.FileSystemException;
 
 import java.io.File;

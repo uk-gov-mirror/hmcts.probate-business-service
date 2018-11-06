@@ -1,12 +1,10 @@
 package uk.gov.hmcts.probate.services.exceptions.handler;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import uk.gov.hmcts.probate.services.businessdocuments.PDFGenerationService;
 import uk.gov.hmcts.probate.services.exceptions.BusinessDocumentException;
 import uk.gov.hmcts.probate.services.exceptions.FileSystemException;
 import uk.gov.hmcts.probate.services.exceptions.PDFGenerationException;
@@ -43,7 +40,7 @@ class BusinessDocumentExceptionHandler extends ResponseEntityExceptionHandler {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<ErrorResponse>(errorResponse, headers, HttpStatus.valueOf(errorResponse.getCode()));
+        return new ResponseEntity<>(errorResponse, headers, HttpStatus.valueOf(errorResponse.getCode()));
     }
 
     @ExceptionHandler(PDFServiceClientException.class)
@@ -54,7 +51,7 @@ class BusinessDocumentExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return new ResponseEntity<ErrorResponse>(errorResponse, headers, HttpStatus.valueOf(errorResponse.getCode()));
+        return new ResponseEntity<>(errorResponse, headers, HttpStatus.valueOf(errorResponse.getCode()));
     }
 
     @ExceptionHandler(FileSystemException.class)
@@ -65,7 +62,7 @@ class BusinessDocumentExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return new ResponseEntity<ErrorResponse>(errorResponse, headers, HttpStatus.valueOf(errorResponse.getCode()));
+        return new ResponseEntity<>(errorResponse, headers, HttpStatus.valueOf(errorResponse.getCode()));
     }
 
     @ExceptionHandler(PDFGenerationException.class)
@@ -76,7 +73,7 @@ class BusinessDocumentExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return new ResponseEntity<ErrorResponse>(errorResponse, headers, HttpStatus.valueOf(errorResponse.getCode()));
+        return new ResponseEntity<>(errorResponse, headers, HttpStatus.valueOf(errorResponse.getCode()));
     }
 
     @Override
@@ -90,7 +87,7 @@ class BusinessDocumentExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(), JSON_VALIDATION_ERROR, fieldPath);
 
         headers.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<Object>(errorResponse, headers, HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(errorResponse, headers, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
 

@@ -1,9 +1,6 @@
 package uk.gov.hmcts.probate.services.businessvalidation.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -17,7 +14,7 @@ public class QuestionAndAnswerRow implements Serializable {
     @JsonProperty("answers")
     private List<String> answers;
 
-    private final String[] NOT_ANSWERED = {"not answered"};
+    private static final String[] notAnswered = {"not answered"};
 
     public String getQuestion() {
         return question;
@@ -30,8 +27,9 @@ public class QuestionAndAnswerRow implements Serializable {
     public List<String> getAnswers() {
 
         if (answers.isEmpty() || answers.contains("")) {
-            return Arrays.asList(NOT_ANSWERED);
-        };
+            return Arrays.asList(notAnswered);
+        }
+
         return answers;
     }
 

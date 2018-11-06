@@ -39,16 +39,15 @@ public class BusinessDocumentExceptionHandlerTest {
 
     private static final String EXCEPTION_MESSAGE = "Message";
 
-    @Mock
     private PDFServiceClientException pdfClientException;
 
     @Mock
+    Exception exception;
+
     private FileSystemException fileSystemException;
 
-    @Mock
     private BusinessDocumentException businessDocumentException;
 
-    @Mock
     private PDFGenerationException pdfGenerationException;
 
     @Mock
@@ -68,7 +67,7 @@ public class BusinessDocumentExceptionHandlerTest {
 
     @Test
     public void shouldConvertPDFServiceClientExceptionsToInternalServerErrorCodes() {
-        when(pdfClientException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
+        pdfClientException = new PDFServiceClientException(EXCEPTION_MESSAGE, exception);
 
         ResponseEntity<ErrorResponse> response = businessDocumentExceptionHandler.handle(pdfClientException);
 
@@ -79,8 +78,7 @@ public class BusinessDocumentExceptionHandlerTest {
 
     @Test
     public void shouldConvertBusinessDocumentExceptionsToInternalServerErrorCodes() {
-        when(businessDocumentException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
-
+        businessDocumentException = new BusinessDocumentException(EXCEPTION_MESSAGE, exception);
         ResponseEntity<ErrorResponse> response = businessDocumentExceptionHandler.handle(businessDocumentException);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -90,8 +88,7 @@ public class BusinessDocumentExceptionHandlerTest {
 
     @Test
     public void shouldConvertFileSytemExceptionsToInternalServerErrorCodes() {
-        when(fileSystemException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
-
+        fileSystemException = new FileSystemException(EXCEPTION_MESSAGE, exception);
         ResponseEntity<ErrorResponse> response = businessDocumentExceptionHandler.handle(fileSystemException);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -101,8 +98,7 @@ public class BusinessDocumentExceptionHandlerTest {
 
     @Test
     public void shouldConvertPDFGenerationExceptionsToInternalServerErrorCodes() {
-        when(pdfGenerationException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
-
+        pdfGenerationException = new PDFGenerationException(EXCEPTION_MESSAGE, exception);
         ResponseEntity<ErrorResponse> response = businessDocumentExceptionHandler.handle(pdfGenerationException);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());

@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.services.businessdocuments;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.hmcts.probate.services.businessvalidation.model.CheckAnswersSummary;
 
@@ -23,8 +22,7 @@ public class BusinessDocumentController {
 
         log.info("call to generateCheckAnswersSummaryPDF()");
 
-        final byte[] bytes = pdfDocumentGenerationService.generatePdf(authorization, checkAnswersSummary,DocumentType.CHECK_ANSWERS_SUMMARY);
-        return bytes;
+        return pdfDocumentGenerationService.generatePdf(authorization, checkAnswersSummary,DocumentType.CHECK_ANSWERS_SUMMARY);
     }
 
 

@@ -3,9 +3,6 @@ package uk.gov.hmcts.probate.services.businessvalidation.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.List;
 

@@ -1,5 +1,4 @@
 package uk.gov.hmcts.probate.services.businessdocuments;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
