@@ -33,7 +33,8 @@ public class CheckSummaryAnswerPDFTest extends IntegrationTestBase {
 
     private static final String SIMPLE_SUMMARY = "checkAnswersSimpleSummary.json";
     private static final String MULTITIPLE_EXECUTORS = "checkAnswersMultipleExecutorsSummary.json";
-    private final String CHECK_ANSWERS_SUMMARY_PDF_URL = "/businessDocument/generateCheckAnswersSummaryPDF";
+    private static final String CHECK_ANSWERS_SUMMARY_PDF_URL = "/businessDocument/generateCheckAnswersSummaryPDF";
+    private static final String CHECK_ANSWERS_WITH_ALIAS = "checkAnswersWithAliasNames.json";
 
 
     @Test
@@ -47,6 +48,13 @@ public class CheckSummaryAnswerPDFTest extends IntegrationTestBase {
     public void shouldPassMultipleExecutorsSummary() throws Exception {
         String pdfContentAsString = pdfContentAsString(MULTITIPLE_EXECUTORS, CHECK_ANSWERS_SUMMARY_PDF_URL);
         CheckAnswersSummary checkAnswersSummary = getCheckAnswersSummaryFromJSON(MULTITIPLE_EXECUTORS);
+        validatePDFContent(pdfContentAsString, checkAnswersSummary);
+    }
+
+    @Test
+    public void shouldPassAliasNamesSummary() throws Exception {
+        String pdfContentAsString = pdfContentAsString(CHECK_ANSWERS_WITH_ALIAS, CHECK_ANSWERS_SUMMARY_PDF_URL);
+        CheckAnswersSummary checkAnswersSummary = getCheckAnswersSummaryFromJSON(CHECK_ANSWERS_WITH_ALIAS);
         validatePDFContent(pdfContentAsString, checkAnswersSummary);
     }
 
