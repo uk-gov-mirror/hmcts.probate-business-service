@@ -5,29 +5,22 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import uk.gov.hmcts.probate.services.exceptions.BusinessDocumentException;
 import uk.gov.hmcts.probate.services.exceptions.FileSystemException;
 import uk.gov.hmcts.probate.services.exceptions.PDFGenerationException;
 import uk.gov.hmcts.probate.services.exceptions.model.ErrorResponse;
 import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
-import java.util.stream.Collectors;
-
 @Slf4j
 @ControllerAdvice
 @ResponseBody
-class BusinessDocumentExceptionHandler extends ResponseEntityExceptionHandler {
+class BusinessExceptionHandler {
 
     public static final String BUSINESS_DOC_ERROR = "Business Doc Error";
     public static final String PDF_CLIENT_ERROR = "PDF Client Error";
-    public static final String JSON_VALIDATION_ERROR = "Json Error";
     public static final String FILE_SYSTEM_ERROR = "File System Error";
     public static final String PDF_GENERATION_EXCEPTION = "PDF Generation Error";
 
@@ -75,20 +68,5 @@ class BusinessDocumentExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(errorResponse, headers, HttpStatus.valueOf(errorResponse.getCode()));
     }
-
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex, final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
-
-        log.warn("Jackson validation exception: {}", ex.getMessage(), ex);
-        String fieldPath = ex.getBindingResult().getFieldErrors().stream()
-                .map(FieldError::getField)
-                .collect(Collectors.joining("."));
-
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(), JSON_VALIDATION_ERROR, fieldPath);
-
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>(errorResponse, headers, HttpStatus.UNPROCESSABLE_ENTITY);
-    }
-
 
 }
