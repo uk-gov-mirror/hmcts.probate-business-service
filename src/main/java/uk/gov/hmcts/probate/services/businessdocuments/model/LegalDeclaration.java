@@ -4,15 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import org.hibernate.validator.constraints.NotBlank;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @JsonRootName(value = "legalDeclaration")
-public class LegalDeclaration extends BusinessDocument {
-
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+public class LegalDeclaration implements BusinessDocument {
 
     @JsonProperty("headers")
     private List<String> headers;

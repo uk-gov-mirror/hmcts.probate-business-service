@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonRootName(value = "checkAnswersSummary")
-public class CheckAnswersSummary extends BusinessDocument {
+public class CheckAnswersSummary implements BusinessDocument {
 
     @NotBlank
     @JsonProperty("pageTitle")
