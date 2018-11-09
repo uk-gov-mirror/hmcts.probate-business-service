@@ -3,12 +3,11 @@ package uk.gov.hmcts.probate.services.businessdocuments.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import org.hibernate.validator.constraints.NotBlank;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @JsonRootName(value = "checkAnswersSummary")
-public class CheckAnswersSummary extends BusinessDocument {
+public class CheckAnswersSummary implements BusinessDocument {
 
     @NotBlank
     @JsonProperty("pageTitle")

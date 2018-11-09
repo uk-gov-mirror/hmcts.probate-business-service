@@ -31,8 +31,7 @@ public class BusinessDocumentController {
 
         log.info("call to generateLegalDeclarationPDF()");
 
-        final byte[] bytes = pdfDocumentGenerationService.generatePdf(authorization, legalDeclaration, DocumentType.LEGAL_DECLARATION);
-        return bytes;
+        return pdfDocumentGenerationService.generatePdf(authorization, legalDeclaration, DocumentType.LEGAL_DECLARATION);
     }
 
 }
