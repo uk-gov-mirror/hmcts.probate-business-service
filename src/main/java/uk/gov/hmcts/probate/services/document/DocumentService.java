@@ -28,9 +28,7 @@ public class DocumentService {
 
     @Value("${services.documentmanagement.baseUrl}")
     private String documentManagementUrl;
-
-    private String DOCUMENTS_PATH = "/documents";
-
+    
     private final AuthTokenGenerator authTokenGenerator;
     private RestTemplate restTemplate;
 
@@ -58,7 +56,7 @@ public class DocumentService {
         HttpHeaders httpHeaders = setHttpHeaders(authorisation, serviceAuth, userId);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(parameters, httpHeaders);
 
-        return uploadDocuments(documentManagementUrl + DOCUMENTS_PATH, httpEntity);
+        return uploadDocuments(documentManagementUrl + "/documents", httpEntity);
     }
 
     private UploadResponse uploadDocuments(String url, HttpEntity httpEntity) {
@@ -119,7 +117,7 @@ public class DocumentService {
         HttpEntity<Object> httpEntity = deleteDocumentHeaders(userID);
 
         return restTemplate.exchange(
-                documentManagementUrl + DOCUMENTS_PATH + "/" + documentId,
+                documentManagementUrl + "/documents/" + documentId,
                 HttpMethod.DELETE,
                 httpEntity,
                 String.class);
