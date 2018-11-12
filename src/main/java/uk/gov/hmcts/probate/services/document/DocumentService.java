@@ -29,12 +29,13 @@ public class DocumentService {
     @Value("${services.documentmanagement.baseUrl}")
     private String documentManagementUrl;
 
+    private String DOCUMENTS_PATH = "/documents";
+
     private final AuthTokenGenerator authTokenGenerator;
     private RestTemplate restTemplate;
 
     private static final String CLASSIFICATION = "classification";
     private static final String FILES = "files";
-    private static final String DOCUMENTS_PATH = "/documents";
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
     private static final String USER_ID = "user-id";
 
@@ -114,7 +115,7 @@ public class DocumentService {
         }
     }
 
-    public ResponseEntity<?> delete(String userID, String documentId) {
+    public ResponseEntity<String> delete(String userID, String documentId) {
         HttpEntity<Object> httpEntity = deleteDocumentHeaders(userID);
 
         return restTemplate.exchange(

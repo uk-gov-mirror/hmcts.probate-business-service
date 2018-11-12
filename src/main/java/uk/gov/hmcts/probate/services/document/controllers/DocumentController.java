@@ -93,7 +93,7 @@ public class DocumentController {
 
     @DeleteMapping(value = "/delete/{documentId}")
     @ResponseBody
-    public ResponseEntity<?> delete(
+    public ResponseEntity<String> delete(
             @RequestHeader("user-id") String userID,
             @PathVariable("documentId") String documentId
     ) {
