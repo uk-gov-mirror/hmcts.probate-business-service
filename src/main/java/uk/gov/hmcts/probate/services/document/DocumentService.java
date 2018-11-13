@@ -26,7 +26,7 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @Service
 public class DocumentService {
 
-    @Value("${services.documentmanagement.baseUrl}")
+    @Value("${document_management.url}")
     private String documentManagementUrl;
 
     private final AuthTokenGenerator authTokenGenerator;
