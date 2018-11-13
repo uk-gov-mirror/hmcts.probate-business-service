@@ -41,8 +41,6 @@
         url: ${services.persistence.baseUrl}/invitedata
       formdata:
         url: ${services.persistence.baseUrl}/formdata
-    documentmanagement:
-      baseUrl: http://localhost:8383
     notify:
       apiKey: "dummykey"
       invitedata:
@@ -58,6 +56,7 @@
     app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
 
   document_management:
+    url: http://localhost:8383
     fileupload:
       extensions: ".pdf .jpeg .jpg .bmp .tif .tiff .png"
       mimetypes: "image/jpeg application/pdf image/tiff image/png image/bmp"
