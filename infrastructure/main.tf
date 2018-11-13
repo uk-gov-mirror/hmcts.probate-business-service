@@ -74,6 +74,7 @@ module "probate-business-service" {
     SERVICES_NOTIFY_INVITEDATA_TEMPLATEID = "${data.azurerm_key_vault_secret.business_services_notify_invitedata_templateId.value}"
     SERVICES_NOTIFY_INVITEDATA_INVITELINK = "${var.business_services_notify_invitedata_inviteLink}"
     SERVICES_NOTIFY_PIN_TEMPLATEID = "${data.azurerm_key_vault_secret.business_services_notify_pin_templateId.value}"
+    DOCUMENT_MANAGEMENT_URL =  "${var.evidence_management_host}"
     java_app_name = "${var.microservice}"
     LOG_LEVEL = "${var.log_level}"
     //ROOT_APPENDER = "JSON_CONSOLE"  //remove json output
