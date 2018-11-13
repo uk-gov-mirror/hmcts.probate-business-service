@@ -28,7 +28,7 @@ public class DocumentService {
 
     @Value("${services.documentmanagement.baseUrl}")
     private String documentManagementUrl;
-    
+
     private final AuthTokenGenerator authTokenGenerator;
     private RestTemplate restTemplate;
 

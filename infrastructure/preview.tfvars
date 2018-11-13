@@ -12,3 +12,5 @@ business_services_notify_invitedata_inviteLink = "http://probate-frontend-aat.se
 
 asp_name = "probate-preview"
 asp_rg = "probate-preview"
+
+evidence_management_host = "http://dm-store-aat.service.core-compute-aat.internal"

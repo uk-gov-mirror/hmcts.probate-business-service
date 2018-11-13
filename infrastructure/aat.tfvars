@@ -12,3 +12,5 @@ business_services_persistence_baseUrl  = "http://probate-persistence-service-aat
 business_services_notify_invitedata_inviteLink = "http://probate-frontend-aat.service.core-compute-aat.internal/executors/invitation/"
 asp_name = "probate-aat"
 asp_rg = "probate-aat"
+
+evidence_management_host = "http://dm-store-aat.service.core-compute-aat.internal"
