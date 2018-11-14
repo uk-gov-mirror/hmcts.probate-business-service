@@ -33,10 +33,9 @@ public class TestUtils {
                 new Header("Session-ID", sessionId));
     }
 
-    public Map<String, Object> getDocumentUploadHeaders(String auth, String authToken, String userId) {
+    public Map<String, Object> getDocumentUploadHeaders(String auth, String userId) {
         Map<String, Object> headers = new HashMap<>();
         headers.put("Authorization", auth);
-        headers.put("ServiceAuthorization", authToken);
         headers.put("user-id", userId);
         headers.put("Content-Type", "multipart/form-data;boundary=\"12312313132132\"");
         return headers;

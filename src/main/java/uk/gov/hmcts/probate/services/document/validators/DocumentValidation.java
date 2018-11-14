@@ -31,6 +31,6 @@ public class DocumentValidation {
     }
 
     public boolean validFileSize(final MultipartFile file) {
-        return file.getSize() / (1024 * 1024) < (1024 * 1024 * 10);
+        return file.getSize() < (1024 * 1024 * 10);
     }
 }
