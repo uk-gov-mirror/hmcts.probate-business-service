@@ -39,19 +39,20 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
 
     }
 
-//    @Test
-//    public void testValidDocument() throws IOException {
-//        final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/valid_file.png"));
-//
-//        Response response = SerenityRest.given()
-//                .headers(utils.getDocumentUploadHeaders("jbhvhvjhvjh", AUTH_TOKEN, "tom@email.com"))
-//                .multiPart("file", "myFile", bytes, "image/png")
-//                .contentType("multipart/form-data")
-//                .post(businessServiceUrl + "/document/upload")
-//                .andReturn();
-//
-//        Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
-//    }
+    @Test
+    public void testValidDocument() throws IOException {
+        final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/valid_file.png"));
+
+        Response response = SerenityRest.given()
+                .headers(utils.getDocumentUploadHeaders("jbhvhvjhvjh", AUTH_TOKEN, "tom@email.com"))
+                .multiPart("file", "myFile", bytes, "image/png")
+                .contentType("multipart/form-data")
+                .post(businessServiceUrl + "/document/upload")
+                .andReturn();
+        System.out.println(response.body().prettyPrint());
+
+        Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
+    }
 
     @Test
     public void testInvalidDocument() throws IOException {
@@ -117,7 +118,7 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
     public void testDeleteValidDocument() {
         SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getDocumentDeleteHeaders(DUMMY_OAUTH_2_TOKEN, USER_ID))
-                .when().delete(businessServiceUrl + "/document/delete/file_path")
+                .when().delete(businessServiceUrl + "/document/delete/22e31950-f26d-46b2-8008-6e1476633ea6")
                 .then().assertThat().statusCode(204);
     }
 
