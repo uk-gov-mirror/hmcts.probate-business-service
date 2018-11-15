@@ -1,14 +1,10 @@
 package uk.gov.hmcts.probate.services.business.health;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.http.HttpStatus;
@@ -18,7 +14,9 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.UnknownHttpStatusCodeException;
 
-import uk.gov.hmcts.probate.services.business.health.BusinessHealthIndicator;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BusinessHealthIndicatorTest {
@@ -27,20 +25,21 @@ public class BusinessHealthIndicatorTest {
 
     @Mock
     private RestTemplate mockRestTemplate;
-   
+
     @Mock
     private ResponseEntity<String> mockResponseEntity;
-    
+
     private BusinessHealthIndicator businessHealthIndicator;
-    
+
     @Before
     public void setUp() {
-    	businessHealthIndicator = new BusinessHealthIndicator(URL, mockRestTemplate);
+
+        businessHealthIndicator = new BusinessHealthIndicator(URL, mockRestTemplate);
     }
 
-	@Test
+    @Test
     public void shouldReturnStatusOfUpWhenHttpStatusIsOK() {
-        when(mockRestTemplate.getForEntity(URL + "/health", String.class)).thenReturn(mockResponseEntity);      
+        when(mockRestTemplate.getForEntity(URL + "/health", String.class)).thenReturn(mockResponseEntity);
         when(mockResponseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         Health health = businessHealthIndicator.health();
 
@@ -48,7 +47,7 @@ public class BusinessHealthIndicatorTest {
         assertThat(health.getDetails().get("url"), is(URL));
     }
 
-	@Test
+    @Test
     public void shouldReturnStatusOfDownWhenHttpStatusIsNotOK() {
         when(mockRestTemplate.getForEntity(URL + "/health", String.class)).thenReturn(mockResponseEntity);
         when(mockResponseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
