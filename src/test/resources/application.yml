@@ -31,6 +31,8 @@
         url: ${services.persistence.baseUrl}/invitedata
       formdata:
         url: ${services.persistence.baseUrl}/formdata
+    documentmanagement:
+      baseUrl: http://localhost:8383
     notify:
       apiKey: "probate_test_key-fce47f9c-7bbe-4f41-829e-5144a3820768-4b461773-72e0-465e-868a-91482cfc8aa4"
       invitedata:
