@@ -158,7 +158,7 @@ processResources {
 }
 
 def versions = [
-    logging: '3.0.2'
+    logging: '2.0.2'
 ]
 
 configurations.all {
