@@ -164,6 +164,8 @@ def versions = [
 configurations.all {
     resolutionStrategy {
         force "com.google.guava:guava:24.1.1-jre"
+        force "io.netty:netty-codec-http:4.1.9.Final"
+        force "io.netty:netty-transport-native-epoll:4.1.9.Final"
     }
 }
 
