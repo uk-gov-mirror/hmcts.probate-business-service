@@ -10,7 +10,8 @@ List<LinkedHashMap<String, Object>> secrets = [
     secret('probateNotifyMobile', 'TEST_MOBILE'),
     secret('probate-notify-invite-apikey', 'PRO_SERVICES_NOTIFY_APIKEY'),
     secret('business-services-notify-invitedata-templateId', 'PRO_SERVICES_NOTIFY_INVITEDATA_TEMPLATEID'),
-    secret('business-services-notify-pin-templateId', 'PRO_SERVICES_NOTIFY_PIN_TEMPLATEID')
+    secret('business-services-notify-pin-templateId', 'PRO_SERVICES_NOTIFY_PIN_TEMPLATEID'),
+    secret('s2sAuthTotpSecret', 'S2S_AUTH_TOTP_SECRET')
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {

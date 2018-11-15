@@ -28,6 +28,8 @@ spec:
               value: ${PRO_SERVICES_NOTIFY_INVITEDATA_TEMPLATEID}
             - name: SERVICES_NOTIFY_PIN_TEMPLATEID
               value: ${PRO_SERVICES_NOTIFY_PIN_TEMPLATEID}
+            - name: AUTH_PROVIDER_SERVICE_CLIENT_KEY
+              value: ${S2S_AUTH_TOTP_SECRET}
           envFrom:
             - configMapRef:
                 name: ${SERVICE_NAME}-config
