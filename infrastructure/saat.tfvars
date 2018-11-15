@@ -9,7 +9,8 @@ log_level = "INFO"
 
 business_services_persistence_baseUrl  = "http://probate-persistence-service-saat-staging.service.core-compute-saat.internal"
 business_services_notify_invitedata_inviteLink = "http://probate-frontend-saat-staging.service.core-compute-saat.internal/executors/invitation/"
+s2s_service_api = "http://rpe-service-auth-provider-saat.service.core-compute-saat.internal"
+evidence_management_host = "http://dm-store-saat.service.core-compute-saat.internal"
 asp_name = "probate-saat"
 asp_rg = "probate-saat"
 
-evidence_management_host = "http://dm-store-saat.service.core-compute-saat.internal"
