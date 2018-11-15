@@ -205,7 +205,7 @@ compileJava {
     options.compilerArgs << '-parameters'
 }
 
-jar {
+bootJar {
     archiveName = 'business-service.jar'
     manifest {
 
