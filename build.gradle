@@ -76,11 +76,11 @@ sonarqube {
     }
 }
 pitest {
-     targetClasses = ['uk.gov.hmcts.probate.*']
-     threads = 4
-     outputFormats = ['XML', 'HTML']
-     timestampedReports = false
-     mutationThreshold = 50
+    targetClasses = ['uk.gov.hmcts.probate.*']
+    threads = 4
+    outputFormats = ['XML', 'HTML']
+    timestampedReports = false
+    mutationThreshold = 50
 }
 
 test.finalizedBy jacocoTestReport
@@ -95,29 +95,29 @@ dependencyCheck {
 }
 
 sourceSets {
-  testFunctional {
-    java {
-      compileClasspath += main.output
-      runtimeClasspath += main.output
-      srcDir file('src/functionalTest/java')
+    testFunctional {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/functionalTest/java')
+        }
+        resources.srcDir file('src/functionalTest/resources')
     }
-    resources.srcDir file('src/functionalTest/resources')
-  }
 
-  testSmoke {
-    java {
-      compileClasspath += main.output
-      runtimeClasspath += main.output
-      srcDir file('src/smokeTest/java')
+    testSmoke {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/smokeTest/java')
+        }
+        resources.srcDir file('src/smokeTest/resources')
     }
-    resources.srcDir file('src/smokeTest/resources')
-  }
 }
 
 task smoke(type: Test) {
-  description = "Runs Smoke Tests"
-  testClassesDirs = sourceSets.testSmoke.output.classesDirs
-  classpath = sourceSets.testSmoke.runtimeClasspath
+    description = "Runs Smoke Tests"
+    testClassesDirs = sourceSets.testSmoke.output.classesDirs
+    classpath = sourceSets.testSmoke.runtimeClasspath
 }
 
 task functional(type: Test) {
@@ -159,7 +159,7 @@ processResources {
 }
 
 def versions = [
-    logging: '3.0.1'
+    logging: '3.0.3'
 ]
 
 dependencies {
@@ -175,6 +175,8 @@ dependencies {
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: versions.logging
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: versions.logging
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: versions.logging
+    compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '1.0.4'
+    compile group: 'uk.gov.hmcts.reform', name: 'document-management-client', version: '4.0.0'
     compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.0.1'
 
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
@@ -189,7 +191,7 @@ dependencies {
     testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '1.5.2'
     testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '1.5.2'
     testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '1.5.2'
-    testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '1.0.26'    
+    testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '1.0.26'
     testFunctionalCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
     testFunctionalCompile sourceSets.main.runtimeClasspath
     testFunctionalCompile sourceSets.test.runtimeClasspath
@@ -204,12 +206,12 @@ compileJava {
 }
 
 jar {
-  archiveName = 'business-service.jar'
-  manifest {
+    archiveName = 'business-service.jar'
+    manifest {
 
-    attributes 'Implementation-Title': project.name,
-      'Implementation-Version': project.version
-  }
+        attributes 'Implementation-Title': project.name,
+                'Implementation-Version': project.version
+    }
 }
 
 task printVersion {
