@@ -161,6 +161,12 @@ def versions = [
     logging: '2.0.2'
 ]
 
+configurations.all {
+    resolutionStrategy {
+        force "com.google.guava:guava:24.1.1-jre"
+    }
+}
+
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
