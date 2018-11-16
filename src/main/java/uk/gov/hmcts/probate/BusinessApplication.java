@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -20,16 +21,18 @@ import uk.gov.hmcts.probate.services.businessvalidation.validators.ValidationRul
 import uk.gov.hmcts.probate.services.idgeneration.IdGeneratorService;
 import uk.gov.hmcts.probate.services.idgeneration.strategy.PinStrategy;
 import uk.gov.hmcts.probate.services.idgeneration.strategy.ProbateStrategy;
-import uk.gov.hmcts.reform.document.healthcheck.DocumentManagementHealthIndicator;
+import uk.gov.hmcts.reform.document.DocumentManagementClientAutoConfiguration;
 import uk.gov.service.notify.NotificationClient;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootApplication(exclude = {DocumentManagementHealthIndicator.class})
+@SpringBootApplication
+
 @Configuration
 @EnableSwagger2
-@EnableAutoConfiguration
+@EnableFeignClients(basePackages = "uk.gov.hmcts.reform.document")
+@EnableAutoConfiguration(exclude = {DocumentManagementClientAutoConfiguration.class})
 @PropertySource(value = "git.properties", ignoreResourceNotFound = true)
 public class BusinessApplication {
 
