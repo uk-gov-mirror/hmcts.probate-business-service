@@ -32,7 +32,7 @@ public class PersistenceClientTest {
 
     @Before
     public void setUp() {
-        persistenceClient = new PersistenceClient();
+        persistenceClient = new PersistenceClient(restTemplate);
         ReflectionTestUtils.setField(persistenceClient, "inviteDataPersistenceUrl", INVITE_URL);
         ReflectionTestUtils.setField(persistenceClient, "restTemplate", restTemplate);
         mapper = new ObjectMapper();
