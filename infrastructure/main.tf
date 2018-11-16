@@ -44,7 +44,7 @@ data "azurerm_key_vault_secret" "business_services_notify_pin_templateId" {
 
 data "azurerm_key_vault_secret" "s2s_key" {
   name      = "microservicekey-probate-backend"
-  vault_uri = "https://s2s-${local.localenv}.vault.azure.net/"
+  vault_uri = "https://s2s-${local.local_env}.vault.azure.net/"
 }
 
 module "probate-business-service" {
