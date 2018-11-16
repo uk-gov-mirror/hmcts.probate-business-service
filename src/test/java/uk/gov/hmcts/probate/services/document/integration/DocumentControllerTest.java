@@ -1,11 +1,14 @@
 package uk.gov.hmcts.probate.services.document.integration;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.hmcts.probate.services.document.DocumentService;
 import uk.gov.hmcts.probate.services.document.controllers.DocumentController;
 import uk.gov.hmcts.probate.services.document.validators.DocumentValidation;
+import uk.gov.hmcts.reform.document.domain.UploadResponse;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
@@ -43,18 +50,25 @@ public class DocumentControllerTest {
     private DocumentService documentService;
 
     @MockBean
-    private DocumentValidation documentValidation;
-
-    @MockBean
     private AuthTokenGenerator authTokenGenerator;
+
+    private DocumentValidation documentValidation;
 
     private DocumentController documentController;
 
     private static final String DUMMY_OAUTH_2_TOKEN = "oauth2Token";
     private static final String USER_ID = "tom@email.com";
+    private static final String AUTH_TOKEN = "authToken";
 
     @Before
     public void setUp() {
+        when(authTokenGenerator.generate()).thenReturn(AUTH_TOKEN);
+        documentValidation = new DocumentValidation();
+        ReflectionTestUtils.setField(documentValidation,
+                "allowedFileExtensions", ".pdf .jpeg .bmp .tif .tiff .png .pdf");
+        ReflectionTestUtils.setField(documentValidation,
+                "allowedMimeTypes", "image/jpeg application/pdf image/tiff image/png image/bmp");
+
         documentController = new DocumentController(documentService, documentValidation, authTokenGenerator);
     }
 

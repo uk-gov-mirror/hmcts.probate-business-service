@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
+
 @Configuration
 public class BusinessHealthConfiguration {
 
@@ -15,8 +16,24 @@ public class BusinessHealthConfiguration {
     @Value("${services.persistence.baseUrl}")
     private String servicePersistenceBaseUrl;
 
+    @Value("${idam.s2s-auth.url}")
+    private String idamServiceHost;
+
+    @Value("${document_management.url}")
+    private String documentManagementHost;
+
     @Bean
     public BusinessHealthIndicator persistenceServiceHealthIndicator() {
         return new BusinessHealthIndicator(servicePersistenceBaseUrl, restTemplate);
+    }
+
+    @Bean
+    public BusinessHealthIndicator documentManagementHealthIndicator() {
+        return new BusinessHealthIndicator(documentManagementHost, restTemplate);
+    }
+
+    @Bean
+    public BusinessHealthIndicator idamServiceHealthIndicator() {
+        return new BusinessHealthIndicator(idamServiceHost, restTemplate);
     }
 }

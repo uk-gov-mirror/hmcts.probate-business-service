@@ -44,7 +44,7 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
     public void testInvalidDocument() throws IOException {
         final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/invalid.txt"));
 
-        Response response = SerenityRest.given()
+        Response response = SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getDocumentUploadHeaders("jbhvhvjhvjh", "tom@email.com"))
                 .multiPart("file", "myFile", bytes, "text/plain")
                 .contentType("multipart/form-data")
@@ -55,7 +55,7 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
 
     @Test
     public void testNoDocumentsUploaded() {
-        Response response = SerenityRest.given()
+        Response response = SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getDocumentUploadHeaders("jbhvhvjhvjh", USER_ID))
                 .multiPart("file", "myFile")
                 .contentType("multipart/form-data")
@@ -68,7 +68,7 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
     public void testInvalidToken() throws IOException {
         final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/valid_file.png"));
 
-        Response response = SerenityRest.given()
+        Response response = SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getDocumentUploadHeaders("jbhvhvjhvjh", USER_ID))
                 .multiPart("file", "myFile", bytes, "image/png")
                 .contentType("multipart/form-data")
@@ -81,7 +81,7 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
     public void testInvalidCredentials() throws IOException {
         final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/valid_file.png"));
 
-        Response response = SerenityRest.given()
+        Response response = SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getDocumentUploadHeaders("jbhvhvjhvjh", "invalid_user_credentials"))
                 .multiPart("file", "myFile", bytes, "image/png")
                 .contentType("multipart/form-data")
