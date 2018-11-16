@@ -78,7 +78,7 @@ public class DocumentController {
         files = files.stream()
                 .filter(f -> documentValidation.isValid(f))
                 .collect(Collectors.toList());
-
+      
         LOGGER.info("Uploading document");
         result = documentService
                 .upload(authorizationToken, authTokenGenerator.generate(), userID, files)
