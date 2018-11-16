@@ -1,8 +1,5 @@
 package uk.gov.hmcts.probate;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -12,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.client.RestTemplate;
-
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -24,9 +20,13 @@ import uk.gov.hmcts.probate.services.businessvalidation.validators.ValidationRul
 import uk.gov.hmcts.probate.services.idgeneration.IdGeneratorService;
 import uk.gov.hmcts.probate.services.idgeneration.strategy.PinStrategy;
 import uk.gov.hmcts.probate.services.idgeneration.strategy.ProbateStrategy;
+import uk.gov.hmcts.reform.document.healthcheck.DocumentManagementHealthIndicator;
 import uk.gov.service.notify.NotificationClient;
 
-@SpringBootApplication
+import java.util.ArrayList;
+import java.util.List;
+
+@SpringBootApplication(exclude = {DocumentManagementHealthIndicator.class})
 @Configuration
 @EnableSwagger2
 @EnableAutoConfiguration
@@ -35,7 +35,7 @@ public class BusinessApplication {
 
     @Value("${services.notify.apiKey}")
     String notificationApiKey;
-    
+
     @Autowired
     private ValidationRule dobBeforeDodRule, netIHTLessThanGrossRule;
 
