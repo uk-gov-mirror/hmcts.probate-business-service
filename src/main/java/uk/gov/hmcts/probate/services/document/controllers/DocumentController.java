@@ -60,6 +60,15 @@ public class DocumentController {
             return result;
         }
 
+        List<String> invalidFiles = files.stream()
+                .filter(f -> !documentValidation.isValid(f))
+                .map(f -> "Error: invalid file type")
+                .collect(Collectors.toList());
+
+        files = files.stream()
+                .filter(f -> documentValidation.isValid(f))
+                .collect(Collectors.toList());
+
         boolean noValidFilesReceived = files.stream()
                 .noneMatch(f -> documentValidation.isValid(f));
 
@@ -69,15 +78,6 @@ public class DocumentController {
                     .map(f -> "Error: invalid file type")
                     .collect(Collectors.toList());
         }
-
-        List<String> invalidFiles = files.stream()
-                .filter(f -> !documentValidation.isValid(f))
-                .map(f -> "Error: invalid file type")
-                .collect(Collectors.toList());
-
-        files = files.stream()
-                .filter(f -> documentValidation.isValid(f))
-                .collect(Collectors.toList());
 
         LOGGER.info("Uploading document");
         result = documentService
