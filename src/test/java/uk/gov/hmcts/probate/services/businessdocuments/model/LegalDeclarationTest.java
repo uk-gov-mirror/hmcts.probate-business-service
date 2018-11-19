@@ -21,8 +21,8 @@ import static org.junit.Assert.assertThat;
 
 public class LegalDeclarationTest {
 
-    public static final String VALID_LEGAL_DECLARATION_JSON = "businessdocument/validLegalDeclaration.json";
-    public static final String INVALID_LEGAL_DECLARATION_JSON = "businessdocument/invalidLegalDeclaration.json";
+    public static final String VALID_LEGAL_DECLARATION_JSON = "businessdocuments/validLegalDeclaration.json";
+    public static final String INVALID_LEGAL_DECLARATION_JSON = "businessdocuments/invalidLegalDeclaration.json";
     private ObjectMapper objectMapper;
 
     private FileSystemResourceService fileSystemResourceService;
