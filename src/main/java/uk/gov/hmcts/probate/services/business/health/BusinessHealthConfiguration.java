@@ -9,14 +9,11 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class BusinessHealthConfiguration {
 
-    @Autowired
-    private RestTemplate restTemplate;
-
     @Value("${services.persistence.baseUrl}")
     private String servicePersistenceBaseUrl;
 
     @Bean
-    public BusinessHealthIndicator persistenceServiceHealthIndicator() {
+    public BusinessHealthIndicator persistenceServiceHealthIndicator(@Autowired RestTemplate restTemplate) {
         return new BusinessHealthIndicator(servicePersistenceBaseUrl, restTemplate);
     }
 }
