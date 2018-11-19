@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.services.businessdocuments;
+package uk.gov.hmcts.probate.services.businessdocuments.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -7,8 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
+import uk.gov.hmcts.probate.services.businessdocuments.model.DocumentType;
+import uk.gov.hmcts.probate.services.businessdocuments.exceptions.PDFGenerationException;
 import uk.gov.hmcts.probate.services.businessdocuments.model.BusinessDocument;
-import uk.gov.hmcts.probate.services.exceptions.PDFGenerationException;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Component
 public class PDFGenerationService {
-    public static final String HTML = ".html";
+    private static final String HTML = ".html";
     private final FileSystemResourceService fileSystemResourceService;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final ObjectMapper objectMapper;
