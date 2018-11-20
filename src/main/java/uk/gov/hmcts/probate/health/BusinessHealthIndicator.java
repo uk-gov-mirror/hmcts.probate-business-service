@@ -17,9 +17,9 @@ import org.springframework.web.client.UnknownHttpStatusCodeException;
 @AllArgsConstructor
 public class BusinessHealthIndicator implements HealthIndicator {
 
-    private final static String EXCEPTION_KEY = "exception";
-    private final static String MESSAGE_KEY = "message";
-    private final static String URL_KEY = "url";
+    private static final String EXCEPTION_KEY = "exception";
+    private static final String MESSAGE_KEY = "message";
+    private static final String URL_KEY = "url";
     private static final Logger LOGGER = LoggerFactory.getLogger(BusinessHealthIndicator.class);
 
     private final String url;
