@@ -1,8 +1,10 @@
 package uk.gov.hmcts.probate.services.businessdocuments.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,8 @@ public class DeclarationSection implements Serializable {
     @JsonProperty("headingType")
     private String headingType;
 
+    @NotEmpty
+    @Valid
     @JsonProperty("declarationItems")
     private List<DeclarationItem> declarationItems = new ArrayList<>();
 

@@ -2,17 +2,22 @@ package uk.gov.hmcts.probate.services.businessdocuments.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
 @JsonRootName(value = "legalDeclaration")
 public class LegalDeclaration implements BusinessDocument {
 
+    @NotEmpty
     @JsonProperty("headers")
     private List<String> headers;
 
+    @NotEmpty
+    @Valid
     @JsonProperty("sections")
     private List<DeclarationSection> sections = new ArrayList<>();
 
