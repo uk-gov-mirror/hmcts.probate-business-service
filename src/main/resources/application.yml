@@ -2,13 +2,23 @@
   security:
     basic:
       enabled: false
-
-  management:
-    security:
-      enabled: false
+#
+#  management:
+#    security:
+#      enabled: false
 
   server:
     port: 8080
+
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: '*'
+        base-path: /
+    endpoint:
+      health:
+        show-details: always
 
   spring:
     application:
@@ -25,11 +35,6 @@
         unwrap_root_value: true
 
   services:
-    auth:
-      provider:
-        totp_secret: "AAAAAAAAAAAAAAAA"
-        baseUrl: http://localhost:4502
-        microservice: "probate_backend"
     persistence:
       baseUrl: http://localhost:8282
       invitedata:
@@ -56,3 +61,17 @@
 
   azure:
     app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
+
+  document_management:
+    url: http://localhost:8383
+    fileupload:
+      extensions: ".pdf .jpeg .jpg .bmp .tif .tiff .png"
+      mimetypes: "image/jpeg application/pdf image/tiff image/png image/bmp"
+
+  auth.provider.service.client:
+    baseUrl: http://localhost:4502
+    microservice: 'probate_backend'
+    key: 'AAAAAAAAAAAAAAAA'
+    tokenTimeToLiveInSeconds: '900'
+
+  idam.s2s-auth.url: ${auth.provider.service.client.baseUrl}

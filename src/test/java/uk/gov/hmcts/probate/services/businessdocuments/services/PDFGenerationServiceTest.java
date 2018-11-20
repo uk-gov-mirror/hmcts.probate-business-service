@@ -1,22 +1,22 @@
 package uk.gov.hmcts.probate.services.businessdocuments.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.client.RestOperations;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.services.businessdocuments.model.CheckAnswersSummary;
 import uk.gov.hmcts.probate.services.businessdocuments.exceptions.FileSystemException;
 import uk.gov.hmcts.probate.services.businessdocuments.exceptions.PDFGenerationException;
 import uk.gov.hmcts.probate.services.businessdocuments.model.DocumentType;
-import uk.gov.hmcts.probate.services.businessdocuments.services.FileSystemResourceService;
-import uk.gov.hmcts.probate.services.businessdocuments.services.PDFGenerationService;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 
+import static org.hamcrest.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +36,7 @@ public class PDFGenerationServiceTest {
     private ObjectMapper objectMapper;
 
     @Mock
-    private CheckAnswersSummary checkAnswerSummary;
+    private CheckAnswersSummary mockCheckAnswersSummary;
 
     private PDFGenerationService pdfGenerationService;
 
@@ -47,7 +47,11 @@ public class PDFGenerationServiceTest {
 
     @Before
     public void setUp() {
-        objectMapper = new ObjectMapper();
+        try {
+            when(objectMapper.writeValueAsString(Mockito.any(CheckAnswersSummary.class))).thenReturn(someJSON);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         pdfGenerationService = new PDFGenerationService(fileSystemResourceService, pdfServiceConfiguration, objectMapper, pdfServiceClient);
         when(pdfServiceConfiguration.getTemplatesDirectory()).thenReturn("templateDirectory");
         when(fileSystemResourceService.getFileFromResourceAsString(Mockito.anyString())).thenReturn("templateAsString");
@@ -55,24 +59,24 @@ public class PDFGenerationServiceTest {
 
     @Test(expected = PDFGenerationException.class)
     public void shouldCatchJsonProcessingExceptionAndRethrowAsPDFGenerationException () throws Exception {
-        byte[] pdfInBytes = pdfGenerationService.generatePdf(checkAnswerSummary, DocumentType.CHECK_ANSWERS_SUMMARY);
+        try {
+            when(objectMapper.writeValueAsString(Mockito.any(CheckAnswersSummary.class))).thenReturn("");
+            byte[] pdfInBytes = pdfGenerationService.generatePdf(mockCheckAnswersSummary, DocumentType.CHECK_ANSWERS_SUMMARY);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test(expected = FileSystemException.class)
     public void shouldThrowFileSystemException () throws Exception {
         when(fileSystemResourceService.getFileFromResourceAsString(Mockito.anyString())).thenThrow(new FileSystemException("File System Exception"));
-        byte[] pdfInBytes = pdfGenerationService.generatePdf(checkAnswerSummary, DocumentType.CHECK_ANSWERS_SUMMARY);
+        byte[] pdfInBytes = pdfGenerationService.generatePdf(mockCheckAnswersSummary, DocumentType.CHECK_ANSWERS_SUMMARY);
     }
 
     @Test
     public void shouldProcessAValidPDFRequest() throws Exception {
-        CheckAnswersSummary checkAnswersSummary = new CheckAnswersSummary();
-        byte[] pdfInBytes = pdfGenerationService.generatePdf(checkAnswersSummary, DocumentType.CHECK_ANSWERS_SUMMARY);
+        byte[] pdfInBytes = pdfGenerationService.generatePdf(mockCheckAnswersSummary, DocumentType.CHECK_ANSWERS_SUMMARY);
         verify(pdfServiceClient).generateFromHtml(Mockito.any(), Mockito.anyMap());
     }
 
-    @Test
-    public void shouldThrowPDFGenerationExceptionOnAaMapMethod() {
-       // byte[] pdfInBytes = pdfGenerationService.generatePdf(checkAnswerSummary, DocumentType.CHECK_ANSWERS_SUMMARY);
-    }
 }

@@ -1,9 +1,5 @@
 package uk.gov.hmcts.probate.health;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +14,9 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.UnknownHttpStatusCodeException;
 
-import uk.gov.hmcts.probate.health.BusinessHealthIndicator;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BusinessHealthIndicatorTest {
@@ -35,10 +33,11 @@ public class BusinessHealthIndicatorTest {
 
     @Before
     public void setUp() {
-    	businessHealthIndicator = new BusinessHealthIndicator(URL, mockRestTemplate);
+
+        businessHealthIndicator = new BusinessHealthIndicator(URL, mockRestTemplate);
     }
 
-	@Test
+    @Test
     public void shouldReturnStatusOfUpWhenHttpStatusIsOK() {
         when(mockRestTemplate.getForEntity(URL + "/health", String.class)).thenReturn(mockResponseEntity);
         when(mockResponseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
@@ -48,7 +47,7 @@ public class BusinessHealthIndicatorTest {
         assertThat(health.getDetails().get("url"), is(URL));
     }
 
-	@Test
+    @Test
     public void shouldReturnStatusOfDownWhenHttpStatusIsNotOK() {
         when(mockRestTemplate.getForEntity(URL + "/health", String.class)).thenReturn(mockResponseEntity);
         when(mockResponseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
