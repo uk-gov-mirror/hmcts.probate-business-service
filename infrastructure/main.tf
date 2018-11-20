@@ -42,6 +42,10 @@ data "azurerm_key_vault_secret" "business_services_notify_pin_templateId" {
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
+data "azurerm_key_vault_secret" "s2s_key" {
+  name      = "microservicekey-probate-backend"
+  vault_uri = "https://s2s-${local.local_env}.vault.azure.net/"
+}
 
 module "probate-business-service" {
   source = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
@@ -74,6 +78,10 @@ module "probate-business-service" {
     SERVICES_NOTIFY_INVITEDATA_TEMPLATEID = "${data.azurerm_key_vault_secret.business_services_notify_invitedata_templateId.value}"
     SERVICES_NOTIFY_INVITEDATA_INVITELINK = "${var.business_services_notify_invitedata_inviteLink}"
     SERVICES_NOTIFY_PIN_TEMPLATEID = "${data.azurerm_key_vault_secret.business_services_notify_pin_templateId.value}"
+    DOCUMENT_MANAGEMENT_URL =  "${var.evidence_management_host}"
+    AUTH_PROVIDER_SERVICE_CLIENT_BASEURL = "${var.s2s_service_api}"
+
+    AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.azurerm_key_vault_secret.s2s_key.value}"
     SERVICES_PDF_SERVICE_URL = "${var.pdf_service_url}"
     java_app_name = "${var.microservice}"
     LOG_LEVEL = "${var.log_level}"
