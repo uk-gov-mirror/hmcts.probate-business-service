@@ -23,14 +23,14 @@ public class GitCommitInfoEndpointTest {
     private static final String EXPECTED_COMMIT_ID_INFO_RESPONSE = "0773f129ad51c4a23a49fec96fec0888883443f6";
     private static final String EXPECTED_COMMIT_TIME_INFO_RESPONSE = "2018-05-23T13:59+1234";
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    public void shouldGetGitCommitInfoEndpoint() throws Exception {
-        mockMvc.perform(get("/actuator/info"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.git.commit.id").value(EXPECTED_COMMIT_ID_INFO_RESPONSE))
-                .andExpect(jsonPath("$.git.commit.time").value(EXPECTED_COMMIT_TIME_INFO_RESPONSE));
-    }
+	@Test
+	public void shouldGetGitCommitInfoEndpoint() throws Exception {
+		mockMvc.perform(get("/actuator/info"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.git.commit.id").value(EXPECTED_COMMIT_ID_INFO_RESPONSE))
+				.andExpect(jsonPath("$.git.commit.time").value(EXPECTED_COMMIT_TIME_INFO_RESPONSE));
+	}
 }
