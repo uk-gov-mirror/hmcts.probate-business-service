@@ -13,7 +13,6 @@ import uk.gov.hmcts.probate.services.businessdocuments.exceptions.PDFGenerationE
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +46,7 @@ public class PDFGenerationService {
 
         Map<String, Object> paramMap = asMap(objectMapper.writeValueAsString(checkAnswersSummary));
 
-        return pdfServiceClient.generateFromHtml(templateAsString.getBytes(StandardCharsets.UTF_8), paramMap);
+        return pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
     }
 
     private Map<String, Object> asMap(String placeholderValues) {

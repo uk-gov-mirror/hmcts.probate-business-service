@@ -82,13 +82,3 @@ variable "asp_rg" {
 variable "asp_name" {
 
 }
-
-variable "evidence_management_host" {
-  type = "string"
-}
-
-variable "s2s_service_api" {
-  type = "string"
-}
-
-
