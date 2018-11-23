@@ -24,6 +24,7 @@ public class TestUtils {
 
     public static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
     public static final String CONTENT_TYPE = "Content-Type";
+
     @Autowired
     protected BusinessServiceServiceAuthTokenGenerator serviceAuthTokenGenerator;
 
@@ -74,7 +75,6 @@ public class TestUtils {
         return headers;
     }
 
-
     public Headers getHeaders() {
         return getHeaders(serviceToken);
     }
@@ -101,6 +101,4 @@ public class TestUtils {
                 new Header(CONTENT_TYPE, ContentType.JSON.toString()),
                 new Header("user-id", userId));
     }
-
-
 }

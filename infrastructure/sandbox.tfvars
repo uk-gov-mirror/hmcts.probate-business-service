@@ -14,5 +14,3 @@ evidence_management_host = "http://dm-store-sandbox.service.core-compute-sandbox
 pdf_service_url = "http://cmc-pdf-service-sandbox.service.core-compute-sandbox.internal"
 asp_name = "probate-sandbox"
 asp_rg = "probate-sandbox"
-
-
