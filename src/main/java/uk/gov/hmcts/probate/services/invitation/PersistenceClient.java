@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.services.persistence;
+package uk.gov.hmcts.probate.services.invitation;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +19,8 @@ public class PersistenceClient {
     @Value("${services.persistence.formdata.url}")
     private String formDataPersistenceUrl;
 
-    private RestTemplate restTemplate;
-
-
     @Autowired
-    public PersistenceClient(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
+    private RestTemplate restTemplate;
 
     @Retryable(backoff = @Backoff(delay = 100, maxDelay = 500))
     public JsonNode saveInviteData(InviteData inviteData) {

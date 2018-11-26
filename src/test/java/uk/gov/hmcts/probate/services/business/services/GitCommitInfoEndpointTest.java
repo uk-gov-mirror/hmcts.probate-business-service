@@ -17,11 +17,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(properties = {
-        "spring.info.git.location=classpath:uk/gov/hmcts/probate/services/business/git-test.properties"})
+		"spring.info.git.location=classpath:uk/gov/hmcts/probate/services/business/git-test.properties"})
 public class GitCommitInfoEndpointTest {
 
-    private static final String EXPECTED_COMMIT_ID_INFO_RESPONSE = "0773f129ad51c4a23a49fec96fec0888883443f6";
-    private static final String EXPECTED_COMMIT_TIME_INFO_RESPONSE = "2018-05-23T13:59+1234";
+	private static final String EXPECTED_COMMIT_ID_INFO_RESPONSE = "0773f129ad51c4a23a49fec96fec0888883443f6";
+	private static final String EXPECTED_COMMIT_TIME_INFO_RESPONSE = "2018-05-23T13:59+1234";
 
 	@Autowired
 	private MockMvc mockMvc;

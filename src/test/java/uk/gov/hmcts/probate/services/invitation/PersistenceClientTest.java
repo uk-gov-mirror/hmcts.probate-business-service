@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.services.persistence.unit;
+package uk.gov.hmcts.probate.services.invitation;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.services.invitation.model.InviteData;
-import uk.gov.hmcts.probate.services.persistence.PersistenceClient;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -32,7 +31,7 @@ public class PersistenceClientTest {
 
     @Before
     public void setUp() {
-        persistenceClient = new PersistenceClient(restTemplate);
+        persistenceClient = new PersistenceClient();
         ReflectionTestUtils.setField(persistenceClient, "inviteDataPersistenceUrl", INVITE_URL);
         ReflectionTestUtils.setField(persistenceClient, "restTemplate", restTemplate);
         mapper = new ObjectMapper();

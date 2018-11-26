@@ -1,8 +1,5 @@
 package uk.gov.hmcts.probate;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -10,9 +7,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.client.RestTemplate;
-
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -25,23 +20,32 @@ import uk.gov.hmcts.probate.services.idgeneration.IdGeneratorService;
 import uk.gov.hmcts.probate.services.idgeneration.strategy.PinStrategy;
 import uk.gov.hmcts.probate.services.idgeneration.strategy.ProbateStrategy;
 import uk.gov.service.notify.NotificationClient;
+import uk.gov.service.notify.NotificationClientException;
+import uk.gov.service.notify.SendSmsResponse;
 
-@SpringBootApplication
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 @Configuration
+@SpringBootApplication
 @EnableSwagger2
 @EnableAutoConfiguration
-@PropertySource(value = "git.properties", ignoreResourceNotFound = true)
 public class BusinessApplication {
+
 
     @Value("${services.notify.apiKey}")
     String notificationApiKey;
+
+    @Autowired
+    private ValidationRule dobBeforeDodRule, netIHTLessThanGrossRule;
 
     public static void main(String[] args) {
         SpringApplication.run(BusinessApplication.class, args);
     }
 
     @Bean
-    List<ValidationRule> validationRules(@Autowired ValidationRule dobBeforeDodRule, @Autowired ValidationRule netIHTLessThanGrossRule) {
+    List<ValidationRule> validationRules() {
         List<ValidationRule> validationRules = new ArrayList<>();
         validationRules.add(dobBeforeDodRule);
         validationRules.add(netIHTLessThanGrossRule);
@@ -66,37 +70,21 @@ public class BusinessApplication {
 
     @Bean
     NotificationClient notificationClient() {
-        return new NotificationClient(notificationApiKey);
+        return new NotificationClientTestOnly("none");
     }
 
-    @Bean
-    public Docket validationApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("Validation Service")
-                .apiInfo(apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("uk.gov.hmcts.probate.services.businessvalidation.controllers"))
-                .paths(PathSelectors.any())
-                .build();
-    }
+    class NotificationClientTestOnly extends NotificationClient{
 
-    @Bean
-    public Docket idGenerationApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("Invite Generation Service")
-                .apiInfo(apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("uk.gov.hmcts.probate.services.invitation.controllers"))
-                .paths(PathSelectors.any())
-                .build();
-    }
+        public NotificationClientTestOnly(String apiKey) {
+            super(apiKey);
+        }
 
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("Probate Business service")
-                .description("Provides data validation and other services")
-                .license("MIT License")
-                .version("1.0")
-                .build();
+        @Override
+        public SendSmsResponse sendSms(String templateId, String phoneNumber, Map<String, String> personalisation, String reference) throws NotificationClientException {
+            return new SendSmsResponse("{" +
+                    "id: '731d2626-3b8f-4fb6-983e-2f9a10c983c4', " +
+                    "content: {body: ''}," +
+                    "template: {id: '731d2626-3b8f-4fb6-983e-2f9a10c983c4', version: 1, uri: 'none'}}");
+        }
     }
 }
