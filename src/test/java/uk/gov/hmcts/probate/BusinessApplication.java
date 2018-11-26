@@ -30,6 +30,7 @@ import java.util.Map;
 @Configuration
 @SpringBootApplication
 @EnableSwagger2
+@EnableAutoConfiguration
 public class BusinessApplication {
 
 
