@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.hmcts.probate.services.businessdocuments.model.DocumentType;
 import uk.gov.hmcts.probate.services.businessdocuments.services.PDFGenerationService;
+import uk.gov.hmcts.probate.services.businessdocuments.model.BulkScanCoverSheet;
 import uk.gov.hmcts.probate.services.businessdocuments.model.CheckAnswersSummary;
 import uk.gov.hmcts.probate.services.businessdocuments.model.LegalDeclaration;
 
@@ -40,4 +41,12 @@ public class BusinessDocumentController {
         return new ResponseEntity<> (bytes, HttpStatus.OK);
     }
 
+    @PostMapping(path = "/generateBulkScanCoverSheetPDF", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<byte[]> generateBulkScanCoverSheertPDF(@Valid @RequestBody BulkScanCoverSheet coverSheet, @RequestHeader("ServiceAuthorization") String authorization) {
+        log.info("call to generateBulkScanCoverSheetPDF()");
+
+        byte[] bytes = pdfDocumentGenerationService.generatePdf(coverSheet, DocumentType.BULK_SCAN_COVER_SHEET);
+
+        return new ResponseEntity<> (bytes, HttpStatus.OK);
+    }
 }

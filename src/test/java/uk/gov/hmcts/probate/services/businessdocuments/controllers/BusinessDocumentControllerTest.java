@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.services.businessdocuments.controllers.BusinessDocumentController;
+import uk.gov.hmcts.probate.services.businessdocuments.model.BulkScanCoverSheet;
 import uk.gov.hmcts.probate.services.businessdocuments.model.CheckAnswersSummary;
 import uk.gov.hmcts.probate.services.businessdocuments.model.LegalDeclaration;
 import uk.gov.hmcts.probate.services.businessdocuments.services.PDFGenerationService;
@@ -22,13 +23,15 @@ public class BusinessDocumentControllerTest {
     CheckAnswersSummary checkAnswersSummary;
 
     LegalDeclaration legalDeclaration;
+    
+    BulkScanCoverSheet coverSheet;
 
     @Before
     public void setUp() {
         businessDocumentController = new BusinessDocumentController(pdfGenerationService);
         checkAnswersSummary = new CheckAnswersSummary();
         legalDeclaration = new LegalDeclaration();
-
+        coverSheet = new BulkScanCoverSheet();
     }
 
     @Test
@@ -39,5 +42,10 @@ public class BusinessDocumentControllerTest {
     @Test
     public void shouldGenerateALegalDeclarationPDF() {
         ResponseEntity<byte[]> result = businessDocumentController.generateLegalDeclarationPDF(legalDeclaration, "authorisation");
+    }
+    
+    @Test
+    public void shouldGenerateABulkScanCoverSheetPDF() {
+        ResponseEntity<byte[]> result = businessDocumentController.generateBulkScanCoverSheertPDF(coverSheet, "authorisation");
     }
 }
