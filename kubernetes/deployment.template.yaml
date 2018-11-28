@@ -30,8 +30,6 @@ spec:
               value: ${PRO_SERVICES_NOTIFY_PIN_TEMPLATEID}
             - name: AUTH_PROVIDER_SERVICE_CLIENT_KEY
               value: ${S2S_AUTH_TOTP_SECRET}
-            - name: SERVICES_PDF_SERVICE_URL
-              value: ${SERVICES_PDF_SERVICE_URL}
           envFrom:
             - configMapRef:
                 name: ${SERVICE_NAME}-config
