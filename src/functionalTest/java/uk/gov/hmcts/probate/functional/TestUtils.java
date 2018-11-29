@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.functional;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.http.Headers;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -17,11 +16,11 @@ import java.nio.file.Files;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
 @Component
-@Slf4j
 public class TestUtils {
 
     public static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
     public static final String CONTENT_TYPE = "Content-Type";
+
     @Autowired
     protected BusinessServiceServiceAuthTokenGenerator serviceAuthTokenGenerator;
 
@@ -45,15 +44,14 @@ public class TestUtils {
             File file = ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));
             return new String(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {
-            log.error(e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
 
-
     public Headers getHeaders(String sessionId) {
         return Headers.headers(
-                new Header(CONTENT_TYPE, ContentType.JSON.toString()),
+                new Header("Content-Type", ContentType.JSON.toString()),
                 new Header("Session-ID", sessionId));
     }
 
@@ -84,6 +82,4 @@ public class TestUtils {
                 new Header(CONTENT_TYPE, ContentType.JSON.toString()),
                 new Header("user-id", userId));
     }
-
-
 }
