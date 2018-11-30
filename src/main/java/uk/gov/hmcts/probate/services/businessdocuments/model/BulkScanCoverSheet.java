@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.services.businessdocuments.model;
 
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -8,10 +8,10 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 @JsonRootName(value = "bulkScanCoverSheet")
 public class BulkScanCoverSheet implements BusinessDocument {
 		
-	public static final String DEFUALT_TITLE = "Download Cover Sheet";
-	public static final String DEFUALT_APPLICANT_ADDRESS_INTRO = "Your address";
-	public static final String DEFUALT_CASE_REFERENCE_INTRO = "Your unique reference\nnumber is";
-	public static final String DEFUALT_SUBMIT_ADDRESS_INTRO = 
+	public static final String DEFAULT_TITLE = "Download Cover Sheet";
+	public static final String DEFAULT_APPLICANT_ADDRESS_INTRO = "Your address";
+	public static final String DEFAULT_CASE_REFERENCE_INTRO = "Your unique reference\nnumber is";
+	public static final String DEFAULT_SUBMIT_ADDRESS_INTRO = 
 			"Please send this cover sheet along with your document(s) to the address shown below";
 
 	private static final char CASE_REFERENCE_SEPARATOR_CHAR = '-';
@@ -19,11 +19,11 @@ public class BulkScanCoverSheet implements BusinessDocument {
 	
 	@NotBlank
     @JsonProperty("title")
-    private String title = DEFUALT_TITLE;
+    private String title = DEFAULT_TITLE;
 	
 	@NotBlank
     @JsonProperty("applicantAddressIntro")
-    private String applicantAddressIntro = DEFUALT_APPLICANT_ADDRESS_INTRO;
+    private String applicantAddressIntro = DEFAULT_APPLICANT_ADDRESS_INTRO;
 
 	@NotBlank
     @JsonProperty("applicantAddress")
@@ -31,7 +31,7 @@ public class BulkScanCoverSheet implements BusinessDocument {
 
 	@NotBlank
     @JsonProperty("caseReferenceIntro")
-    private String caseReferenceIntro = DEFUALT_CASE_REFERENCE_INTRO;
+    private String caseReferenceIntro = DEFAULT_CASE_REFERENCE_INTRO;
 	
 	@NotBlank
     @JsonProperty("caseReference")
@@ -39,7 +39,7 @@ public class BulkScanCoverSheet implements BusinessDocument {
 
 	@NotBlank
     @JsonProperty("submitAddressIntro")
-    private String submitAddressIntro = DEFUALT_SUBMIT_ADDRESS_INTRO;
+    private String submitAddressIntro = DEFAULT_SUBMIT_ADDRESS_INTRO;
 	
 	@NotBlank
     @JsonProperty("submitAddress")

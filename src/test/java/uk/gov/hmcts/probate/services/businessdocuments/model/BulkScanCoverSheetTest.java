@@ -12,7 +12,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -46,10 +45,10 @@ public class BulkScanCoverSheetTest {
         assertThat(coverSheet, is(notNullValue()));
         Set<ConstraintViolation<BulkScanCoverSheet>> violations = validator.validate(coverSheet);
         assertThat(violations, is(empty()));
-        assertThat(coverSheet.getTitle(), is(equalTo(BulkScanCoverSheet.DEFUALT_TITLE)));
-        assertThat(coverSheet.getApplicantAddressIntro(), is(equalTo(BulkScanCoverSheet.DEFUALT_APPLICANT_ADDRESS_INTRO)));
-        assertThat(coverSheet.getCaseReferenceIntro(), is(equalTo(BulkScanCoverSheet.DEFUALT_CASE_REFERENCE_INTRO)));
-        assertThat(coverSheet.getSubmitAddressIntro(), is(equalTo(BulkScanCoverSheet.DEFUALT_SUBMIT_ADDRESS_INTRO)));
+        assertThat(coverSheet.getTitle(), is(equalTo(BulkScanCoverSheet.DEFAULT_TITLE)));
+        assertThat(coverSheet.getApplicantAddressIntro(), is(equalTo(BulkScanCoverSheet.DEFAULT_APPLICANT_ADDRESS_INTRO)));
+        assertThat(coverSheet.getCaseReferenceIntro(), is(equalTo(BulkScanCoverSheet.DEFAULT_CASE_REFERENCE_INTRO)));
+        assertThat(coverSheet.getSubmitAddressIntro(), is(equalTo(BulkScanCoverSheet.DEFAULT_SUBMIT_ADDRESS_INTRO)));
         assertThat(coverSheet.getApplicantAddress(), is(equalTo("20 White City\nLondon\nW12 7PD")));
         assertThat(coverSheet.getCaseReference(), is(equalTo("1542-9021-4510-0350")));
         assertThat(coverSheet.getSubmitAddress(), is(equalTo("Divorce Service\nPO BOX 123\nExela BSP Services\nHarlow\nCM19 5QS")));
@@ -78,6 +77,19 @@ public class BulkScanCoverSheetTest {
         Set<ConstraintViolation<BulkScanCoverSheet>> violations = validator.validate(coverSheet);
         assertThat(violations, is(not(empty())));
         assertThat(violations.size(), is(equalTo(3)));
+    }
+    
+    @Test
+    public void shouldProduceCorrectFormatForCoverSheetCaseReferenceNumber() throws IOException {
+    	BulkScanCoverSheet coverSheet = new BulkScanCoverSheet();
+    	coverSheet.setCaseReference("#1542-9021-4510-0350");
+        assertThat(coverSheet.getCaseReference(), is(equalTo("1542-9021-4510-0350")));
+        coverSheet.setCaseReference("`#1542902145100350");
+        assertThat(coverSheet.getCaseReference(), is(equalTo("1542-9021-4510-0350")));
+        coverSheet.setCaseReference("1542-9021-4510-0350");
+        assertThat(coverSheet.getCaseReference(), is(equalTo("1542-9021-4510-0350")));
+        coverSheet.setCaseReference("CaseReferenceNumber:#1542-9021-4510-0350");
+        assertThat(coverSheet.getCaseReference(), is(equalTo("1542-9021-4510-0350")));
     }
 
     private Optional<FileSystemResource> getFile(String fileName) {
