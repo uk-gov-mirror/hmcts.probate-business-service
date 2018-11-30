@@ -35,15 +35,14 @@ public class BulkScanCoverSheetPDFTest extends PDFIntegrationBase<BulkScanCoverS
         String pdfContentAsString = pdfContentAsString(BULK_SCAN_COVER_SHEET_VALUES, BULK_SCAN_COVER_SHEET_PDF_URL);
         BulkScanCoverSheet bulkScanCoverSheet = getJSONObject(BULK_SCAN_COVER_SHEET_VALUES, BulkScanCoverSheet.class);
         validatePDFContent(pdfContentAsString, bulkScanCoverSheet);
-        assertTrue(true);
     }
 
     private void validatePDFContent(String pdfContentAsString, BulkScanCoverSheet bulkScanCoverSheet) {
     	assertContent(pdfContentAsString, bulkScanCoverSheet.getApplicantAddressIntro());
         assertContent(pdfContentAsString, bulkScanCoverSheet.getApplicantAddress());
-        assertContent(pdfContentAsString, BulkScanCoverSheet.DEFUALT_CASE_REFERENCE_INTRO);
+        assertContent(pdfContentAsString, BulkScanCoverSheet.DEFAULT_CASE_REFERENCE_INTRO);
         assertContent(pdfContentAsString, bulkScanCoverSheet.getCaseReference());
-        assertContent(pdfContentAsString, BulkScanCoverSheet.DEFUALT_SUBMIT_ADDRESS_INTRO);
+        assertContent(pdfContentAsString, BulkScanCoverSheet.DEFAULT_SUBMIT_ADDRESS_INTRO);
         assertContent(pdfContentAsString, bulkScanCoverSheet.getSubmitAddress());
     }
     
