@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.functional;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.http.Headers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.util.ResourceUtils;
@@ -16,6 +17,9 @@ import java.util.Map;
 @ContextConfiguration(classes = TestContextConfiguration.class)
 @Component
 public class TestUtils {
+
+    @Autowired
+    private IdamTokenGenerator idamTokenGenerator;
 
     public String getJsonFromFile(String fileName) {
         try {
@@ -33,18 +37,10 @@ public class TestUtils {
                 new Header("Session-ID", sessionId));
     }
 
-    public Map<String, Object> getDocumentUploadHeaders(String auth, String userId) {
+    public Map<String, Object> getDocumentUploadHeaders() {
         Map<String, Object> headers = new HashMap<>();
-        headers.put("Authorization", auth);
-        headers.put("user-id", userId);
-        headers.put("Content-Type", "multipart/form-data;boundary=\"12312313132132\"");
-        return headers;
-    }
-
-    public Map<String, Object> getDocumentDeleteHeaders(String authToken, String userId) {
-        Map<String, Object> headers = new HashMap<>();
-        headers.put("ServiceAuthorization", authToken);
-        headers.put("user-id", userId);
+        headers.put("Authorization", idamTokenGenerator.generateUserTokenWithNoRoles());
+        headers.put("user-id", idamTokenGenerator.getUserId());
         return headers;
     }
 }

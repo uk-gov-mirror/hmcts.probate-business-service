@@ -5,7 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -117,7 +121,7 @@ public class DocumentService {
         HttpEntity<Object> httpEntity = deleteDocumentHeaders(userID);
 
         return restTemplate.exchange(
-                documentManagementUrl + "/documents/" + documentId,
+                documentManagementUrl + "/documents/" + documentId + "?permanent=true",
                 HttpMethod.DELETE,
                 httpEntity,
                 String.class);

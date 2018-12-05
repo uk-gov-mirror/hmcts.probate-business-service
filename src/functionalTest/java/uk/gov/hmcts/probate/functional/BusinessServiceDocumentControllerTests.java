@@ -1,116 +1,147 @@
 package uk.gov.hmcts.probate.functional;
 
-import io.restassured.response.Response;
+import io.restassured.RestAssured;
 import net.serenitybdd.junit.runners.SerenityRunner;
-import net.serenitybdd.rest.SerenityRest;
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Assert;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.mockito.BDDMockito.given;
+import static net.serenitybdd.rest.SerenityRest.given;
+import static org.hamcrest.Matchers.containsString;
 
 @RunWith(SerenityRunner.class)
 public class BusinessServiceDocumentControllerTests extends IntegrationTestBase {
 
-    private static final String AUTH_TOKEN = "authToken";
+    private static final String VALID_FILE_NAME = "valid_file.png";
+    private static final String INVALID_FILE_NAME = "invalid.txt";
 
-    private static final String DUMMY_OAUTH_2_TOKEN = "oauth2Token";
-
-    private static final String USER_ID = "tom@email.com";
-
-//    @Test
-//    public void testValidDocument() throws IOException {
-//        final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/valid_file.png"));
-//
-//        Response response = SerenityRest.given()
-//                .headers(utils.getDocumentUploadHeaders("jbhvhvjhvjh", "tom@email.com"))
-//                .multiPart("file", "myFile", bytes, "image/png")
-//                .contentType("multipart/form-data")
-//                .post(businessServiceUrl + "/document/upload")
-//                .andReturn();
-//        System.out.println(response.body().prettyPrint());
-//        Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
-//    }
-
-    @Test
-    public void testInvalidDocument() throws IOException {
-        final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/invalid.txt"));
-
-        Response response = SerenityRest.given().relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeaders("jbhvhvjhvjh", "tom@email.com"))
-                .multiPart("file", "myFile", bytes, "text/plain")
-                .contentType("multipart/form-data")
-                .post(businessServiceUrl + "/document/upload")
-                .andReturn();
-        Assert.assertTrue(response.body().prettyPrint().contains("Error: invalid file type"));
+    @Before
+    public void setUp(){
+        RestAssured.baseURI = businessServiceUrl;
     }
 
     @Test
-    public void testNoDocumentsUploaded() {
-        Response response = SerenityRest.given().relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeaders("jbhvhvjhvjh", USER_ID))
+    public void shouldUploadValidDocument() throws IOException {
+        final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/" + VALID_FILE_NAME));
+
+        given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getDocumentUploadHeaders())
+                .multiPart("file", VALID_FILE_NAME, bytes, "image/png")
+                .contentType("multipart/form-data")
+        .when()
+                .post("/document/upload")
+        .then()
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    public void shouldNotUploadInvalidDocument() throws IOException {
+        final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/" + INVALID_FILE_NAME));
+
+        given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getDocumentUploadHeaders())
+                .multiPart("file", INVALID_FILE_NAME, bytes, "text/plain")
+                .contentType("multipart/form-data")
+        .when()
+                .post(businessServiceUrl + "/document/upload")
+        .then()
+                .body(containsString("Error: invalid file type"));
+    }
+
+    @Test
+    public void shouldThrowErrorWhenNoFilesArePosted() {
+        given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getDocumentUploadHeaders())
                 .multiPart("file", "myFile")
                 .contentType("multipart/form-data")
+        .when()
                 .post(businessServiceUrl + "/document/upload")
-                .andReturn();
-        Assert.assertTrue(response.body().prettyPrint().contains("Error: no files passed"));
+        .then()
+                .body(containsString("Error: no files passed"));
     }
 
     @Test
-    public void testInvalidToken() throws IOException {
+    public void shouldReturnServerErrorForInvalidToken() throws IOException {
         final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/valid_file.png"));
 
-        Response response = SerenityRest.given().relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeaders("jbhvhvjhvjh", USER_ID))
+        given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getDocumentUploadHeaders())
                 .multiPart("file", "myFile", bytes, "image/png")
                 .contentType("multipart/form-data")
+        .when()
                 .post(businessServiceUrl + "/document/upload")
-                .andReturn();
-        Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.statusCode());
+        .then()
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 
     @Test
-    public void testInvalidCredentials() throws IOException {
+    public void shouldReturnServerErrorForInvalidCredentials() throws IOException {
         final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/valid_file.png"));
 
-        Response response = SerenityRest.given().relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeaders("jbhvhvjhvjh", "invalid_user_credentials"))
+        given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getDocumentUploadHeaders())
                 .multiPart("file", "myFile", bytes, "image/png")
                 .contentType("multipart/form-data")
+        .when()
                 .post(businessServiceUrl + "/document/upload")
-                .andReturn();
-        Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.statusCode());
+        .then()
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 
     @Test
-    public void testInvalidUrlRoute() {
-        SerenityRest.given().relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeaders("jbhvhvjhvjh", "tom@email.com"))
-                .when().post(businessServiceUrl + "/document/invalid_path")
-                .then().assertThat().statusCode(404);
+    public void shouldReturn404ForInvalidUrlRoute() {
+        given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getDocumentUploadHeaders())
+        .when()
+                .post("/document/invalid_path")
+        .then()
+                .assertThat().statusCode(HttpStatus.NOT_FOUND.value());
     }
 
     @Test
-    public void testDeleteValidDocument() {
-        SerenityRest.given().relaxedHTTPSValidation()
-                .headers(utils.getDocumentDeleteHeaders(DUMMY_OAUTH_2_TOKEN, USER_ID))
-                .when().delete(businessServiceUrl + "/document/delete/22e31950-f26d-46b2-8008-6e1476633ea6")
-                .then().assertThat().statusCode(204);
+    public void shouldDeleteValidDocument() throws IOException {
+        final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/" + VALID_FILE_NAME));
+        List<String> urls = (ArrayList) given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getDocumentUploadHeaders())
+                .multiPart("file", VALID_FILE_NAME, bytes, "image/png")
+                .contentType("multipart/form-data")
+                .when()
+                .post("/document/upload")
+                .then().extract().response().getBody().jsonPath().get("");
+
+        String id = StringUtils.substringAfterLast(urls.get(0), "/");
+
+        given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getDocumentUploadHeaders())
+        .when()
+                .delete("/document/delete/" + id)
+        .then()
+                .assertThat().statusCode(HttpStatus.NO_CONTENT.value());
     }
 
     @Test
-    public void testDeleteInvalidDocument() {
-        SerenityRest.given().relaxedHTTPSValidation()
-                .headers(utils.getDocumentDeleteHeaders("jbhvhvjhvjh", "tom@email.com"))
-                .when().delete(businessServiceUrl + "/document/delete/invalid_file_path")
-                .then().assertThat().statusCode(500);
+    public void shouldDeleteInvalidDocument() {
+        given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getDocumentUploadHeaders())
+        .when()
+                .delete("/document/delete/invalid_file_path")
+        .then()
+                .assertThat().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 }
