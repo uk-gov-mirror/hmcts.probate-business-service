@@ -34,9 +34,9 @@ public class PersistenceClientTest {
     public void setUp() {
         persistenceClient = new PersistenceClient(restTemplate);
         ReflectionTestUtils.setField(persistenceClient, "inviteDataPersistenceUrl", INVITE_URL);
+        ReflectionTestUtils.setField(persistenceClient, "restTemplate", restTemplate);
         mapper = new ObjectMapper();
     }
-    
 
     @Test
     public void saveInviteData() {

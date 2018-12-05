@@ -13,5 +13,3 @@ s2s_service_api = "http://rpe-service-auth-provider-sandbox.service.core-compute
 evidence_management_host = "http://dm-store-sandbox.service.core-compute-sandbox.internal"
 asp_name = "probate-sandbox"
 asp_rg = "probate-sandbox"
-
-
