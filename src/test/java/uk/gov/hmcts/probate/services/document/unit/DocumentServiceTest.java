@@ -1,17 +1,13 @@
 package uk.gov.hmcts.probate.services.document.unit;
 
-import static org.mockito.Mockito.*;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.hamcrest.CoreMatchers.instanceOf;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -27,48 +23,74 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 @RunWith(MockitoJUnitRunner.class)
 public class DocumentServiceTest {
 
     @Mock
     private AuthTokenGenerator authTokenGenerator;
+
     @Mock
     private RestTemplate restTemplate;
+
     @Mock
-    private ObjectMapper objectMapper;
+    private ResponseEntity responseEntity;
 
     private DocumentService documentService;
 
-    private static final String AUTH_TOKEN = "authToken";
+    private static final String SERVICE_AUTH_TOKEN = "authTokenXXXXX";
     private static final String DUMMY_OAUTH_2_TOKEN = "oauth2Token";
-    private static final String USER_ID = "tom@email.com";
+    private static final String USER_ID = "33";
+    private static final String DOCUMENT_ENDPOINT = "/documents";
+    private static final String DOCUMENT_ID = "DOC-ID-12345";
+    private static final String DOCUMENT_MANAGEMENT_URL =  "http://document-management";
+    private static final String DOCUMENT_DELETE_URL =  DOCUMENT_MANAGEMENT_URL + DOCUMENT_ENDPOINT
+            + "/" + DOCUMENT_ID + "?permanent=true";
+    private static final String SERVICE_AUTHORIZATION_KEY = "ServiceAuthorization";
+    private static final String USER_ID_KEY = "user-id";
 
     @Before
     public void setUp() {
         documentService = new DocumentService(authTokenGenerator, restTemplate);
-        ReflectionTestUtils.setField(documentService,
-                "documentManagementUrl", "http://localhost:8383");
+        ReflectionTestUtils.setField(documentService, "documentManagementUrl", DOCUMENT_MANAGEMENT_URL);
+
+        when(authTokenGenerator.generate()).thenReturn(SERVICE_AUTH_TOKEN);
     }
 
     @Test
     public void shouldUploadDocumentsToEvidenceManagement() throws IOException {
-        MockMultipartFile file = new MockMultipartFile("filename.png", "filename.png", "image/png", "some xml".getBytes());
+        MockMultipartFile file = new MockMultipartFile("filename.png", "filename.png", "image/png", "some xml" .getBytes());
         String response = new String(Files.readAllBytes(Paths.get("src/test/resources/files", "response.json")));
 
         List<MultipartFile> files = Collections.singletonList(file);
-        when(restTemplate.postForObject(eq("http://localhost:8383/documents"), any(HttpEntity.class), eq(String.class))).thenReturn(response);
+        when(restTemplate.postForObject(eq(DOCUMENT_MANAGEMENT_URL + DOCUMENT_ENDPOINT), any(HttpEntity.class),
+                eq(String.class))).thenReturn(response);
 
-        UploadResponse actualUploadResponse = this.documentService.upload(DUMMY_OAUTH_2_TOKEN, AUTH_TOKEN, USER_ID, files);
+        UploadResponse actualUploadResponse = documentService.upload(DUMMY_OAUTH_2_TOKEN, SERVICE_AUTH_TOKEN, USER_ID, files);
         assertThat(actualUploadResponse, instanceOf(UploadResponse.class));
     }
 
     @Test
     public void shouldDeleteDocumentFromEvidenceManagement() {
-        ResponseEntity response = mock(ResponseEntity.class);
-        when(authTokenGenerator.generate()).thenReturn(AUTH_TOKEN);
-        when(documentService.delete(USER_ID, "file")).thenReturn(response);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(SERVICE_AUTHORIZATION_KEY, SERVICE_AUTH_TOKEN);
+        headers.add(USER_ID_KEY, USER_ID);
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
-        ResponseEntity actualResponse = documentService.delete(USER_ID, "file");
-        assertThat(actualResponse, equalTo(response));
+        when(restTemplate.exchange( eq(DOCUMENT_DELETE_URL), eq(HttpMethod.DELETE), eq(httpEntity), eq(String.class)))
+                .thenReturn(responseEntity);
+
+        ResponseEntity actualResponse = documentService.delete(USER_ID, DOCUMENT_ID);
+        assertThat(actualResponse, equalTo(responseEntity));
+        verify(restTemplate, times(1))
+                .exchange( eq(DOCUMENT_DELETE_URL), eq(HttpMethod.DELETE), eq(httpEntity), eq(String.class));
     }
 }
