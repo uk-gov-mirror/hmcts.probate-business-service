@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.functional;
 
 import io.restassured.RestAssured;
+import io.restassured.parsing.Parser;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,7 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
     @Before
     public void setUp(){
         RestAssured.baseURI = businessServiceUrl;
+        RestAssured.defaultParser = Parser.JSON;
     }
 
     @Test
