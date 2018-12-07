@@ -69,6 +69,8 @@ public class IdamTokenGenerator {
                 .header("Authorization", "Basic " + encoded)
                 .post("/oauth2/authorize?response_type=code&client_id=probate&redirect_uri=" + redirectUri)
                 .body().path("code");
+        System.out.println("********************** idamUserBaseUrl: "  + idamUserBaseUrl + "**********************");
+        System.out.println("********************** redirectUri: "  + redirectUri + "**********************");
         System.out.println("********************** CODE: "  + code + "**********************");
         return code;
 
