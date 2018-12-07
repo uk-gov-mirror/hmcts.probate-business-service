@@ -57,7 +57,6 @@ public class IdamTokenGenerator {
                 "&redirect_uri=" + redirectUri +
                 "&grant_type=authorization_code")
                 .body();
-        System.out.println(responseBody.prettyPrint());
         token = responseBody.path("access_token");
 
         return "Bearer " + token;
@@ -70,6 +69,7 @@ public class IdamTokenGenerator {
                 .header("Authorization", "Basic " + encoded)
                 .post("/oauth2/authorize?response_type=code&client_id=probate&redirect_uri=" + redirectUri)
                 .body().path("code");
+        System.out.println("********************** CODE: "  + code + "**********************");
         return code;
 
     }
