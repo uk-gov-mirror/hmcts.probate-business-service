@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.functional;
 
 
 import io.restassured.RestAssured;
-import io.restassured.response.ResponseBody;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +10,7 @@ import java.util.Base64;
 @Component
 public class IdamTokenGenerator {
 
-    @Value("${idam.redirect_uri}")
+    @Value("${idam.oauth2.redirect_uri}")
     private String redirectUri;
 
     @Value("${idam.username}")
@@ -23,7 +22,7 @@ public class IdamTokenGenerator {
     @Value("${idam.secret}")
     private String secret;
 
-    @Value("${idam.url}")
+    @Value("${user.auth.provider.oauth2.url}")
     private String idamUserBaseUrl;
 
     private String userToken;
@@ -51,13 +50,12 @@ public class IdamTokenGenerator {
         String code = generateClientCode();
         String token = "";
 
-        ResponseBody responseBody = RestAssured.given().post(idamUserBaseUrl + "/oauth2/token?code=" + code +
+        token = RestAssured.given().post(idamUserBaseUrl + "/oauth2/token?code=" + code +
                 "&client_secret=" + secret +
                 "&client_id=probate" +
                 "&redirect_uri=" + redirectUri +
                 "&grant_type=authorization_code")
-                .body();
-        token = responseBody.path("access_token");
+                .body().path("access_token");
 
         return "Bearer " + token;
     }
@@ -69,9 +67,6 @@ public class IdamTokenGenerator {
                 .header("Authorization", "Basic " + encoded)
                 .post("/oauth2/authorize?response_type=code&client_id=probate&redirect_uri=" + redirectUri)
                 .body().path("code");
-        System.out.println("********************** idamUserBaseUrl: "  + idamUserBaseUrl + "**********************");
-        System.out.println("********************** redirectUri: "  + redirectUri + "**********************");
-        System.out.println("********************** CODE: "  + code + "**********************");
         return code;
 
     }
