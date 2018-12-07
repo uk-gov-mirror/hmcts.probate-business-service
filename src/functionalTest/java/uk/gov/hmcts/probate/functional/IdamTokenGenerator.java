@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.functional;
 
 
 import io.restassured.RestAssured;
+import io.restassured.response.ResponseBody;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -50,12 +51,14 @@ public class IdamTokenGenerator {
         String code = generateClientCode();
         String token = "";
 
-        token = RestAssured.given().post(idamUserBaseUrl + "/oauth2/token?code=" + code +
+        ResponseBody responseBody = RestAssured.given().post(idamUserBaseUrl + "/oauth2/token?code=" + code +
                 "&client_secret=" + secret +
                 "&client_id=probate" +
                 "&redirect_uri=" + redirectUri +
                 "&grant_type=authorization_code")
-                .body().path("access_token");
+                .body();
+        System.out.println(responseBody.prettyPrint());
+        token = responseBody.path("access_token");
 
         return "Bearer " + token;
     }
