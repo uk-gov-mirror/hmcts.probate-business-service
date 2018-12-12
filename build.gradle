@@ -46,7 +46,7 @@ jacocoTestReport {
     group = "Reporting"
     reports {
         xml.enabled false
-        html.destination "${buildDir}/reports/jacoco"
+        html.destination file("${buildDir}/reports/jacoco")
     }
 }
 
