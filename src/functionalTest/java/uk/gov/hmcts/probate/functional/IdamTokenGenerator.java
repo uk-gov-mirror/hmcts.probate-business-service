@@ -10,7 +10,7 @@ import java.util.Base64;
 @Component
 public class IdamTokenGenerator {
 
-    @Value("${idam.redirect_uri}")
+    @Value("${idam.oauth2.redirect_uri}")
     private String redirectUri;
 
     @Value("${idam.username}")
@@ -22,7 +22,7 @@ public class IdamTokenGenerator {
     @Value("${idam.secret}")
     private String secret;
 
-    @Value("${idam.url}")
+    @Value("${user.auth.provider.oauth2.url}")
     private String idamUserBaseUrl;
 
     private String userToken;
@@ -62,7 +62,7 @@ public class IdamTokenGenerator {
 
     private String generateClientCode() {
         String code = "";
-        final String encoded = Base64.getEncoder().encodeToString((idamUsername + ":" + idamPassword).getBytes());
+        final String encoded = Base64.getEncoder().encodeToString(("testABC@TEST.COM:Probate123").getBytes());
         code = RestAssured.given().baseUri(idamUserBaseUrl)
                 .header("Authorization", "Basic " + encoded)
                 .post("/oauth2/authorize?response_type=code&client_id=probate&redirect_uri=" + redirectUri)
