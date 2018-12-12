@@ -15,17 +15,20 @@ public abstract class IntegrationTestBase {
     @Autowired
     protected TestUtils utils;
 
-    String businessServiceUrl;
-    String persistenceServiceUrl;
-    String mobileNumber;
+    protected String businessServiceUrl;
+    protected String persistenceServiceUrl;
+    protected String mobileNumber;
+    protected String documentManagementUrl;
 
     @Autowired
     public void businessServiceConfiguration(@Value("${probate.business.url}") String businessServiceUrl,
                                              @Value("${probate.persistence.url}") String persistenceServiceUrl,
-                                             @Value("${probate.notify.mobile}") String mobileNumber) {
+                                             @Value("${probate.notify.mobile}") String mobileNumber,
+                                             @Value("${probate.document_management.ur}") String documentManagementUrl) {
         this.businessServiceUrl = businessServiceUrl;
         this.persistenceServiceUrl = persistenceServiceUrl;
         this.mobileNumber = mobileNumber;
+        this.documentManagementUrl = documentManagementUrl;
     }
 
     @Rule
