@@ -1,47 +1,50 @@
 package uk.gov.hmcts.probate.services.document.integration;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.multipart.MultipartFile;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.services.document.DocumentService;
 import uk.gov.hmcts.probate.services.document.controllers.DocumentController;
 import uk.gov.hmcts.probate.services.document.validators.DocumentValidation;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.document.domain.Document;
 import uk.gov.hmcts.reform.document.domain.UploadResponse;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class DocumentControllerTest {
+
+    private static final String EXPECTED_HREF = "http://href";
+
+    private static final String VALID_FILE_NAME = "valid_file.png";
 
     @Autowired
     private MockMvc mockMvc;
@@ -134,5 +137,42 @@ public class DocumentControllerTest {
                 .content("[]")
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
                 .andExpect(status().isOk());
+    }
+
+
+    @Test
+    public void shouldUploadSuccessfully() throws IOException {
+        final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/" + VALID_FILE_NAME));
+
+
+        MockMultipartFile file = new MockMultipartFile(VALID_FILE_NAME, VALID_FILE_NAME, "image/jpeg", bytes);
+        List<MultipartFile> files = new ArrayList<>();
+        files.add(file);
+
+        UploadResponse uploadResponse = createUploadResponse();
+        when(documentService.upload(eq(DUMMY_OAUTH_2_TOKEN), eq(AUTH_TOKEN), eq(USER_ID), eq(files)))
+                .thenReturn(uploadResponse);
+
+        List<String> actualResult = documentController.upload(DUMMY_OAUTH_2_TOKEN, USER_ID, files);
+        assertThat(actualResult, hasItems());
+    }
+
+    private UploadResponse createUploadResponse() {
+        UploadResponse response = mock(UploadResponse.class);
+        UploadResponse.Embedded embedded = mock(UploadResponse.Embedded.class);
+        when(response.getEmbedded()).thenReturn(embedded);
+        Document document = createDocument();
+        when(embedded.getDocuments()).thenReturn(Collections.singletonList(document));
+        return response;
+    }
+
+    private Document createDocument() {
+        Document document = new Document();
+        Document.Links links = new Document.Links();
+        Document.Link link = new Document.Link();
+        link.href = EXPECTED_HREF;
+        links.self = link;
+        document.links = links;
+        return document;
     }
 }
