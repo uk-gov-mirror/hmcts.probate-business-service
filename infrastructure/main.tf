@@ -48,7 +48,7 @@ data "azurerm_key_vault_secret" "s2s_key" {
 }
 
 module "probate-business-service" {
-  source = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
+  source = "git@github.com:hmcts/moj-module-webapp.git?ref=test-new-api-version"
   product = "${var.product}-${var.microservice}"
   location = "${var.location}"
   env = "${var.env}"
