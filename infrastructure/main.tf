@@ -9,6 +9,11 @@ provider "vault" {
 }
 
 
+provider "azurerm" {
+  version = "1.19.0"
+}
+
+
 locals {
   aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
   app_full_name = "${var.product}-${var.microservice}"
@@ -48,7 +53,7 @@ data "azurerm_key_vault_secret" "s2s_key" {
 }
 
 module "probate-business-service" {
-  source = "git@github.com:hmcts/moj-module-webapp.git?ref=test-new-api-version"
+  source = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
   product = "${var.product}-${var.microservice}"
   location = "${var.location}"
   env = "${var.env}"
@@ -85,6 +90,7 @@ module "probate-business-service" {
     java_app_name = "${var.microservice}"
     LOG_LEVEL = "${var.log_level}"
     Testing = "TESTING"  //remove json output
+    Testing1 = "TESTING"  //remove json output
 
   }
 }
