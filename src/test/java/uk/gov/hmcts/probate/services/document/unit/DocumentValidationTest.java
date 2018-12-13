@@ -8,8 +8,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
+import uk.gov.hmcts.probate.services.businessvalidation.util.TestUtils;
 import uk.gov.hmcts.probate.services.document.validators.DocumentValidation;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -31,8 +33,23 @@ public class DocumentValidationTest {
     }
 
     @Test
-    public void rejectInvalidFile() throws IOException {
-        MockMultipartFile file = new MockMultipartFile("filename.txt", "filename.txt", "text/plain", "some xml".getBytes());
+    public void rejectInvalidFileForContentType() throws IOException {
+        MockMultipartFile file = new MockMultipartFile("filename.pdf", "filename.pdf", "text/plain", "some xml".getBytes());
+        boolean result = documentValidation.isValid(file);
+        assertThat(result, equalTo(false));
+    }
+
+    @Test
+    public void rejectInvalidFileForFileName() throws IOException {
+        MockMultipartFile file = new MockMultipartFile("filename.txt", "filename.txt", "image/jpeg", "some xml".getBytes());
+        boolean result = documentValidation.isValid(file);
+        assertThat(result, equalTo(false));
+    }
+
+    @Test
+    public void rejectInvalidFileForFileSize() throws IOException {
+        TestUtils testUtils = new TestUtils();
+        MockMultipartFile file = new MockMultipartFile("filename.txt", "filename.txt", "image/jpeg", testUtils.getJSONFromFile("files/large_pdf.pdf").getBytes());
         boolean result = documentValidation.isValid(file);
         assertThat(result, equalTo(false));
     }
