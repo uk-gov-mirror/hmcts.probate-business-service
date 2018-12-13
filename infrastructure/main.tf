@@ -81,9 +81,10 @@ module "probate-business-service" {
     DOCUMENT_MANAGEMENT_URL =  "${var.evidence_management_host}"
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL = "${var.s2s_service_api}"
     AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.azurerm_key_vault_secret.s2s_key.value}"
+
     java_app_name = "${var.microservice}"
     LOG_LEVEL = "${var.log_level}"
-    //ROOT_APPENDER = "JSON_CONSOLE"  //remove json output
+    Testing = "TESTING"  //remove json output
 
   }
 }
