@@ -40,8 +40,10 @@ public class BusinessHealthConfiguration {
     @Bean
     public BusinessHealthIndicator authServiceHealthIndicator(@Autowired RestTemplate restTemplate) {
         return new BusinessHealthIndicator(authServiceBaseUrl, restTemplate);
+    }
 
-      public BusinessHealthIndicator documentManagementHealthIndicator() {
+    @Bean
+    public BusinessHealthIndicator documentManagementHealthIndicator() {
         return new BusinessHealthIndicator(documentManagementHost, restTemplate);
     }
 
