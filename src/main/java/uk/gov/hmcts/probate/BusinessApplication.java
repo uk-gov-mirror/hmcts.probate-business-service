@@ -21,7 +21,6 @@ import uk.gov.hmcts.probate.services.businessvalidation.validators.ValidationRul
 import uk.gov.hmcts.probate.services.idgeneration.IdGeneratorService;
 import uk.gov.hmcts.probate.services.idgeneration.strategy.PinStrategy;
 import uk.gov.hmcts.probate.services.idgeneration.strategy.ProbateStrategy;
-import uk.gov.hmcts.reform.authorisation.healthcheck.ServiceAuthHealthIndicator;
 import uk.gov.hmcts.reform.document.DocumentManagementClientAutoConfiguration;
 import uk.gov.service.notify.NotificationClient;
 
