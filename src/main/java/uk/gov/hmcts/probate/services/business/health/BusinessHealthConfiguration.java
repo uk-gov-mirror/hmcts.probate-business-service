@@ -33,12 +33,12 @@ public class BusinessHealthConfiguration {
     }
 
     @Bean
-    public BusinessHealthIndicator pdfServiceHealthIndicator(@Autowired RestTemplate restTemplate) {
+    public BusinessHealthIndicator pdfServiceHealthIndicator() {
         return new BusinessHealthIndicator(pdfServiceBaseUrl, restTemplate);
     }
 
     @Bean
-    public BusinessHealthIndicator authServiceHealthIndicator(@Autowired RestTemplate restTemplate) {
+    public BusinessHealthIndicator authServiceHealthIndicator() {
         return new BusinessHealthIndicator(authServiceBaseUrl, restTemplate);
     }
 
