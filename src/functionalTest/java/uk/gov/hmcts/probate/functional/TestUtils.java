@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.functional;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.http.Headers;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,8 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
 @Component
@@ -39,6 +42,9 @@ public class TestUtils {
         }
     }
 
+  @Autowired
+    private IdamTokenGenerator idamTokenGenerator;
+
     public String getJsonFromFile(String fileName) {
         try {
             File file = ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));
@@ -54,7 +60,6 @@ public class TestUtils {
                 new Header("Content-Type", ContentType.JSON.toString()),
                 new Header("Session-ID", sessionId));
     }
-
 
     public Headers getHeaders() {
         return getHeaders(serviceToken);
@@ -81,5 +86,11 @@ public class TestUtils {
                 new Header(SERVICE_AUTHORIZATION, serviceToken),
                 new Header(CONTENT_TYPE, ContentType.JSON.toString()),
                 new Header("user-id", userId));
+
+    public Map<String, Object> getDocumentUploadHeaders() {
+        Map<String, Object> headers = new HashMap<>();
+        headers.put("Authorization", idamTokenGenerator.generateUserTokenWithNoRoles());
+        headers.put("user-id", idamTokenGenerator.getUserId());
+        return headers;
     }
 }

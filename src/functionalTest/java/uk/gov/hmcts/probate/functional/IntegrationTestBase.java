@@ -19,16 +19,23 @@ public abstract class IntegrationTestBase {
     String persistenceServiceUrl;
     String pdfServiceUrl;
     String mobileNumber;
+    protected String businessServiceUrl;
+    protected String persistenceServiceUrl;
+    protected String mobileNumber;
+    protected String documentManagementUrl;
 
     @Autowired
     public void businessServiceConfiguration(@Value("${probate.business.url}") String businessServiceUrl,
                                              @Value("${probate.persistence.url}") String persistenceServiceUrl,
                                              @Value("${probate.pdfservice.url}") String pdfServiceUrl,
                                              @Value("${probate.notify.mobile}") String mobileNumber) {
+                                             @Value("${probate.notify.mobile}") String mobileNumber,
+                                             @Value("${probate.document_management.ur}") String documentManagementUrl) {
         this.businessServiceUrl = businessServiceUrl;
         this.persistenceServiceUrl = persistenceServiceUrl;
         this.pdfServiceUrl = pdfServiceUrl;
         this.mobileNumber = mobileNumber;
+        this.documentManagementUrl = documentManagementUrl;
     }
 
     @Rule

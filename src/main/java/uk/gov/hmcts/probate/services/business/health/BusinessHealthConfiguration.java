@@ -9,6 +9,9 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class BusinessHealthConfiguration {
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     @Value("${services.persistence.baseUrl}")
     private String servicePersistenceBaseUrl;
 
@@ -18,9 +21,14 @@ public class BusinessHealthConfiguration {
     @Value("${services.auth.provider.baseUrl}")
     private String authServiceBaseUrl;
 
+    @Value("${idam.s2s-auth.url}")
+    private String idamServiceHost;
+
+    @Value("${document_management.url}")
+    private String documentManagementHost;
 
     @Bean
-    public BusinessHealthIndicator persistenceServiceHealthIndicator(@Autowired RestTemplate restTemplate) {
+    public BusinessHealthIndicator persistenceServiceHealthIndicator() {
         return new BusinessHealthIndicator(servicePersistenceBaseUrl, restTemplate);
     }
 
@@ -32,5 +40,13 @@ public class BusinessHealthConfiguration {
     @Bean
     public BusinessHealthIndicator authServiceHealthIndicator(@Autowired RestTemplate restTemplate) {
         return new BusinessHealthIndicator(authServiceBaseUrl, restTemplate);
+
+      public BusinessHealthIndicator documentManagementHealthIndicator() {
+        return new BusinessHealthIndicator(documentManagementHost, restTemplate);
+    }
+
+    @Bean
+    public BusinessHealthIndicator idamServiceHealthIndicator() {
+        return new BusinessHealthIndicator(idamServiceHost, restTemplate);
     }
 }
