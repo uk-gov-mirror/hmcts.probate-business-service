@@ -86,6 +86,7 @@ public class TestUtils {
                 new Header(SERVICE_AUTHORIZATION, serviceToken),
                 new Header(CONTENT_TYPE, ContentType.JSON.toString()),
                 new Header("user-id", userId));
+    }
 
     public Map<String, Object> getDocumentUploadHeaders() {
         Map<String, Object> headers = new HashMap<>();

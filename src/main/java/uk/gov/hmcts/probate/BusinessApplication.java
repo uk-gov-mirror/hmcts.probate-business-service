@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.services.businessvalidation.validators.ValidationRul
 import uk.gov.hmcts.probate.services.idgeneration.IdGeneratorService;
 import uk.gov.hmcts.probate.services.idgeneration.strategy.PinStrategy;
 import uk.gov.hmcts.probate.services.idgeneration.strategy.ProbateStrategy;
+import uk.gov.hmcts.reform.authorisation.healthcheck.ServiceAuthHealthIndicator;
 import uk.gov.hmcts.reform.document.DocumentManagementClientAutoConfiguration;
 import uk.gov.service.notify.NotificationClient;
 
@@ -30,7 +31,7 @@ import java.util.List;
 @SpringBootApplication
 @Configuration
 @EnableSwagger2
-@EnableFeignClients(basePackages = "uk.gov.hmcts.reform.document")
+@EnableFeignClients(basePackages = {"uk.gov.hmcts.reform.document", "uk.gov.hmcts.reform.authorisation"})
 @EnableAutoConfiguration(exclude = {DocumentManagementClientAutoConfiguration.class})
 @PropertySource(value = "git.properties", ignoreResourceNotFound = true)
 public class BusinessApplication {
