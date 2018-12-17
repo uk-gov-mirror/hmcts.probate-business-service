@@ -9,6 +9,11 @@ provider "vault" {
 }
 
 
+provider "azurerm" {
+  version = "1.19.0"
+}
+
+
 locals {
   aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
   app_full_name = "${var.product}-${var.microservice}"
@@ -40,6 +45,11 @@ data "azurerm_key_vault_secret" "business_services_notify_invitedata_templateId"
 data "azurerm_key_vault_secret" "business_services_notify_pin_templateId" {
   name = "business-services-notify-pin-templateId"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "s2s_key" {
+  name      = "microservicekey-probate-backend"
+  vault_uri = "https://s2s-${local.local_env}.vault.azure.net/"
 }
 
 module "probate-business-service" {
@@ -74,9 +84,13 @@ module "probate-business-service" {
     SERVICES_NOTIFY_INVITEDATA_INVITELINK = "${var.business_services_notify_invitedata_inviteLink}"
     SERVICES_NOTIFY_PIN_TEMPLATEID = "${data.azurerm_key_vault_secret.business_services_notify_pin_templateId.value}"
     SERVICES_PDF_SERVICE_URL = "${var.pdf_service_url}"
+    DOCUMENT_MANAGEMENT_URL =  "${var.evidence_management_host}"
+    AUTH_PROVIDER_SERVICE_CLIENT_BASEURL = "${var.s2s_service_api}"
+    AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.azurerm_key_vault_secret.s2s_key.value}"
+
     java_app_name = "${var.microservice}"
     LOG_LEVEL = "${var.log_level}"
-    //ROOT_APPENDER = "JSON_CONSOLE"  //remove json output
+    Testing = "TESTING"  //remove json output
 
   }
 }

@@ -29,7 +29,7 @@ public class PinControllerTest {
     private static final String TEST_SESSION_ID = "1234567890";
     private static final String TEST_UK_PHONE_NUMBER = "(0)7700900111";
     private static final String TEST_INT_PHONE_NUMBER = "%2B447700900111";
-    private static final String TEST_BAD_PHONE_NUMBER = "$447700900111"; 
+    private static final String TEST_BAD_PHONE_NUMBER = "$447700900111";
     private static final String TEST_LARGE_PHONE_NUMBER = "%2B10900111000111000111";
 
     private MediaType contentType = new MediaType(MediaType.TEXT_PLAIN.getType(),
@@ -99,5 +99,14 @@ public class PinControllerTest {
         mockMvc.perform(get(SERVICE_URL + "?phoneNumber=" + TEST_UK_PHONE_NUMBER)
                 .contentType(contentType))
                 .andExpect(status().isBadRequest());
-    }    
+    }
+
+    @Test
+    public void inviteLegacy() throws Exception {
+        mockMvc.perform(get(SERVICE_URL + "/" + TEST_UK_PHONE_NUMBER)
+                .header("Session-Id", TEST_SESSION_ID)
+                .contentType(contentType))
+                .andExpect(status().isOk())
+                .andExpect(content().string(lessThanOrEqualTo("999999")));
+    }
 }
