@@ -30,7 +30,7 @@ import java.util.List;
 @SpringBootApplication
 @Configuration
 @EnableSwagger2
-@EnableFeignClients(basePackages = "uk.gov.hmcts.reform.document")
+@EnableFeignClients(basePackages = {"uk.gov.hmcts.reform.document", "uk.gov.hmcts.reform.authorisation"})
 @EnableAutoConfiguration(exclude = {DocumentManagementClientAutoConfiguration.class})
 @PropertySource(value = "git.properties", ignoreResourceNotFound = true)
 public class BusinessApplication {

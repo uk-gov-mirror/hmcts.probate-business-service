@@ -15,6 +15,12 @@ public class BusinessHealthConfiguration {
     @Value("${services.persistence.baseUrl}")
     private String servicePersistenceBaseUrl;
 
+    @Value("${services.pdf.service.url}")
+    private String pdfServiceBaseUrl;
+
+    @Value("${services.auth.provider.baseUrl}")
+    private String authServiceBaseUrl;
+
     @Value("${idam.s2s-auth.url}")
     private String idamServiceHost;
 
@@ -24,6 +30,16 @@ public class BusinessHealthConfiguration {
     @Bean
     public BusinessHealthIndicator persistenceServiceHealthIndicator() {
         return new BusinessHealthIndicator(servicePersistenceBaseUrl, restTemplate);
+    }
+
+    @Bean
+    public BusinessHealthIndicator pdfServiceHealthIndicator() {
+        return new BusinessHealthIndicator(pdfServiceBaseUrl, restTemplate);
+    }
+
+    @Bean
+    public BusinessHealthIndicator authServiceHealthIndicator() {
+        return new BusinessHealthIndicator(authServiceBaseUrl, restTemplate);
     }
 
     @Bean
