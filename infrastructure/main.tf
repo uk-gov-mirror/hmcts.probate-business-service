@@ -90,7 +90,7 @@ module "probate-business-service" {
 
     java_app_name = "${var.microservice}"
     LOG_LEVEL = "${var.log_level}"
-    Testing = "TESTING"  //remove json output
+    //Testing = "TESTING"  //remove json output
 
   }
 }
