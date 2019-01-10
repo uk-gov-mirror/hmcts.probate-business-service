@@ -43,8 +43,9 @@ public class PDFGenerationService {
 
         String templatePath = pdfServiceConfiguration.getTemplatesDirectory() + templateName + HTML;
         String templateAsString = fileSystemResourceService.getFileFromResourceAsString(templatePath);
+
         Map<String, Object> paramMap = asMap(objectMapper.writeValueAsString(businessDocument));
-        
+
         return pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
     }
 

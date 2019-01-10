@@ -30,8 +30,6 @@ public class PDFServiceConfigurationTest {
         assertThat(pdfServiceConfiguration.getTemplatesDirectory(),  equalTo("templates/pdf/"));
         assertThat(pdfServiceConfiguration.getUrl(), equalTo("http://localhost:5500"));
         assertThat(pdfServiceConfiguration.getPdfApi(), equalTo("/api/v2/pdf-generator/html"));
-        assertThat(pdfServiceConfiguration.getDefaultDisplayFilename(), equalTo("dummy.pdf"));
-        assertThat(pdfServiceConfiguration.getGrantSignatureBase64(), equalTo("dummy_hash"));
 
     }
 
