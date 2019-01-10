@@ -11,7 +11,6 @@ import uk.gov.hmcts.probate.services.businessdocuments.model.LegalDeclaration;
 import uk.gov.hmcts.probate.services.businessdocuments.services.PDFGenerationService;
 import uk.gov.hmcts.probate.services.businessdocuments.model.BulkScanCoverSheet;
 import uk.gov.hmcts.probate.services.businessdocuments.model.CheckAnswersSummary;
-import uk.gov.hmcts.probate.services.businessdocuments.model.LegalDeclaration;
 
 import javax.validation.Valid;
 
