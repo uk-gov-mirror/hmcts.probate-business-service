@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonRootName(value = "checkAnswersSummary")
-public class CheckAnswersSummary implements Serializable {
+public class CheckAnswersSummary implements BusinessDocument {
 
     @NotBlank
     @JsonProperty("pageTitle")
@@ -21,7 +21,7 @@ public class CheckAnswersSummary implements Serializable {
 
     @NotEmpty
     @JsonProperty("sections")
-    private List<Section> sections;
+    private List<Section> sections = new ArrayList<>();
 
     public String getMainParagraph() {
         return mainParagraph;

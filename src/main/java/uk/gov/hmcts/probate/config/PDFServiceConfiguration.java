@@ -21,8 +21,6 @@ public class PDFServiceConfiguration {
     private String url;
     private String pdfApi;
     private String templatesDirectory;
-    private String defaultDisplayFilename;
-    private String grantSignatureBase64;
 
     @Bean
     public PDFServiceClient pdfServiceClient(

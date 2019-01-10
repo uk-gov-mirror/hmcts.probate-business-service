@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.hmcts.probate.services.businessdocuments.model.DocumentType;
+import uk.gov.hmcts.probate.services.businessdocuments.model.LegalDeclaration;
 import uk.gov.hmcts.probate.services.businessdocuments.services.PDFGenerationService;
 import uk.gov.hmcts.probate.services.businessdocuments.model.CheckAnswersSummary;
 
@@ -30,5 +31,13 @@ public class BusinessDocumentController {
         return new ResponseEntity<> (bytes, HttpStatus.OK);
     }
 
+    @PostMapping(path = "/generateLegalDeclarationPDF", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<byte[]> generateLegalDeclarationPDF(@Valid @RequestBody LegalDeclaration legalDeclaration, @RequestHeader("ServiceAuthorization") String authorization) {
+        log.info("call to generateLegalDeclarationPDF()");
+
+        byte[] bytes = pdfDocumentGenerationService.generatePdf(legalDeclaration, DocumentType.LEGAL_DECLARATION);
+
+        return new ResponseEntity<> (bytes, HttpStatus.OK);
+    }
 
 }

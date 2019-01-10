@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Section implements Serializable {
@@ -19,7 +20,7 @@ public class Section implements Serializable {
 
     @NotEmpty
     @JsonProperty("questionAndAnswers")
-    private List<QuestionAndAnswerRow> questionsAndAnswers;
+    private List<QuestionAndAnswerRow> questionsAndAnswers = new ArrayList<>();
 
     public String getTitle() {
         return title;

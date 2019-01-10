@@ -55,8 +55,6 @@
       url: http://localhost:5500
       pdfApi: /api/v2/pdf-generator/html
       templatesDirectory: templates/pdf/
-      defaultDisplayFilename: dummy.pdf
-      grantSignatureBase64: dummy_hash
 
   appinsights:
     intrumentationkey: false
@@ -69,5 +67,5 @@
     fileupload:
       extensions: ".pdf .jpeg .jpg .bmp .tif .tiff .png"
       mimetypes: "image/jpeg application/pdf image/tiff image/png image/bmp"
- 
+
   idam.s2s-auth.url: ${services.auth.provider.baseUrl}

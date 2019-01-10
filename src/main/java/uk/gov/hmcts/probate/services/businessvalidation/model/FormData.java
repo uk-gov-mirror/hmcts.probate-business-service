@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.services.businessvalidation.model;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+
 import java.io.Serializable;
 import javax.validation.Valid;
 	
