@@ -83,9 +83,9 @@
         	padding:0;
         }
         table {
-    		border-collapse: collapse; 
+    		border-collapse: collapse;
     		table-layout: fixed;
-		} 
+		}
 		.applicantAddressTableCell {
    			width: 350px;
    			height: 150px;
@@ -121,21 +121,24 @@
 <p class="content-text-small">{{ applicantAddressIntro }}</p>
 <table>
 <tr><td class="applicantAddressTableCell"><p class="content-text-small">{{ applicantAddress }}</p></td></tr>
-</table> 
+</table>
 
 <div style="height: 75px;">&nbsp;</div>
-
+    <p class="content-text-small">{{ caseReferenceIntro }}</p>
 <table>
-<tr><td class="caseReferenceTableCell"><p class="content-text-large">{{ caseReference }}</p></td>
-<td><p class="content-text-small">{{ caseReferenceIntro }}</p></td></tr>
-</table> 
+<tr>
+    <td class="caseReferenceTableCell">
+        <p class="content-text-large">{{ caseReference }}</p>
+    </td>
+</tr>
+</table>
 
 <div style="height: 75px;">&nbsp;</div>
 
 <p class="content-text-small">{{ submitAddressIntro }}</p>
 <table>
 <tr><td class="submitAddressTableCell"><p class="content-text-medium">{{ submitAddress }}</p></td></tr>
-</table> 
+</table>
 
 </div>
 
