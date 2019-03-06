@@ -10,12 +10,12 @@
 
 
 provider "azurerm" {
-  version = "1.19.0"
+  version = "1.22.1"
 }
 
 
 locals {
-  aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
+  aseName = "core-compute-${var.env}"
   app_full_name = "${var.product}-${var.microservice}"
 
   local_env = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
