@@ -40,7 +40,7 @@ public class SmokeTests {
     public void shouldGetOkStatusFromHealthEndpointForProbusinessService() {
         given().config(config)
                 .when()
-                .get(url + "/health")
+                .get(url + "/health/liveness")
                 .then()
                 .statusCode(HttpStatus.OK.value());
     }
