@@ -63,6 +63,6 @@ withPipeline("java", product, component) {
 //            reportFiles          : "main.html",
 //            reportName           : "sol-ccd-service find Bugs Report"
 //    ]
-  }
+//  }
 
 }
