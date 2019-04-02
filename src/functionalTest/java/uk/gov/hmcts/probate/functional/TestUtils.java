@@ -95,9 +95,16 @@ public class TestUtils {
         return headers;
     }
 
-    public Map<String, Object> getInvalidDocumentUploadHeaders() {
+    public Map<String, Object> getDocumentUploadHeadersWithInvalidToken() {
         Map<String, Object> headers = new HashMap<>();
         headers.put("Authorization", "BadAuthorisation");
+        headers.put("user-id", idamTokenGenerator.getUserId());
+        return headers;
+    }
+
+    public Map<String, Object> getDocumentUploadHeadersWithInvalidUserId() {
+        Map<String, Object> headers = new HashMap<>();
+        headers.put("Authorization", idamTokenGenerator.generateUserTokenWithNoRoles());
         headers.put("user-id", "BadUserId");
         return headers;
     }
