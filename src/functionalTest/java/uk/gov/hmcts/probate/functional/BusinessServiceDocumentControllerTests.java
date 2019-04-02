@@ -41,7 +41,7 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
         .when()
                 .post("/document/upload")
         .then()
-                .log().all();
+                .log().body();
              // .statusCode(HttpStatus.OK.value());
     }
 
