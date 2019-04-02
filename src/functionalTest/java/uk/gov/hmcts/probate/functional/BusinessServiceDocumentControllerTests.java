@@ -40,7 +40,8 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
                 .contentType("multipart/form-data")
         .when()
                 .post("/document/upload")
-        .then();
+        .then()
+                .log().all();
              // .statusCode(HttpStatus.OK.value());
     }
 
