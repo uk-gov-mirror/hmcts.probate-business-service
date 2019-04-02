@@ -98,7 +98,7 @@ public class TestUtils {
     public Map<String, Object> getDocumentUploadHeadersWithInvalidToken() {
         Map<String, Object> headers = new HashMap<>();
         headers.put("Authorization", "BadAuthorisation");
-        headers.put("user-id", idamTokenGenerator.getUserId());
+        headers.put("user-id", "TestUserId");
         return headers;
     }
 
