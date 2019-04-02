@@ -94,4 +94,11 @@ public class TestUtils {
         headers.put("user-id", idamTokenGenerator.getUserId());
         return headers;
     }
+
+    public Map<String, Object> getInvalidDocumentUploadHeaders() {
+        Map<String, Object> headers = new HashMap<>();
+        headers.put("Authorization", "BadAuthorisation");
+        headers.put("user-id", "BadUserId");
+        return headers;
+    }
 }
