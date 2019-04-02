@@ -31,7 +31,7 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
 
     @Test
     public void shouldUploadValidDocument() throws IOException {
-        final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/" + VALID_FILE_NAME));
+        final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("../files/" + VALID_FILE_NAME));
 
         given()
                 .relaxedHTTPSValidation()
