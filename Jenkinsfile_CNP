@@ -36,6 +36,7 @@ withPipeline("java", product, component) {
   enableDeployToAKS()
   loadVaultSecrets(secrets)
   enableSlackNotifications('#probate-jenkins')
+
 //    before('smoketest:aks') {
 //        // workaround to fix SIDAM whitelisting for PR AKS URLs
 //        try {
