@@ -66,11 +66,9 @@ public class IdamTokenGenerator {
 
         code = RestAssured.given().baseUri(idamUserBaseUrl)
                 .header("Authorization", "Basic " + encoded)
-                //.header("Content-Type", "application/x-www-form-urlencoded")
                 .post("/oauth2/authorize?response_type=code&client_id=probate&redirect_uri=" + redirectUri)
                 .body().path("code");
 
-        System.out.println("code>>>" + code);
         return code;
 
     }
