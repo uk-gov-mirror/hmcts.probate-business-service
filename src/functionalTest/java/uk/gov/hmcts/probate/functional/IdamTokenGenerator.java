@@ -66,16 +66,11 @@ public class IdamTokenGenerator {
     private String generateClientCode() {
         String code = "";
 
-        //final String encoded = Base64.getEncoder().encodeToString(("testABC@TEST.COM:Probate123").getBytes());
-        // String encoded = Base64.getEncoder().encodeToString(("testABC@TEST.COM:Probate123").getBytes());
-        // System.out.println("testABC>>>>" + encoded);
         final String encoded = Base64.getEncoder().encodeToString(("ashika.jolette@buycow.org:Probate123").getBytes());
 
-        System.out.println("Ashika>>>>" + encoded);
-       // code = RestAssured.given().baseUri(idamUserBaseUrl)
-        code = RestAssured.given().baseUri("https://idam-api.aat.platform.hmcts.net")
+        code = RestAssured.given().baseUri(idamUserBaseUrl)
                 .header("Authorization", "Basic " + encoded)
-                .header("Content-Type", "application/x-www-form-urlencoded")
+                //.header("Content-Type", "application/x-www-form-urlencoded")
                 .post("/oauth2/authorize?response_type=code&client_id=probate&redirect_uri=" + redirectUri)
                 .body().path("code");
 
