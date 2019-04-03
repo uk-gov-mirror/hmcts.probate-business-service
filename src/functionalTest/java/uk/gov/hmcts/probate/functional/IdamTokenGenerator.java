@@ -62,7 +62,7 @@ public class IdamTokenGenerator {
     private String generateClientCode() {
         String code = "";
 
-        final String encoded = Base64.getEncoder().encodeToString((idamUsername + ":" + idamPassword).getBytes());
+        final String encoded = Base64.getEncoder().encodeToString(("businessServiceTestUser01@test.com:Probate123").getBytes());
 
         code = RestAssured.given().baseUri(idamUserBaseUrl)
                 .header("Authorization", "Basic " + encoded)
