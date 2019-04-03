@@ -68,13 +68,13 @@ public class IdamTokenGenerator {
 
         //final String encoded = Base64.getEncoder().encodeToString(("testABC@TEST.COM:Probate123").getBytes());
         final String encoded = Base64.getEncoder().encodeToString(("ashika.jolette@buycow.org:Probate123").getBytes());
-        System.out.println("idamUserBaseUrl>>>>" + idamUserBaseUrl);
-        System.out.println("redirectUri>>>>" + redirectUri);
 
         code = RestAssured.given().baseUri(idamUserBaseUrl)
                 .header("Authorization", "Basic " + encoded)
                 .post("/oauth2/authorize?response_type=code&client_id=probate&redirect_uri=" + redirectUri)
                 .body().path("code");
+
+        System.out.println("code>>>" + code);
         return code;
 
     }
