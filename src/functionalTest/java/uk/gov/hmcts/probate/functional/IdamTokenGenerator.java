@@ -43,6 +43,7 @@ public class IdamTokenGenerator {
 
     public String generateUserTokenWithNoRoles() {
         userToken = generateClientToken();
+        System.out.println("usertoken>>>> %s",userToken)
         return userToken;
     }
 
@@ -63,6 +64,7 @@ public class IdamTokenGenerator {
     private String generateClientCode() {
         String code = "";
 
+        //final String encoded = Base64.getEncoder().encodeToString(("testABC@TEST.COM:Probate123").getBytes());
         final String encoded = Base64.getEncoder().encodeToString(("ashika.jolette@buycow.org:Probate123").getBytes());
         code = RestAssured.given().baseUri(idamUserBaseUrl)
                 .header("Authorization", "Basic " + encoded)
