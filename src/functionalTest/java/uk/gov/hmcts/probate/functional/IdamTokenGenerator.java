@@ -43,7 +43,7 @@ public class IdamTokenGenerator {
 
     public String generateUserTokenWithNoRoles() {
         userToken = generateClientToken();
-        System.out.println("usertoken>>>> %s",userToken)
+        System.out.println("usertoken>>>>" + userToken);
         return userToken;
     }
 
