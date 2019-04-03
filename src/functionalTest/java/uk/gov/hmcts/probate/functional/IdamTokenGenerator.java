@@ -56,7 +56,7 @@ public class IdamTokenGenerator {
         token = RestAssured.given().post(idamUserBaseUrl + "/oauth2/token?code=" + code +
                 "&client_secret=" + secret +
                 "&client_id=probate" +
-                "&redirect_uri=" + redirectUri + "/oauth2/callback" +
+                "&redirect_uri=" + redirectUri +
                 "&grant_type=authorization_code")
                 .body().path("access_token");
 //        System.out.println("usertoken 2 >>>>" + token);
@@ -72,10 +72,11 @@ public class IdamTokenGenerator {
         final String encoded = Base64.getEncoder().encodeToString(("ashika.jolette@buycow.org:Probate123").getBytes());
 
         System.out.println("Ashika>>>>" + encoded);
-        code = RestAssured.given().baseUri(idamUserBaseUrl)
+       // code = RestAssured.given().baseUri(idamUserBaseUrl)
+        code = RestAssured.given().baseUri("https://idam-api.aat.platform.hmcts.net")
                 .header("Authorization", "Basic " + encoded)
                 .header("Content-Type", "application/x-www-form-urlencoded")
-                .post("/oauth2/authorize?response_type=code&client_id=probate&redirect_uri=" + redirectUri + "/oauth2/callback")
+                .post("/oauth2/authorize?response_type=code&client_id=probate&redirect_uri=" + redirectUri)
                 .body().path("code");
 
         System.out.println("code>>>" + code);
