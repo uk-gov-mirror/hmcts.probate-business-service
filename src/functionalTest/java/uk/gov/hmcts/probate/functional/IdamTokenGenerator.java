@@ -67,14 +67,14 @@ public class IdamTokenGenerator {
         String code = "";
 
         //final String encoded = Base64.getEncoder().encodeToString(("testABC@TEST.COM:Probate123").getBytes());
-
-       // String encoded = Base64.getEncoder().encodeToString(("testABC@TEST.COM:Probate123").getBytes());
-       // System.out.println("testABC>>>>" + encoded);
+        // String encoded = Base64.getEncoder().encodeToString(("testABC@TEST.COM:Probate123").getBytes());
+        // System.out.println("testABC>>>>" + encoded);
         final String encoded = Base64.getEncoder().encodeToString(("ashika.jolette@buycow.org:Probate123").getBytes());
 
         System.out.println("Ashika>>>>" + encoded);
         code = RestAssured.given().baseUri(idamUserBaseUrl)
                 .header("Authorization", "Basic " + encoded)
+                .header("Content-Type", "application/x-www-form-urlencoded")
                 .post("/oauth2/authorize?response_type=code&client_id=probate&redirect_uri=" + redirectUri + "/oauth2/callback")
                 .body().path("code");
 
