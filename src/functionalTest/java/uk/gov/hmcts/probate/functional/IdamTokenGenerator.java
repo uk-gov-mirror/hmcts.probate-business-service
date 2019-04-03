@@ -43,21 +43,20 @@ public class IdamTokenGenerator {
 
     public String generateUserTokenWithNoRoles() {
         userToken = generateClientToken();
-        System.out.println("usertoken>>>>" + userToken);
         return userToken;
     }
 
     private String generateClientToken() {
         String code = generateClientCode();
         String token = "";
-
+        System.out.println("usertoken 1>>>>" + token);
         token = RestAssured.given().post(idamUserBaseUrl + "/oauth2/token?code=" + code +
                 "&client_secret=" + secret +
                 "&client_id=probate" +
                 "&redirect_uri=" + redirectUri +
                 "&grant_type=authorization_code")
                 .body().path("access_token");
-
+        System.out.println("usertoken 2 >>>>" + token);
         return "Bearer " + token;
     }
 
