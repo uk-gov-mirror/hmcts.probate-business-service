@@ -64,7 +64,7 @@ public class IdamTokenGenerator {
         String code = "";
 
         //final String encoded = Base64.getEncoder().encodeToString(("businessServiceTestUser01@test.com:Probate123").getBytes());
-        String encoded = Base64.getEncoder().encodeToString(("businessServiceTestUser99@test.com:Probate123").getBytes());
+        String encoded = Base64.getEncoder().encodeToString(("businessServiceTestUser89@test.com:Probate123").getBytes());
         String encoded2 = Base64.getEncoder().encodeToString((idamUsername + ":" + idamPassword).getBytes());
 
         System.out.println("hardcoded auto01@test.com>>>"+encoded+"<<<");
