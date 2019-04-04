@@ -78,7 +78,7 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
 
         given()
                 .relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeaders())
+                .headers(utils.getDocumentUploadHeadersWithInvalidToken())
                 .multiPart("file", "myFile", bytes, "image/png")
                 .contentType("multipart/form-data")
         .when()
@@ -93,7 +93,7 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
 
         given()
                 .relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeaders())
+                .headers(utils.getDocumentUploadHeadersWithInvalidUserId())
                 .multiPart("file", "myFile", bytes, "image/png")
                 .contentType("multipart/form-data")
         .when()
