@@ -37,7 +37,7 @@ public class IdamTokenGenerator {
                 .get(idamUserBaseUrl + "/details")
                 .body()
                 .path("id");
-        System.out.println("userid>>>" + userid_local);
+
         return userid_local;
     }
 
@@ -63,12 +63,7 @@ public class IdamTokenGenerator {
     private String generateClientCode() {
         String code = "";
 
-        //final String encoded = Base64.getEncoder().encodeToString(("businessServiceTestUser01@test.com:Probate123").getBytes());
-        String encoded = Base64.getEncoder().encodeToString(("businessServiceTestUser89@test.com:Probate123").getBytes());
-        String encoded2 = Base64.getEncoder().encodeToString((idamUsername + ":" + idamPassword).getBytes());
-
-        System.out.println("hardcoded auto01@test.com>>>"+encoded+"<<<");
-        System.out.println("vault auto01@test.com>>>"+encoded2+"<<<");
+        final String encoded = Base64.getEncoder().encodeToString((idamUsername + ":" + idamPassword).getBytes());
 
         code = RestAssured.given().baseUri(idamUserBaseUrl)
                 .header("Authorization", "Basic " + encoded)
