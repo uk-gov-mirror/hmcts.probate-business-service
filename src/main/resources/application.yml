@@ -10,7 +10,7 @@
     endpoints:
       web:
         exposure:
-          include: health,info
+          include: health,info,liveness,health/liveness
         base-path: /
     endpoint:
       health:
