@@ -37,6 +37,7 @@ public class IdamTokenGenerator {
                 .get(idamUserBaseUrl + "/details")
                 .body()
                 .path("id");
+
         return userid_local;
     }
 
@@ -56,17 +57,19 @@ public class IdamTokenGenerator {
                 "&redirect_uri=" + redirectUri +
                 "&grant_type=authorization_code")
                 .body().path("access_token");
-
         return "Bearer " + token;
     }
 
     private String generateClientCode() {
         String code = "";
-        final String encoded = Base64.getEncoder().encodeToString(("testABC@TEST.COM:Probate123").getBytes());
+
+        final String encoded = Base64.getEncoder().encodeToString((idamUsername + ":" + idamPassword).getBytes());
+
         code = RestAssured.given().baseUri(idamUserBaseUrl)
                 .header("Authorization", "Basic " + encoded)
                 .post("/oauth2/authorize?response_type=code&client_id=probate&redirect_uri=" + redirectUri)
                 .body().path("code");
+
         return code;
 
     }
