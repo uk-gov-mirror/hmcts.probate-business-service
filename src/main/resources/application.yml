@@ -10,7 +10,7 @@
     endpoints:
       web:
         exposure:
-          include: '*'
+          include: health,info
         base-path: /
     endpoint:
       health:
