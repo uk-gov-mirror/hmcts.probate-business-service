@@ -1,0 +1,6 @@
+java:
+  applicationPort: 8080
+  environment:
+    REFORM_TEAM: probate
+    REFORM_SERVICE_NAME: business-service
+  image: latest
