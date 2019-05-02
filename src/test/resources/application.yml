@@ -9,6 +9,8 @@
   spring:
     application:
       name: probate-business-service
+    main:
+      allow-bean-definition-overriding: true
     messages:
       basename: messages
       cache-seconds: -1

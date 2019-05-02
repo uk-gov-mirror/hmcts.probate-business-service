@@ -33,7 +33,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 withPipeline("java", product, component) {
   setVaultName('probate')
   enableDockerBuild()
-  enableDeployToAKS()
+  installCharts()
   loadVaultSecrets(secrets)
   enableSlackNotifications('#probate-jenkins')
 
