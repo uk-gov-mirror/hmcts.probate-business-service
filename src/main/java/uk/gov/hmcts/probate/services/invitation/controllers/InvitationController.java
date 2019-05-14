@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.services.idgeneration.IdGeneratorService;
 import uk.gov.hmcts.probate.services.invitation.InvitationService;
-import uk.gov.hmcts.probate.services.invitation.model.Invitation;
+import uk.gov.hmcts.reform.probate.model.multiapplicant.Invitation;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.validation.Valid;
@@ -41,7 +41,7 @@ public class InvitationController {
         data.put("lastName", invitation.getLastName());
 
         String linkId = idGeneratorService.generate(data);
-        invitationService.saveAndSendEmail(linkId, invitation);
+        invitationService.sendEmail(linkId, invitation);
         return linkId;
     }
 
@@ -51,16 +51,8 @@ public class InvitationController {
                          BindingResult bindingResult,
                          @RequestHeader("Session-Id") String sessionId) throws NotificationClientException {
         LOGGER.info("Processing session id " + sessionId + " : " + bindingResult.getFieldErrors());
-        invitationService.resendEmail(inviteId, invitation);
+        invitationService.sendEmail(inviteId, invitation);
         return inviteId;
     }
 
-    @GetMapping(path = "/invites/allAgreed/{formdataId:.+}")
-    public Boolean invitesAllAgreed(@PathVariable String formdataId) {
-
-        boolean allInvitedAgreed = invitationService.checkAllInvitedAgreed(formdataId);
-        boolean mainApplicantAgreed = invitationService.checkMainApplicantAgreed(formdataId);
-
-        return allInvitedAgreed && mainApplicantAgreed;
-    }
 }
