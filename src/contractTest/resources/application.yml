@@ -1,0 +1,71 @@
+---
+#  security:
+#    basic:
+#      enabled: false
+
+  server:
+    port: 8080
+
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: '*'
+        base-path: /
+    endpoint:
+      health:
+        show-details: always
+
+  spring:
+    application:
+      name: probate-business-service
+    messages:
+      basename: messages
+      cache-seconds: -1
+      encoding: UTF-8
+
+    jackson:
+      serialization:
+        wrap_root_value: false
+      deserialization:
+        unwrap_root_value: true
+
+  services:
+    auth:
+      provider:
+        totp_secret: "AAAAAAAAAAAAAAAA"
+        baseUrl: http://localhost:4502
+        microservice: "probate_backend"
+        tokenTimeToLiveInSeconds: '900'
+    persistence:
+      baseUrl: http://localhost:8282
+      invitedata:
+        url: ${services.persistence.baseUrl}/invitedata
+      formdata:
+        url: ${services.persistence.baseUrl}/formdata
+    notify:
+      apiKey: "dummykey"
+      invitedata:
+        templateId: "dummykey"
+        inviteLink: "http://localhost:3000/executors/invitation/"
+      pin:
+        templateId: "dummykey"
+
+    pdf.service:
+      url: http://localhost:5500
+      pdfApi: /api/v2/pdf-generator/html
+      templatesDirectory: templates/pdf/
+
+  appinsights:
+    intrumentationkey: false
+
+  azure:
+    app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
+
+  document_management:
+    url: http://localhost:8383
+    fileupload:
+      extensions: ".pdf .jpeg .jpg .bmp .tif .tiff .png"
+      mimetypes: "image/jpeg application/pdf image/tiff image/png image/bmp"
+
+  idam.s2s-auth.url: ${services.auth.provider.baseUrl}

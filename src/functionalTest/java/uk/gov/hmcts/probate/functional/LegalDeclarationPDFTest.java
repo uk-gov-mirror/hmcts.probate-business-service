@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.functional;
 
 import org.junit.Test;
-import uk.gov.hmcts.probate.services.businessdocuments.model.LegalDeclaration;
 
 import static org.junit.Assert.assertThat;
 

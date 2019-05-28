@@ -12,8 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
-import uk.gov.hmcts.probate.services.invitation.model.InviteData;
 import uk.gov.hmcts.probate.services.persistence.PersistenceClient;
+import uk.gov.hmcts.reform.probate.model.multiapplicant.InviteData;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;

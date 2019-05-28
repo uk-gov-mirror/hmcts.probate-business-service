@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.services.invitation.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -22,6 +23,7 @@ public class InvitationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(InvitationController.class);
 
     @Autowired
+    @Qualifier("identityGeneratorService")
     private IdGeneratorService idGeneratorService;
 
     @Autowired
