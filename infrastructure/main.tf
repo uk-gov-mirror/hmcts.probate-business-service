@@ -13,6 +13,11 @@ provider "azurerm" {
   version = "1.22.1"
 }
 
+#s2s vault
+data "azurerm_key_vault" "s2s_vault" {
+  name = "s2s-${local.local_env}"
+  resource_group_name = "rpe-service-auth-provider-${local.local_env}"
+}
 
 locals {
   aseName = "core-compute-${var.env}"
@@ -49,7 +54,7 @@ data "azurerm_key_vault_secret" "business_services_notify_pin_templateId" {
 
 data "azurerm_key_vault_secret" "s2s_key" {
   name      = "microservicekey-probate-backend"
-  key_vault_id = "https://s2s-${local.local_env}.vault.azure.net/"
+  key_vault_id = "${data.azurerm_key_vault.s2s_vault.id}"
 }
 
 module "probate-business-service" {
