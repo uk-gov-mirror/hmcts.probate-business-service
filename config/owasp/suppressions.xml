@@ -171,18 +171,6 @@
   </suppress>
     <suppress>
         <notes><![CDATA[
-    file name: feign-core-8.18.0.jar
-    ]]></notes>
-        <cve>CWE-611</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-    file name: feign-jackson-8.18.0.jar
-    ]]></notes>
-        <cve>CWE-611</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
    file name: bcprov-jdk15on-1.56.jar
    ]]></notes>
         <gav regex="true">^org\.bouncycastle:bcprov-jdk15on:.*$</gav>
