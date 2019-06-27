@@ -190,10 +190,4 @@
         <gav regex="true">^org\.bouncycastle:bcprov-jdk15on:.*$</gav>
         <cve>CVE-2018-1000613</cve>
     </suppress>
-    <suppress>
-        <notes><![CDATA[file name: feign-jackson-8.18.0.jar]]></notes>
-        io.github.openfeign
-        <gav regex="true">^com\.netflix\.feign:feign-jackson:.*$</gav>
-        <cve>CWE-611</cve>
-    </suppress>
 </suppressions>
