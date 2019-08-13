@@ -12,4 +12,3 @@ evidence_management_host = "http://dm-store-ithc.service.core-compute-ithc.inter
 s2s_service_api = "http://rpe-service-auth-provider-ithc.service.core-compute-ithc.internal"
 asp_name = "probate-ithc"
 asp_rg = "probate-ithc"
-
