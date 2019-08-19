@@ -43,7 +43,7 @@ public class PersistenceClientTest {
 
     @Test
     public void saveInviteData() {
-        InviteData inviteData = new InviteData("link", "formdata", "test@test.com", "07777777777", "MainName");
+        InviteData inviteData = new InviteData("link", "formdata", "MainName", "07777777777", "test@test.com" ,  false);
         JsonNode jsonNode = mapper.convertValue(inviteData, JsonNode.class);
         when(restTemplate.postForEntity(INVITE_URL, inviteData, JsonNode.class))
                 .thenReturn(new ResponseEntity<>(jsonNode, HttpStatus.OK));
@@ -60,7 +60,7 @@ public class PersistenceClientTest {
 
     @Test
     public void getInvitesByFormData() {
-        InviteData inviteData = new InviteData("link", "formdata", "test@test.com", "07777777777", "MainName");
+        InviteData inviteData = new InviteData("link", "formdata", "MainName", "07777777777", "test@test.com" ,  false);
         JsonNode jsonNode = mapper.convertValue(inviteData, JsonNode.class);
         when(restTemplate.getForEntity(INVITE_URL + "/search/formdata?id=formdata", JsonNode.class))
                 .thenReturn(new ResponseEntity<>(jsonNode, HttpStatus.OK));
@@ -77,7 +77,7 @@ public class PersistenceClientTest {
 
     @Test
     public void getFormData() {
-        InviteData inviteData = new InviteData("link", "formdata", "test@test.com", "07777777777", "MainName");
+        InviteData inviteData = new InviteData("link", "formdata", "MainName", "07777777777", "test@test.com" ,  false);
         JsonNode jsonNode = mapper.convertValue(inviteData, JsonNode.class);
         when(restTemplate.getForEntity(FORMDATA_URL + "/formdata", JsonNode.class))
                 .thenReturn(new ResponseEntity<>(jsonNode, HttpStatus.OK));

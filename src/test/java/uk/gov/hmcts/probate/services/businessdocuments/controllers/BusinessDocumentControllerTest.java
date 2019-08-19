@@ -45,6 +45,6 @@ public class BusinessDocumentControllerTest {
     
     @Test
     public void shouldGenerateABulkScanCoverSheetPDF() {
-        ResponseEntity<byte[]> result = businessDocumentController.generateBulkScanCoverSheertPDF(coverSheet, "authorisation");
+        ResponseEntity<byte[]> result = businessDocumentController.generateBulkScanCoverSheetPDF(coverSheet, "authorisation");
     }
 }

@@ -1,9 +1,5 @@
 package uk.gov.hmcts.probate;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -46,13 +42,6 @@ public class BusinessApplication {
         SpringApplication.run(BusinessApplication.class, args);
     }
 
-    @Bean
-    public ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false);
-        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-        return mapper;
-    }
 
     @Bean
     List<ValidationRule> validationRules(@Autowired ValidationRule dobBeforeDodRule, @Autowired ValidationRule netIHTLessThanGrossRule) {
