@@ -55,7 +55,7 @@ data "azurerm_key_vault_secret" "s2s_key" {
 resource "azurerm_key_vault_secret" "s2s-secret-for-probate-backoffice" {
   name         = "s2s-probate-backend"
   value        = "${data.azurerm_key_vault_secret.s2s_key.value}"
-  key_vault_id = "${module.key-vault.key_vault_id}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 module "probate-business-service" {
