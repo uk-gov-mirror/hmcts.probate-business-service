@@ -57,6 +57,12 @@ data "azurerm_key_vault_secret" "s2s_key" {
   key_vault_id = "${data.azurerm_key_vault.s2s_vault.id}"
 }
 
+resource "azurerm_key_vault_secret" "s2s-secret-for-probate-backoffice" {
+  name         = "s2s-probate-backend"
+  value        = "${data.azurerm_key_vault_secret.s2s_key.value}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
+}
+
 module "probate-business-service" {
   source = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
   product = "${var.product}-${var.microservice}"
