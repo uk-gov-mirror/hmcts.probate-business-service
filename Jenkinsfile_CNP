@@ -5,10 +5,10 @@
 String product = "probate"
 String component = "business-service"
 
-List<LinkedHashMap<String, Object>> secrets = [
+def secrets = [
+  'probate-${env}': [
     secret('probatePersistenceUrl', 'TEST_PERSISTENCE_URL'),
     secret('probateNotifyMobile', 'TEST_MOBILE'),
-    secret('probate-notify-invite-apikey', 'PRO_SERVICES_NOTIFY_APIKEY'),
     secret('business-services-notify-invitedata-templateId', 'PRO_SERVICES_NOTIFY_INVITEDATA_TEMPLATEID'),
     secret('business-services-notify-pin-templateId', 'PRO_SERVICES_NOTIFY_PIN_TEMPLATEID'),
     secret('pdfservice-url', 'TEST_PDFSERVICE_URL'),
@@ -19,6 +19,7 @@ List<LinkedHashMap<String, Object>> secrets = [
     secret('probateIdamSecret', 'IDAM_SECRET'),
     secret('probateIdamUserName', 'IDAM_USERNAME'),
     secret('probateIdamPassword', 'IDAM_USERPASSWORD')
+  ]
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
@@ -31,10 +32,11 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 }
 
 withPipeline("java", product, component) {
-  setVaultName('probate')
+
   enableDockerBuild()
   installCharts()
   loadVaultSecrets(secrets)
+  enableAksStagingDeployment()
   enableSlackNotifications('#probate-jenkins')
 
 //    before('buildinfra:prod') {
