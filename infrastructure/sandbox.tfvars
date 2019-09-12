@@ -15,3 +15,4 @@ evidence_management_host = "http://dm-store-sandbox.service.core-compute-sandbox
 
 asp_name = "probate-sandbox"
 asp_rg = "probate-sandbox"
+enable_ase = true
