@@ -83,9 +83,3 @@ variable "evidence_management_host" {
 variable "s2s_service_api" {
   type = "string"
 }
-
-variable "appinsights_location" {
-  type        = "string"
-  default     = "West Europe"
-  description = "Location for Application Insights"
-}
