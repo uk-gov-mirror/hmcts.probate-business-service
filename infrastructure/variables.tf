@@ -84,10 +84,6 @@ variable "s2s_service_api" {
   type = "string"
 }
 
-variable "enable_ase" {
-  default = true
-}
-
 variable "appinsights_location" {
   type        = "string"
   default     = "West Europe"
