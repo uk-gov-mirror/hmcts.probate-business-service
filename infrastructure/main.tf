@@ -70,4 +70,3 @@ resource "azurerm_application_insights" "appinsights" {
 
   tags = "${var.common_tags}"
 }
-
