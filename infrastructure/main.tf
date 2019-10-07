@@ -64,7 +64,7 @@ resource "azurerm_key_vault_secret" "s2s-secret-for-probate-backoffice" {
 }
 
 module "probate-business-service" {
-  source = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
+  source = "git@github.com:hmcts/cnp-module-webapp.git?ref=master"
   product = "${var.product}-${var.microservice}"
   location = "${var.location}"
   env = "${var.env}"
