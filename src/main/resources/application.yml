@@ -4,7 +4,7 @@
 #      enabled: false
 
   server:
-    port: 8081
+    port: 8080
 
   management:
     endpoints:
@@ -61,9 +61,6 @@
 
   appinsights:
     intrumentationkey: false
-
-  azure:
-    app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
 
   document_management:
     url: http://localhost:8383
