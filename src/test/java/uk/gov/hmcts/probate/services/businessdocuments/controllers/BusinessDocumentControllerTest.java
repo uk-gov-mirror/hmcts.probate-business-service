@@ -9,7 +9,10 @@ import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.services.businessdocuments.services.PDFGenerationService;
 import uk.gov.hmcts.reform.probate.model.documents.BulkScanCoverSheet;
 import uk.gov.hmcts.reform.probate.model.documents.CheckAnswersSummary;
+import uk.gov.hmcts.reform.probate.model.documents.Declaration;
 import uk.gov.hmcts.reform.probate.model.documents.LegalDeclaration;
+
+import java.util.Arrays;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BusinessDocumentControllerTest {
@@ -30,6 +33,7 @@ public class BusinessDocumentControllerTest {
         businessDocumentController = new BusinessDocumentController(pdfGenerationService);
         checkAnswersSummary = new CheckAnswersSummary();
         legalDeclaration = new LegalDeclaration();
+        legalDeclaration.setDeclarations(Arrays.asList(new Declaration()));
         coverSheet = new BulkScanCoverSheet();
     }
 
