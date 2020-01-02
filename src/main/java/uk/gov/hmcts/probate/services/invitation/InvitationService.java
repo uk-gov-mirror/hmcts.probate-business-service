@@ -23,6 +23,9 @@ public class InvitationService {
     @Value("${services.notify.invitedata.templateId}")
     String templateId;
 
+    @Value("${services.notify.invitedata.bilingualTemplateId}")
+    String bilingualTemplateId;
+
     @Value("${services.notify.invitedata.inviteLink}")
     String inviteLink;
 
@@ -32,9 +35,10 @@ public class InvitationService {
     @Autowired
     private NotificationClient notificationClient;
 
-    public void sendEmail(String linkId, Invitation invitation) throws NotificationClientException {
-        notificationClient.sendEmail(templateId, invitation.getEmail(), createPersonalisation(linkId, invitation), linkId);
+    public void sendEmail(String linkId, Invitation invitation, Boolean isBilingual) throws NotificationClientException {
+        notificationClient.sendEmail(isBilingual? bilingualTemplateId: templateId, invitation.getEmail(), createPersonalisation(linkId, invitation), linkId);
     }
+
 
     private Map<String, String> createPersonalisation(String linkId, Invitation inviteData) {
         HashMap<String, String> personalisation = new HashMap<>();
