@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -68,7 +69,7 @@ public class InvitationControllerProviderTest extends ControllerProviderTest {
     @State("business service generates pin number")
     public void toGeneratePinNumber() throws IOException, JSONException , NotificationClientException {
         String pin = "123345453";
-        when(pinService.generateAndSend(anyString()))
+        when(pinService.generateAndSend(anyString(), anyBoolean()))
                 .thenReturn(pin);
     }
 

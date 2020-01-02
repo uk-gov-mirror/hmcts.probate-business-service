@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.services.invitation;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -44,18 +45,11 @@ public class InviteControllerTest {
     @Test
     public void shouldSendInvitationAndGenerateId() throws UnsupportedEncodingException, NotificationClientException {
 
-        Invitation invitation = Invitation.builder().firstName("firstName").lastName("lastName").build();
-        Map<String, String> data = new HashMap<>();
-        data.put("firstName", invitation.getFirstName());
-        data.put("lastName", invitation.getLastName());
-
-        when(invitationService.decodeURL(invitation)).thenReturn(invitation);
-        when(idGeneratorService.generate(data)).thenReturn("1233445");
+        Invitation invitation = setUpInvitationMock();
 
         invitationController.invite(invitation, mockBindingResult, "");
 
-        verify(idGeneratorService).generate(data);
-        verify(invitationService).sendEmail("1233445", invitation);
+        verify(invitationService).sendEmail("1233445", invitation, Boolean.FALSE);
     }
 
     @Test
@@ -65,6 +59,56 @@ public class InviteControllerTest {
 
         invitationController.invite("1233445", invitation, mockBindingResult, "");
 
-        verify(invitationService).sendEmail("1233445", invitation);
+        verify(invitationService).sendEmail("1233445", invitation, Boolean.FALSE);
+    }
+
+    @Test
+    public void shouldSendInvitation() throws UnsupportedEncodingException, NotificationClientException {
+
+        Invitation invitation = setUpInvitationMock();
+
+        invitationController.invite( invitation, mockBindingResult, "");
+
+        verify(invitationService).sendEmail("1233445", invitation, Boolean.FALSE);
+    }
+
+    @NotNull
+    private Invitation setUpInvitationMock() throws UnsupportedEncodingException {
+        Invitation invitation = Invitation.builder().firstName("firstName").lastName("lastName").build();
+        Map<String, String> data = new HashMap<>();
+        data.put("firstName", invitation.getFirstName());
+        data.put("lastName", invitation.getLastName());
+        when(invitationService.decodeURL(invitation)).thenReturn(invitation);
+        when(idGeneratorService.generate(data)).thenReturn("1233445");
+        return invitation;
+    }
+
+    @Test
+    public void shouldSendInvitationWithId() throws UnsupportedEncodingException, NotificationClientException {
+
+        Invitation invitation = setUpInvitationMock();
+        invitationController.invite( invitation, mockBindingResult, "");
+
+        verify(invitationService).sendEmail("1233445", invitation, Boolean.FALSE);
+    }
+
+    @Test
+    public void shouldSendBilingualInvitation() throws UnsupportedEncodingException, NotificationClientException {
+
+        Invitation invitation = Invitation.builder().firstName("firstName").lastName("lastName").build();
+
+        invitationController.inviteBilingual("1233445", invitation, mockBindingResult, "");
+
+        verify(invitationService).sendEmail("1233445", invitation, Boolean.TRUE);
+    }
+
+    @Test
+    public void shouldSendBilingualInvitationWithId() throws UnsupportedEncodingException, NotificationClientException {
+
+        Invitation invitation = setUpInvitationMock();
+
+        invitationController.inviteBilingual("1233445", invitation, mockBindingResult, "");
+
+        verify(invitationService).sendEmail("1233445", invitation, Boolean.TRUE);
     }
 }
