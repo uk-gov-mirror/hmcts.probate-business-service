@@ -16,8 +16,10 @@ import uk.gov.hmcts.probate.services.businessdocuments.model.DocumentType;
 import uk.gov.hmcts.probate.services.businessdocuments.services.PDFGenerationService;
 import uk.gov.hmcts.reform.probate.model.documents.BulkScanCoverSheet;
 import uk.gov.hmcts.reform.probate.model.documents.CheckAnswersSummary;
+import uk.gov.hmcts.reform.probate.model.documents.Declaration;
 import uk.gov.hmcts.reform.probate.model.documents.LegalDeclaration;
 
+import java.util.stream.Stream;
 import javax.validation.Valid;
 
 @Slf4j
@@ -41,10 +43,15 @@ public class BusinessDocumentController {
     @PostMapping(path = "/generateLegalDeclarationPDF", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<byte[]> generateLegalDeclarationPDF(@Valid @RequestBody LegalDeclaration legalDeclaration, @RequestHeader("ServiceAuthorization") String authorization) {
         log.info("call to generateLegalDeclarationPDF()");
-        legalDeclaration.getDeclarations().get(legalDeclaration.getDeclarations().size()-1).setLastDeclaration(Boolean.TRUE);
+        getLastDeclaration(legalDeclaration).setLastDeclaration(Boolean.TRUE);
         byte[] bytes = pdfDocumentGenerationService.generatePdf(legalDeclaration, DocumentType.LEGAL_DECLARATION);
 
         return new ResponseEntity<>(bytes, HttpStatus.OK);
+    }
+
+    private Declaration getLastDeclaration(@RequestBody @Valid LegalDeclaration legalDeclaration) {
+        long count = legalDeclaration.getDeclarations().stream().count();
+        return legalDeclaration.getDeclarations().stream().skip(count - 1).findFirst().get();
     }
 
     @PostMapping(path = "/generateBulkScanCoverSheetPDF", consumes = MediaType.APPLICATION_JSON_VALUE)
