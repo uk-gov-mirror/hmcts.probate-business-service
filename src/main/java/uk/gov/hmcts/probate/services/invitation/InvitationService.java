@@ -10,6 +10,9 @@ import uk.gov.hmcts.reform.probate.model.multiapplicant.InviteData;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +23,9 @@ public class InvitationService {
     @Value("${services.notify.invitedata.templateId}")
     String templateId;
 
+    @Value("${services.notify.invitedata.bilingualTemplateId}")
+    String bilingualTemplateId;
+
     @Value("${services.notify.invitedata.inviteLink}")
     String inviteLink;
 
@@ -29,9 +35,10 @@ public class InvitationService {
     @Autowired
     private NotificationClient notificationClient;
 
-    public void sendEmail(String linkId, Invitation invitation) throws NotificationClientException {
-        notificationClient.sendEmail(templateId, invitation.getEmail(), createPersonalisation(linkId, invitation), linkId);
+    public void sendEmail(String linkId, Invitation invitation, Boolean isBilingual) throws NotificationClientException {
+        notificationClient.sendEmail(isBilingual? bilingualTemplateId: templateId, invitation.getEmail(), createPersonalisation(linkId, invitation), linkId);
     }
+
 
     private Map<String, String> createPersonalisation(String linkId, Invitation inviteData) {
         HashMap<String, String> personalisation = new HashMap<>();
@@ -57,5 +64,17 @@ public class InvitationService {
         JsonNode declared = formdata.findPath("declarationCheckbox");
 
         return declared.asBoolean(false);
+    }
+
+    public Invitation decodeURL(Invitation invitation) throws UnsupportedEncodingException {
+        invitation.setExecutorName(decodeURLParam(invitation.getExecutorName()));
+        invitation.setFirstName(decodeURLParam(invitation.getFirstName()));
+        invitation.setLastName(decodeURLParam(invitation.getLastName()));
+        invitation.setLeadExecutorName(decodeURLParam(invitation.getLeadExecutorName()));
+        return invitation;
+    }
+
+    private String decodeURLParam(String URIParam) throws UnsupportedEncodingException {
+        return URLDecoder.decode(URIParam, StandardCharsets.UTF_8.toString());
     }
 }

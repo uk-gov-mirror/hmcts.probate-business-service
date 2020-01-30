@@ -42,6 +42,14 @@
             padding: 15px;
             /*border: 1px solid black;*/
             background-color: #EDEDED;
+            page-break-after : always;
+            -fs-keep-with-inline : keep;
+            -fs-table-paginate: paginate;
+        }
+        div.newpage {
+            page-break-after : always;
+            -fs-keep-with-inline : keep;
+            -fs-table-paginate: paginate;
         }
         #pagenumber:before {
             content: counter(page);
@@ -122,38 +130,43 @@
     <p class="alignleft">Downloaded on: {{dateCreated}}</p>
 </div>
 <div style="clear: both;"></div>
-<div class='content'>
-
-    {% for header in headers %}
-    <div class="top-header">
-        {{ header }}
-    </div>
-    {% endfor %}
-
-    {% for section in sections %}
-    <div class="no-page-break">
-        {% if section.headingType == "large" %}
-            <p class="section-title-large">
-                {{ section.title }}
-            </p>
-        {% else %}
-            <p class="section-title-medium">
-                {{ section.title }}
-            </p>
-        {% endif %}
-        {% for declarationItem in section.declarationItems %}
-            <p class="section-title-small">
-                {{ declarationItem.title }}
-            <ul>
-                {% for value in declarationItem.values %}
-                <li>{{ value }}</li>
-                {% endfor %}
-            </ul>
-            </p>
+    {% for declaration in declarations %}
+    <div class="content">
+    {% for header in declaration.headers %}
+        <div class="top-header">
+            {{ header }}
+        </div>
         {% endfor %}
-    </div>
+
+        {% for section in declaration.sections %}
+        <div class="no-page-break">
+            {% if section.headingType == "large" %}
+                <p class="section-title-large">
+                    {{ section.title }}
+                </p>
+            {% else %}
+                <p class="section-title-medium">
+                    {{ section.title }}
+                </p>
+            {% endif %}
+            {% for declarationItem in section.declarationItems %}
+                <p class="section-title-small">
+                    {{ declarationItem.title }}
+                <ul>
+                    {% for value in declarationItem.values %}
+                    <li>{{ value }}</li>
+                    {% endfor %}
+                </ul>
+                </p>
+            {% endfor %}
+        </div>
     {% endfor %}
-</div>
+        {% if declaration.lastDeclaration == false %}
+        <div class="newpage"></div>
+        {% endif %}
+
+    </div>
+{% endfor %}
 </body>
 </html>
 

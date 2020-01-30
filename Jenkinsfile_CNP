@@ -37,11 +37,12 @@ withPipeline("java", product, component) {
   installCharts()
   loadVaultSecrets(secrets)
   enableAksStagingDeployment()
+
   enableSlackNotifications('#probate-jenkins')
 
-//    before('buildinfra:prod') {
-//      error 'Deliberately breaking pipeline to prevent prod deployment'
-//    }
+  before('buildinfra:prod') {
+      error 'Deliberately breaking pipeline to prevent prod deployment'
+  }
 
   after('test') {
   //
@@ -63,13 +64,6 @@ withPipeline("java", product, component) {
             reportDir            : "build/reports/jacoco",
             reportFiles          : "index.html",
             reportName           : "sol-ccd-service Code Coverage Report"
-    ]
-
-    publishHTML target: [
-            alwaysLinkToLastBuild: true,
-            reportDir            : "build/reports/findbugs",
-            reportFiles          : "main.html",
-            reportName           : "sol-ccd-service find Bugs Report"
     ]
   }
 

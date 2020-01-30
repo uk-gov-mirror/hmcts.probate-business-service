@@ -1,21 +1,48 @@
 {
   "legalDeclaration": {
-    "headers": [
-      "header0",
-      "header1",
-      "header2"
-    ],
-    "sections": [
+    "declarations": [
       {
-        "headingType": "large",
-        "title": "section title",
-        "declarationItems": [
+        "headers": [
+          "header0",
+          "header1",
+          "header2"
+        ],
+        "sections": [
           {
-            "title": "declaration title",
-            "values": [
-              "value0",
-              "value1",
-              "value2"
+            "headingType": "large",
+            "title": "section title",
+            "declarationItems": [
+              {
+                "title": "declaration title",
+                "values": [
+                  "value0",
+                  "value1",
+                  "value2"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "headers": [
+          "welshHeader0",
+          "welshHeader1",
+          "welshHeader2"
+        ],
+        "sections": [
+          {
+            "headingType": "large",
+            "title": "welsh section title",
+            "declarationItems": [
+              {
+                "title": "welsh declaration title",
+                "values": [
+                  "welsh value0",
+                  "welsh value1",
+                  "welsh value2"
+                ]
+              }
             ]
           }
         ]
