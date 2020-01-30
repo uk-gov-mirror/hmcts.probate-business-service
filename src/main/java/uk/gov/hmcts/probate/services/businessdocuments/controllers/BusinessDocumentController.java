@@ -50,8 +50,8 @@ public class BusinessDocumentController {
     }
 
     private Declaration getLastDeclaration(@RequestBody @Valid LegalDeclaration legalDeclaration) {
-        long count = legalDeclaration.getDeclarations().stream().count();
-        return legalDeclaration.getDeclarations().stream().skip(count - 1).findFirst().get();
+        return legalDeclaration.getDeclarations().stream().reduce((first, second) -> second)
+            .orElse(null);
     }
 
     @PostMapping(path = "/generateBulkScanCoverSheetPDF", consumes = MediaType.APPLICATION_JSON_VALUE)
