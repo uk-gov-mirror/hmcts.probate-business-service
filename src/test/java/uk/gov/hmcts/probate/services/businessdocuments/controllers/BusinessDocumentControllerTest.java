@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.services.businessdocuments.controllers;
 
+import org.hamcrest.*;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,6 +50,8 @@ public class BusinessDocumentControllerTest {
     @Test
     public void shouldGenerateALegalDeclarationPDF() {
         ResponseEntity<byte[]> result = businessDocumentController.generateLegalDeclarationPDF(legalDeclaration, "authorisation");
+        Assert.assertThat(legalDeclaration.getDeclarations().size(), CoreMatchers.is(1));
+        Assert.assertThat(legalDeclaration.getDeclarations().stream().findFirst().get().isLastDeclaration(), CoreMatchers.is(Boolean.TRUE));
     }
 
     @Test
