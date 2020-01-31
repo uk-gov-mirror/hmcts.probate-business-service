@@ -15,9 +15,14 @@ import uk.gov.hmcts.reform.probate.model.documents.Declaration;
 import uk.gov.hmcts.reform.probate.model.documents.LegalDeclaration;
 
 import java.util.Arrays;
+import java.util.Optional;
+
 import uk.gov.hmcts.reform.probate.model.documents.BulkScanCoverSheet;
 import uk.gov.hmcts.reform.probate.model.documents.CheckAnswersSummary;
 import uk.gov.hmcts.reform.probate.model.documents.LegalDeclaration;
+
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BusinessDocumentControllerTest {
@@ -33,12 +38,15 @@ public class BusinessDocumentControllerTest {
 
     BulkScanCoverSheet coverSheet;
 
+    Declaration lastDeclaration;
+
     @Before
     public void setUp() {
         businessDocumentController = new BusinessDocumentController(pdfGenerationService);
         checkAnswersSummary = new CheckAnswersSummary();
         legalDeclaration = new LegalDeclaration();
-        legalDeclaration.setDeclarations(Arrays.asList(new Declaration()));
+        lastDeclaration = new Declaration();
+        legalDeclaration.setDeclarations(Arrays.asList(new Declaration(), lastDeclaration));
         coverSheet = new BulkScanCoverSheet();
     }
 
@@ -50,8 +58,13 @@ public class BusinessDocumentControllerTest {
     @Test
     public void shouldGenerateALegalDeclarationPDF() {
         ResponseEntity<byte[]> result = businessDocumentController.generateLegalDeclarationPDF(legalDeclaration, "authorisation");
-        Assert.assertThat(legalDeclaration.getDeclarations().size(), CoreMatchers.is(1));
-        Assert.assertThat(legalDeclaration.getDeclarations().stream().findFirst().get().isLastDeclaration(), CoreMatchers.is(Boolean.TRUE));
+
+    }
+
+    @Test
+    public void shouldGetLastDeclaration(){
+        Optional<Declaration> result = businessDocumentController.getLastDeclaration(legalDeclaration);
+        result.ifPresent(declaration -> assertThat(declaration, is(lastDeclaration)));
     }
 
     @Test
