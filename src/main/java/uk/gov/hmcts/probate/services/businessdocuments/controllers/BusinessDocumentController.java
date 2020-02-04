@@ -41,9 +41,10 @@ public class BusinessDocumentController {
         return new ResponseEntity<>(bytes, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/generateLegalDeclarationPDF", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/generateLegalDeclarationPDF", consumes = MediaType.APPLICATION_JSON_VALUE, produces = "application/pdf")
     public ResponseEntity<byte[]> generateLegalDeclarationPDF(@Valid @RequestBody LegalDeclaration legalDeclaration, @RequestHeader("ServiceAuthorization") String authorization) {
         log.info("call to generateLegalDeclarationPDF()");
+        legalDeclaration.setBilingual(legalDeclaration.getDeclarations().size()>1);
         getLastDeclaration(legalDeclaration).ifPresent(d-> d.setLastDeclaration(Boolean.TRUE));
         byte[] bytes = pdfDocumentGenerationService.generatePdf(legalDeclaration, DocumentType.LEGAL_DECLARATION);
 
