@@ -16,6 +16,9 @@ public class PinService {
     @Value("${services.notify.pin.templateId}")
     String templateId;
 
+    @Value("${services.notify.pin.bilingualTemplateId}")
+    String bilingualTemplateId;
+
     @Autowired
     private NotificationClient notificationClient;
 
@@ -23,9 +26,9 @@ public class PinService {
     private IdGeneratorService pinGeneratorService;
 
 
-    public String generateAndSend(String phoneNumber) throws NotificationClientException {
+    public String generateAndSend(String phoneNumber, Boolean isBilingual) throws NotificationClientException {
         String pin = pinGeneratorService.generate();
-        notificationClient.sendSms(templateId, phoneNumber, createPersonalisation(pin), pin);
+        notificationClient.sendSms(isBilingual ? bilingualTemplateId : templateId, phoneNumber, createPersonalisation(pin), pin);
         return pin;
     }
 

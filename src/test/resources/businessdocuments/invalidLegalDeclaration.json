@@ -1,25 +1,52 @@
 {
   "legalDeclaration": {
-    "headers": [
-      "header0",
-      "header1",
-      "header2"
-    ],
-    "sections": [
+    "declarations": [
       {
-        "headingType": "large",
-        "declarationItems": [
+        "headers": [
+          "header0",
+          "header1",
+          "header2"
+        ],
+        "sections": [
           {
-            "title": "declaration title",
-            "values": [
-              "value0",
-              "value1",
-              "value2"
+            "headingType": "large",
+            "declarationItems": [
+              {
+                "title": "declaration title",
+                "values": [
+                  "value0",
+                  "value1",
+                  "value2"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "headers": [
+          "welshHeader0",
+          "welshHeader1",
+          "welshHeader2"
+        ],
+        "sections": [
+          {
+            "headingType": "large",
+            "declarationItems": [
+              {
+                "title": "welsh declaration title",
+                "values": [
+                  "welsh value0",
+                  "welsh value1",
+                  "welsh value2"
+                ]
+              }
             ]
           }
         ]
       }
     ],
-    "dateCreated": "date and time"
+    "dateCreated": "date and time",
+    "deceased": "deceased"
   }
 }

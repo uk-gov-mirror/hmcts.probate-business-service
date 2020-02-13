@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.services.businessdocuments.model;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.core.io.FileSystemResource;
 import uk.gov.hmcts.probate.services.businessdocuments.services.FileSystemResourceService;
@@ -52,13 +53,13 @@ public class LegalDeclarationTest {
         assertThat(legalDeclaration.getDeceased(), is(equalTo("deceased")));
         assertThat(legalDeclaration.getDateCreated(), is(equalTo("date and time")));
 
-        List<String> headers = legalDeclaration.getHeaders();
+        List<String> headers = legalDeclaration.getDeclarations().stream().findFirst().get().getHeaders();
         assertThat(headers.size(), is(equalTo(3)));
         for (int i = 0; i < headers.size() ; i++) {
             assertThat(headers.get(i), is(equalTo("header" + i)));
         }
 
-        DeclarationSection declarationSection = legalDeclaration.getSections().get(0);
+        DeclarationSection declarationSection = legalDeclaration.getDeclarations().stream().findFirst().get().getSections().get(0);
         assertThat(declarationSection.getHeadingType(), is(equalTo("large")));
         assertThat(declarationSection.getTitle(), is(equalTo("section title")));
 
