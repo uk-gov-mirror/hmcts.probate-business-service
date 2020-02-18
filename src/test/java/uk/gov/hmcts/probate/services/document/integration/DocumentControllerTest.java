@@ -15,6 +15,11 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.services.document.DocumentService;
 import uk.gov.hmcts.probate.services.document.controllers.DocumentController;
@@ -35,7 +40,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -47,6 +51,8 @@ public class DocumentControllerTest {
     private static final String VALID_FILE_NAME = "valid_file.png";
 
     @Autowired
+    private WebApplicationContext wac;
+
     private MockMvc mockMvc;
 
     @MockBean
@@ -65,12 +71,15 @@ public class DocumentControllerTest {
 
     @Before
     public void setUp() {
+        DefaultMockMvcBuilder builder = MockMvcBuilders.webAppContextSetup(this.wac);
+        this.mockMvc = builder.build();
+
         when(authTokenGenerator.generate()).thenReturn(AUTH_TOKEN);
         documentValidation = new DocumentValidation();
         ReflectionTestUtils.setField(documentValidation,
-                "allowedFileExtensions", ".pdf .jpeg .bmp .tif .tiff .png .pdf");
+            "allowedFileExtensions", ".pdf .jpeg .bmp .tif .tiff .png .pdf");
         ReflectionTestUtils.setField(documentValidation,
-                "allowedMimeTypes", "image/jpeg application/pdf image/tiff image/png image/bmp");
+            "allowedMimeTypes", "image/jpeg application/pdf image/tiff image/png image/bmp");
 
         documentController = new DocumentController(documentService, documentValidation, authTokenGenerator);
     }
@@ -80,7 +89,7 @@ public class DocumentControllerTest {
         List<String> expectedResult = new ArrayList<>();
         expectedResult.add("Error: no files passed");
 
-        List<String> actualResult = documentController.upload(DUMMY_OAUTH_2_TOKEN, USER_ID,null);
+        List<String> actualResult = documentController.upload(DUMMY_OAUTH_2_TOKEN, USER_ID, null);
         assertThat(actualResult, equalTo(expectedResult));
     }
 
@@ -100,7 +109,7 @@ public class DocumentControllerTest {
 
         MultipartFile file = Mockito.mock(MultipartFile.class);
         List<MultipartFile> files = new ArrayList<>();
-        for(int i = 1; i <= 11; i ++) {
+        for (int i = 1; i <= 11; i++) {
             files.add(file);
         }
 
@@ -132,13 +141,15 @@ public class DocumentControllerTest {
 
     @Test
     public void shouldDeleteFileAndReturnAppropriateResponse() throws Exception {
-        mockMvc.perform(delete("/document/delete/document-id")
-                .header("user-id", USER_ID)
-                .content("[]")
-                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
-                .andExpect(status().isOk());
-    }
+        ResultMatcher ok = MockMvcResultMatchers.status()
+            .isOk();
 
+        this.mockMvc.perform(delete("/document/delete/document-id")
+            .header("user-id", USER_ID)
+            .content("[]")
+            .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
+            .andExpect(ok);
+    }
 
     @Test
     public void shouldUploadSuccessfully() throws IOException {
@@ -151,7 +162,7 @@ public class DocumentControllerTest {
 
         UploadResponse uploadResponse = createUploadResponse();
         when(documentService.upload(eq(DUMMY_OAUTH_2_TOKEN), eq(AUTH_TOKEN), eq(USER_ID), eq(files)))
-                .thenReturn(uploadResponse);
+            .thenReturn(uploadResponse);
 
         List<String> actualResult = documentController.upload(DUMMY_OAUTH_2_TOKEN, USER_ID, files);
         assertThat(actualResult, hasItems());
