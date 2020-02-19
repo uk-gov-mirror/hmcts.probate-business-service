@@ -51,7 +51,7 @@ public class BusinessDocumentController {
         return new ResponseEntity<>(bytes, HttpStatus.OK);
     }
 
-    private Optional<Declaration> getLastDeclaration(@RequestBody @Valid LegalDeclaration legalDeclaration) {
+    protected Optional<Declaration> getLastDeclaration(@RequestBody @Valid LegalDeclaration legalDeclaration) {
         return Optional.ofNullable(legalDeclaration.getDeclarations().stream().reduce((first, second) -> second)
             .orElse(null));
     }
