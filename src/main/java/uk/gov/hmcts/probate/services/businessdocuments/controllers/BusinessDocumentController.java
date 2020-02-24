@@ -20,7 +20,6 @@ import uk.gov.hmcts.reform.probate.model.documents.Declaration;
 import uk.gov.hmcts.reform.probate.model.documents.LegalDeclaration;
 
 import java.util.Optional;
-import java.util.stream.Stream;
 import javax.validation.Valid;
 
 @Slf4j
