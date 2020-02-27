@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.services.businessdocuments.unit;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,4 +96,12 @@ public class BusinessDocumentControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    public void shouldConsumeValidLegalDeclarationMessageWhenBilingualIsOn() throws Exception {
+        ResultActions resultActions = mockMvc.perform(post(LEGAL_DECLARATION_URL)
+            .header("serviceAuthorization", "dummyKey")
+            .content(utils.getJSONFromFile("businessdocuments/validLegalDeclarationOneDec.json"))
+            .contentType(contentType))
+            .andExpect(status().isOk());
+    }
 }
