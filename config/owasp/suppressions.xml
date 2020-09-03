@@ -331,4 +331,12 @@
     <gav regex="true">^org\.bouncycastle:bcprov-jdk15on:.*$</gav>
     <cpe>cpe:/a:bouncycastle:legion-of-the-bouncy-castle-java-crytography-api</cpe>
   </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: snakeyaml-1.25.jar
+   ]]></notes>
+    <gav regex="true">^org\.yaml:snakeyaml:.*$</gav>
+    <cpe>cpe:/a:snakeyaml_project:snakeyaml</cpe>
+    <cve>CVE-2017-18640</cve>
+  </suppress>
 </suppressions>
