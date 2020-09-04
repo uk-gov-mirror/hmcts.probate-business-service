@@ -1,9 +1,9 @@
 package uk.gov.hmcts.probate.functional;
 
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import uk.gov.hmcts.reform.probate.model.documents.LegalDeclaration;
-
-import static org.junit.Assert.assertThat;
 
 /**
  * Test class to compare the contents of the inbound JSON file against the content of the generated
@@ -13,6 +13,7 @@ import static org.junit.Assert.assertThat;
  * We concaternate the question and answer together before we look for the corresponding pdf string.
  * When we have a multi answer question we will look for all strings answers belonging to that question.
  */
+@RunWith(SpringIntegrationSerenityRunner.class)
 public class LegalDeclarationPDFTest extends PDFIntegrationBase<LegalDeclaration> {
 
     private static final String SIMPLE_LEGAL_DECLARTION = "validLegalDeclaration.json";
@@ -38,11 +39,12 @@ public class LegalDeclarationPDFTest extends PDFIntegrationBase<LegalDeclaration
         assertContent(pdfContentAsString, legalDeclaration.getDateCreated());
         assertContent(pdfContentAsString, legalDeclaration.getDeceased());
 
-        legalDeclaration.getHeaders().forEach(header -> {
+        legalDeclaration.getDeclarations().forEach(declaration -> {declaration.getHeaders().forEach(header -> {
             assertContent(pdfContentAsString, header.toUpperCase());
         });
+     });
 
-        legalDeclaration.getSections().forEach(section -> {
+        legalDeclaration.getDeclarations().forEach(declaration -> {declaration.getSections().forEach(section -> {
             assertContent(pdfContentAsString, section.getTitle());
             section.getDeclarationItems().forEach(declarationItem -> {
                 assertContent(pdfContentAsString, declarationItem.getTitle());
@@ -51,7 +53,8 @@ public class LegalDeclarationPDFTest extends PDFIntegrationBase<LegalDeclaration
                 });
             });
         });
-    }
+     });
+  }
 
 
 }
