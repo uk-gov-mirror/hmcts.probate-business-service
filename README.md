@@ -11,16 +11,27 @@ The probate business service provides useful business logic to thefrontend servi
 
 ### Running the application
 #### Building and Running the Business Service
-Install dependencies and build the service by executing the following command:  
+Install dependencies and build the service by executing the following command:
 ```
 $ ./gradlew clean build
 ```
 
-Once the build has completed, you will find the new *.jar* in `build/libs`. You can run the *.jar* with the following command:  
+Once the build has completed, you will find the new *.jar* in `build/libs`. You can run the *.jar* with the following command:
 ```
 $ java -jar build/libs/business-service-1.0.1.jar
 ```
 
+### Local Development using docker
+
+## Docker environment
+
+Bring up the environment:
+
+```
+# first time only
+npx @hmcts/probate-dev-env --create
+npx @hmcts/probate-dev-env
+```
 
 ### API documentation
 
@@ -55,7 +66,7 @@ For the versions available, see the tags on this repository.
 ### IDE Settings
 
 #### Project Lombok Plugin
-When building the project in your IDE (eclipse or IntelliJ), Lombok plugin will be required to compile. 
+When building the project in your IDE (eclipse or IntelliJ), Lombok plugin will be required to compile.
 
 For IntelliJ IDEA, please add the Lombok IntelliJ plugin:
 * Go to `File > Settings > Plugins`
@@ -67,8 +78,8 @@ For IntelliJ IDEA, please add the Lombok IntelliJ plugin:
 Plugin setup for other IDE's are available on [https://projectlombok.org/setup/overview]
 
 #### JsonMappingException when running tests in your IDE
-Add the `-parameters` setting to your compiler arguments in your IDE (Make sure you recompile your code after).  
-This is because we use a feature of jackson for automatically deserialising based on the constructor.  
+Add the `-parameters` setting to your compiler arguments in your IDE (Make sure you recompile your code after).
+This is because we use a feature of jackson for automatically deserialising based on the constructor.
 For more info see: https://github.com/FasterXML/jackson-modules-java8/blob/a0d102fa0aea5c2fc327250868e1c1f6d523856d/parameter-names/README.md
 
 ## License
