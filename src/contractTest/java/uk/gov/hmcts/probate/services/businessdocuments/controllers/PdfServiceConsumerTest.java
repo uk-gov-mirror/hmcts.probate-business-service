@@ -83,8 +83,6 @@ public class PdfServiceConsumerTest {
 
     private String someJSON = "{\"test\":\"json\"}";
 
-
-
     @BeforeEach
     public void setUpEachTest() throws InterruptedException, IOException {
         Thread.sleep(2000);
@@ -109,7 +107,7 @@ public class PdfServiceConsumerTest {
             .given("A request to generate a Probate pdf document")
             .uponReceiving("a request to generate a PDF document with a template")
             .method("POST")
-            .headers(SERVICE_AUTHORIZATION_HEADER, someServiceAuthToken)
+            //.headers(SERVICE_AUTHORIZATION_HEADER, someServiceAuthToken)
             //.body(createJsonObject(new GenerateDocumentRequest(template, placeholders)),
             //    "application/vnd.uk.gov.hmcts.pdf-service.v2+json;charset=UTF-8")
             .path("/pdfs")
