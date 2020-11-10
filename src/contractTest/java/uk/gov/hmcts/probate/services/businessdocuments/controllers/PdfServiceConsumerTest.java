@@ -11,11 +11,15 @@ import uk.gov.hmcts.probate.services.businessdocuments.services.PDFGenerationSer
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.documents.BusinessDocument;
 import uk.gov.hmcts.reform.probate.model.documents.CheckAnswersSummary;
+import uk.gov.hmcts.reform.probate.model.documents.Section;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
@@ -49,7 +53,7 @@ import org.springframework.util.ResourceUtils;
 @PactTestFor(providerName = "rpePdfService_PDFGenerationEndpointV2", port = "8891")
 @PactFolder("pacts")
 @SpringBootTest({
-    "service.pdf.service.uri : http://localhost:8891/pdfs"
+    "services.pdf.service.url : http://localhost:8891/pdfs"
 })
 public class PdfServiceConsumerTest {
 
@@ -64,9 +68,6 @@ public class PdfServiceConsumerTest {
     @MockBean
     private AuthTokenGenerator serviceTokenGenerator;
 
-    //@MockBean
-    //private TemplateManagementService templateManagementService;
-
     @Mock
     private CheckAnswersSummary mockCheckAnswersSummary;
 
@@ -77,9 +78,6 @@ public class PdfServiceConsumerTest {
     private FileSystemResourceService fileSystemResourceService;
 
     private final String someServiceAuthToken = "someServiceAuthToken";
-    private final String template = "<html><body><div>Case number: {{ caseNo }}</div></body></html>";
-
-    private Map placeholders = Map.of("caseNo", "12345");
 
     private String someJSON = "{\"test\":\"json\"}";
 
@@ -104,12 +102,12 @@ public class PdfServiceConsumerTest {
         // @formatter:off
 
         return builder
-            .given("A request to generate a Probate pdf document")
-            .uponReceiving("a request to generate a PDF document with a template")
+            .given("A request to generate a PDF document ")
+            .uponReceiving("A request to generate a PDF document ")
             .method("POST")
-            //.headers(SERVICE_AUTHORIZATION_HEADER, someServiceAuthToken)
-            //.body(createJsonObject(new GenerateDocumentRequest(template, placeholders)),
-            //    "application/vnd.uk.gov.hmcts.pdf-service.v2+json;charset=UTF-8")
+            .headers(SERVICE_AUTHORIZATION_HEADER, someServiceAuthToken)
+            .body(createJsonObject(answersSummary()),
+                "application/vnd.uk.gov.hmcts.pdf-service.v2+json;charset=UTF-8")
             .path("/pdfs")
             .willRespondWith()
             .withBinaryData("".getBytes(), "application/octet-stream")
@@ -122,34 +120,34 @@ public class PdfServiceConsumerTest {
     @PactTestFor(pactMethod = "generatePdfFromTemplate")
     public void verifyGeneratePdfFromTemplatePact() throws IOException, JSONException {
 
-        Map<String, Object> placeholders = new HashMap<>();
-        placeholders.put("caseNo", "12345");
-
         when(pdfServiceConfiguration.getTemplatesDirectory()).thenReturn("templateDirectory");
         when(fileSystemResourceService.getFileFromResourceAsString(Mockito.anyString())).thenReturn("templateAsString");
 
-        //when(templateManagementService.getTemplateByName("someTemplateName")).thenReturn(template.getBytes());
         when(serviceTokenGenerator.generate()).thenReturn(someServiceAuthToken);
 
-        byte[] response = pdfGenerationService.generatePdf(mockCheckAnswersSummary, DocumentType.CHECK_ANSWERS_SUMMARY);
+        byte[] response = pdfGenerationService.generatePdf(answersSummary(), DocumentType.CHECK_ANSWERS_SUMMARY);
 
         assertThat(response , notNullValue());
+        // TODO other asserts required here.
 
     }
 
-//    private File getFile(String fileName) throws FileNotFoundException {
-//        return ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));
-//    }
-//
-//    protected String createJsonObject(Object obj) throws JSONException, IOException {
-//        return objectMapper.writeValueAsString(obj);
-//    }
+    protected String createJsonObject(Object obj) throws JSONException, IOException {
+        return objectMapper.writeValueAsString(obj);
+    }
 
-//    private GenerateDocumentRequest buildGenerateDocumentRequest() {
-//        Map<String, Object> placeholders = new HashMap<>();
-//        placeholders.put("caseNo", "12345");
-//
-//        return new GenerateDocumentRequest(template, placeholders);
-//
-//    }
+    private CheckAnswersSummary answersSummary(){
+        CheckAnswersSummary summary = new CheckAnswersSummary();
+        summary.setMainParagraph("paragraph");
+        summary.setPageTitle("title");
+
+        List<Section> sectionList = new ArrayList<Section>();
+        Section section = new Section();
+        section.setTitle("title");
+        sectionList.add(section);
+
+        summary.setSections(sectionList);
+
+        return summary;
+    }
 }
