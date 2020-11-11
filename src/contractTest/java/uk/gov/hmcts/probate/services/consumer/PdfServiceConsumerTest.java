@@ -77,8 +77,8 @@ public class PdfServiceConsumerTest {
         // @formatter:off
 
         return builder
-            .given("A request to generate a PDF document ")
-            .uponReceiving("A request to generate a PDF document ")
+            .given("A request to generate a Probate PDF document")
+            .uponReceiving("A request to generate a Probate PDF document")
             .method("POST")
             //.headers(SERVICE_AUTHORIZATION_HEADER, someServiceAuthToken)
             .body(createJsonObject(buildGenerateDocumentRequest(DocumentType.CHECK_ANSWERS_SUMMARY.getTemplateName(), answersSummary())),
