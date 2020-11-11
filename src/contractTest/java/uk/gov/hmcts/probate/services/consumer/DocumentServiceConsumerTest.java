@@ -25,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -39,9 +41,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ContextConfiguration(classes = BusinessApplication.class)
-@PactTestFor(providerName = "em_dm_store", port = "3404")
+@PactTestFor(providerName = "em_dm_store", port = "5006")
 @SpringBootTest({
-    "document_management.url : http://localhost:3404/documents"
+    "document_management.url : http://localhost:5006"
 })
 public class DocumentServiceConsumerTest {
 
@@ -54,9 +56,7 @@ public class DocumentServiceConsumerTest {
     @Value("${document_management.url}")
     private String documentManagementUrl;
 
-    public static final String SOME_AUTHORIZATION_TOKEN = "Bearer UserAuthToken";
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
-    private static final String REQ_ID = "ReqId";
     private static final String USER_ID = "id1";
 
     private static final String DOCUMENT_ID = "5c3c3906-2b51-468e-8cbb-a4002eded075";
@@ -69,6 +69,7 @@ public class DocumentServiceConsumerTest {
 
     @Pact(consumer = "probate_documentServiceClient")
     RequestResponsePact deleteDocument(PactDslWithProvider builder) throws IOException {
+
         Map<String, String> headers = Maps.newHashMap();
         headers.put("ServiceAuthorization", SOME_SERVICE_AUTHORIZATION_TOKEN);
         headers.put("user-id", USER_ID);
@@ -77,9 +78,9 @@ public class DocumentServiceConsumerTest {
             .given("I have existing document")
             .uponReceiving("and I request to delete the document")
             .path(documentManagementUrl + "/documents/" + DOCUMENT_ID)
+            .query("permanent=true")
             .method("DELETE")
             .headers(headers)
-            .query("permanent=true")
             .willRespondWith()
             .status(204)
             .toPact();
@@ -91,6 +92,7 @@ public class DocumentServiceConsumerTest {
         when(authTokenGenerator.generate()).thenReturn(SOME_SERVICE_AUTHORIZATION_TOKEN);
 
         ResponseEntity<?> responses = documentService.delete(USER_ID , DOCUMENT_ID);
+
         assertThat(responses.getStatusCode().is2xxSuccessful());
 
     }
