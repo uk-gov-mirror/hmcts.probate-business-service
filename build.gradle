@@ -149,6 +149,8 @@ serenity {
 
 task pactTask(type: Test) {
     description = "Runs pact Tests"
+    useJUnitPlatform()
+    include "uk/gov/hmcts/probate/services/consumer/**"
     testClassesDirs = sourceSets.testContract.output.classesDirs
     classpath = sourceSets.testContract.runtimeClasspath
 }
@@ -269,5 +271,33 @@ bootJar {
 
         attributes 'Implementation-Title': project.name,
                 'Implementation-Version': project.version
+    }
+}
+
+project.ext {
+    pactVersion = getCheckedOutGitCommitHash()
+}
+
+task runAndPublishConsumerPactTests(type: Test){
+    logger.lifecycle("Runs pact Tests")
+    testClassesDirs = sourceSets.testContract.output.classesDirs
+    classpath = sourceSets.testContract.runtimeClasspath
+
+}
+
+runAndPublishConsumerPactTests.dependsOn pactTask
+
+runAndPublishConsumerPactTests.finalizedBy pactPublish
+
+def getCheckedOutGitCommitHash() {
+    'git rev-parse --verify --short HEAD'.execute().text.trim()
+}
+
+pact {
+    publish {
+        pactDirectory = 'pacts'
+        pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+        tags = [System.getenv("PACT_BRANCH_NAME") ?:'Dev']
+        version = project.pactVersion
     }
 }
