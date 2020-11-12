@@ -18,7 +18,6 @@ plugins {
     id 'au.com.dius.pact' version '4.0.3'
 }
 
-
 apply plugin: 'java'
 apply plugin: 'org.sonarqube'
 apply plugin: 'jacoco'
@@ -73,14 +72,14 @@ pitest {
 
 test.finalizedBy jacocoTestReport
 
-//dependencyCheck {
-//    failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
-//    suppressionFiles = ['config/owasp/suppressions.xml']
-//    analyzers {
-//        assemblyEnabled = false
-//    }
-//    scanConfigurations = ['compile']
-//}
+dependencyCheck {
+    failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
+    suppressionFiles = ['config/owasp/suppressions.xml']
+    analyzers {
+        assemblyEnabled = false
+    }
+    scanConfigurations = ['compile']
+}
 
 def isNonStable = { String version ->
     def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
