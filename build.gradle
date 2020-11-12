@@ -151,6 +151,7 @@ task pactTask(type: Test) {
     description = "Runs pact Tests"
     useJUnitPlatform()
     include "uk/gov/hmcts/probate/services/consumer/**"
+    exclude "uk/gov/hmcts/probate/services/businessdocuments/controllers/**"
     testClassesDirs = sourceSets.testContract.output.classesDirs
     classpath = sourceSets.testContract.runtimeClasspath
 }
