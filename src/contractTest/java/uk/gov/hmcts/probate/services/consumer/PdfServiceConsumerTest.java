@@ -42,7 +42,6 @@ import java.util.Map;
 })
 public class PdfServiceConsumerTest {
 
-    private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
     private static final String HTML = ".html";
 
     @Autowired
@@ -56,10 +55,6 @@ public class PdfServiceConsumerTest {
 
     @Autowired
     private FileSystemResourceService fileSystemResourceService;
-
-    private final String someServiceAuthToken = "someServiceAuthToken";
-
-    private String someJSON = "{\"test\":\"json\"}";
 
     @BeforeEach
     public void setUpEachTest() throws InterruptedException, IOException {
