@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.services.consumer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import au.com.dius.pact.core.model.annotations.PactFolder;
 import uk.gov.hmcts.probate.BusinessApplication;
 import uk.gov.hmcts.probate.services.document.DocumentService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -40,8 +41,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(PactConsumerTestExt.class)
 @ExtendWith(SpringExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ContextConfiguration(classes = BusinessApplication.class)
 @PactTestFor(providerName = "em_dm_store", port = "5006")
+@PactFolder("pacts")
 @SpringBootTest({
     "document_management.url : http://localhost:5006"
 })
@@ -67,7 +68,7 @@ public class DocumentServiceConsumerTest {
         Thread.sleep(2000);
     }
 
-    @Pact(consumer = "probate_documentServiceClient")
+    @Pact(consumer = "probate_businessService")
     RequestResponsePact deleteDocument(PactDslWithProvider builder) throws IOException {
 
         Map<String, String> headers = Maps.newHashMap();
@@ -77,7 +78,7 @@ public class DocumentServiceConsumerTest {
         return builder
             .given("I have existing document")
             .uponReceiving("and I request to delete the document")
-            .path(documentManagementUrl + "/documents/" + DOCUMENT_ID)
+            .path("/documents/" + DOCUMENT_ID)
             .query("permanent=true")
             .method("DELETE")
             .headers(headers)

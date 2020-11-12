@@ -37,9 +37,7 @@ import java.util.Map;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @PactTestFor(providerName = "rpePdfService_PDFGenerationEndpointV2", port = "5500")
 @PactFolder("pacts")
-@SpringBootTest({
-    "logging.level.au.com.dius.pact : DEBUG"
-})
+@SpringBootTest
 public class PdfServiceConsumerTest {
 
     private static final String HTML = ".html";
