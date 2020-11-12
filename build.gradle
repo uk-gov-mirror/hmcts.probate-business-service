@@ -18,6 +18,7 @@ plugins {
     id 'au.com.dius.pact' version '4.0.3'
 }
 
+
 apply plugin: 'java'
 apply plugin: 'org.sonarqube'
 apply plugin: 'jacoco'
@@ -72,14 +73,14 @@ pitest {
 
 test.finalizedBy jacocoTestReport
 
-dependencyCheck {
-    failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
-    suppressionFiles = ['config/owasp/suppressions.xml']
-    analyzers {
-        assemblyEnabled = false
-    }
-    scanConfigurations = ['compile']
-}
+//dependencyCheck {
+//    failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
+//    suppressionFiles = ['config/owasp/suppressions.xml']
+//    analyzers {
+//        assemblyEnabled = false
+//    }
+//    scanConfigurations = ['compile']
+//}
 
 def isNonStable = { String version ->
     def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
@@ -184,6 +185,7 @@ def versions = [
     serenity              : '2.0.23',
     serenityreporter      : '2.1.4',
     lombok                : '1.18.12',
+    tomcat                : '9.0.37',
     pact_version          : '4.1.7' // this is for PACT Consumer only . Provider points to 3.6.14
 ]
 
@@ -216,6 +218,13 @@ dependencies {
     implementation ("com.fasterxml.jackson.core:jackson-databind:2.9.8")
     implementation group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: '1.1.0.2'
     implementation 'org.springdoc:springdoc-openapi-ui:1.2.11'
+
+    implementation (group: 'org.apache.tomcat.embed', name:'tomcat-embed-core', version: versions.tomcat) {
+      force = true
+    }
+    implementation (group: 'org.apache.tomcat.embed', name:'tomcat-embed-websocket', version: versions.tomcat) {
+      force = true
+    }
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude group: "com.vaadin.external.google", module:"android-json"
