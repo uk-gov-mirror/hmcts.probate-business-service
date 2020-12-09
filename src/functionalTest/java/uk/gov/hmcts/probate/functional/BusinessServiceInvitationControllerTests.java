@@ -140,7 +140,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
     public void testInviteBilingualFailure() {
         Response response = RestAssured.given().relaxedHTTPSValidation()
             .headers(utils.getHeaders(SESSION_ID))
-            .body(utils.getJsonFromFile("inviteDataInValid.json"))
+            .body(utils.getJsonFromFile("inviteDataInvalid.json"))
             .when().post(businessServiceUrl + "/invite/bilingual")
             .thenReturn();
 
