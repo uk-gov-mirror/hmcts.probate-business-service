@@ -22,7 +22,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
     @Before
     public void setUp() {
         if (isInitialized) return;
-        // populateFormDataTable();
+        populateFormDataTable();
         isInitialized = true;
     }
 
@@ -37,7 +37,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
         request.header("Content-Type", "application/json");
         request.header("Session-Id", SESSION_ID);
         request.body(utils.getJsonFromFile("formDataMultiples.json"));
-        Response response = request.post("/formdata");
+        //Response response = request.post("/formdata");
     }
 
     @Test
