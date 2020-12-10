@@ -40,6 +40,15 @@ public class BusinessServicePinControllerTests extends IntegrationTestBase {
     }
 
     @Test
+    public void testValidatePinFailurePhoneNumberWithNoEnoughDigits() {
+        given().relaxedHTTPSValidation()
+            .headers(utils.getHeaders(SESSION_ID))
+            .when().get(businessServiceUrl + "/pin/?phoneNumber=" + 34)
+            .then().assertThat().statusCode(500)
+            .body("message", containsString("phone_number Not enough digits"));
+    }
+
+    @Test
     public void testInviteWithPhoneNumber() {
         given().relaxedHTTPSValidation()
             .headers(utils.getHeaders(SESSION_ID))
@@ -71,4 +80,15 @@ public class BusinessServicePinControllerTests extends IntegrationTestBase {
             .when().get(businessServiceUrl + "/pin/bilingual?phoneNumber=" + INVALID_NUMBER)
             .then().assertThat().statusCode(400);
     }
+
+    @Test
+    public void testInviteBilingualPhoneNumberWithNoEnoughDigits() {
+        given().relaxedHTTPSValidation()
+            .headers(utils.getHeaders(SESSION_ID))
+            .when().get(businessServiceUrl + "/pin/bilingual?phoneNumber=" + 34)
+            .then().assertThat().statusCode(500)
+            .body("message", containsString("phone_number Not enough digits"));
+    }
+
+
 }
