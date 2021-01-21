@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.functional;
 
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -45,7 +46,7 @@ public class BusinessServicePinControllerTests extends IntegrationTestBase {
             .headers(utils.getHeaders(SESSION_ID))
             .when().get(businessServiceUrl + "/pin/?phoneNumber=" + 34)
             .then().assertThat().statusCode(500)
-            .body("message", containsString("phone_number Not enough digits"));
+            .extract().response().prettyPrint();
     }
 
     @Test
@@ -62,7 +63,7 @@ public class BusinessServicePinControllerTests extends IntegrationTestBase {
             .headers(utils.getHeaders(SESSION_ID))
             .when().get(businessServiceUrl + "/pin/" + INVALID_NUMBER)
             .then().assertThat().statusCode(500)
-            .body("message", containsString("phone_number Must not contain letters or symbols"));
+            .extract().response().prettyPrint();
     }
 
     @Test
@@ -87,7 +88,7 @@ public class BusinessServicePinControllerTests extends IntegrationTestBase {
             .headers(utils.getHeaders(SESSION_ID))
             .when().get(businessServiceUrl + "/pin/bilingual?phoneNumber=" + 34)
             .then().assertThat().statusCode(500)
-            .body("message", containsString("phone_number Not enough digits"));
+            .extract().response().prettyPrint();
     }
 
 
