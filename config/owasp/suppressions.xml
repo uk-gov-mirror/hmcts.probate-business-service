@@ -66,6 +66,17 @@
     <cve>CVE-2020-35490</cve>
     <cve>CVE-2020-35491</cve>
     <cve>CVE-2020-35728</cve>
+    <cve>CVE-2020-36179</cve>
+    <cve>CVE-2020-36180</cve>
+    <cve>CVE-2020-36181</cve>
+    <cve>CVE-2020-36182</cve>
+    <cve>CVE-2020-36183</cve>
+    <cve>CVE-2020-36184</cve>
+    <cve>CVE-2020-36185</cve>
+    <cve>CVE-2020-36186</cve>
+    <cve>CVE-2020-36187</cve>
+    <cve>CVE-2020-36188</cve>
+    <cve>CVE-2020-36189</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -94,6 +105,7 @@
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-websocket@.*$</packageUrl>
     <cve>CVE-2020-17527</cve>
+    <cve>CVE-2021-24122</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -101,6 +113,7 @@
    ]]></notes>
     <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
     <cve>CVE-2020-17527</cve>
+    <cve>CVE-2021-24122</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
