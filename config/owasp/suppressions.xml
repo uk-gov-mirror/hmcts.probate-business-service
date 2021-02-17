@@ -113,4 +113,11 @@
     <gav regex="true">^commons-beanutils:commons-beanutils:.*$</gav>
     <cve>CVE-2019-10086</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: bcprov-jdk15on-1.60.jar
+   ]]></notes>
+    <gav regex="true">^org\.bouncycastle:bcprov-jdk15on:.*$</gav>
+    <cve>CVE-2020-26939</cve>
+  </suppress>
 </suppressions>
