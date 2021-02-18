@@ -1,21 +1,11 @@
 package uk.gov.hmcts.probate.services.consumer;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
-import au.com.dius.pact.core.model.annotations.PactFolder;
-import uk.gov.hmcts.probate.BusinessApplication;
-import uk.gov.hmcts.probate.services.document.DocumentService;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-
-import java.io.IOException;
-import java.util.Map;
-
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
+import au.com.dius.pact.core.model.annotations.PactFolder;
 import com.google.common.collect.Maps;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,16 +16,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.services.document.DocumentService;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+
+import java.io.IOException;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * PACT interactions for calls made from DocumentService (the Consumer)
  * to DocumentManagement Store (aka dm-store) [the Provider]
- *
  */
 
 @ExtendWith(PactConsumerTestExt.class)
@@ -52,7 +46,7 @@ public class DocumentServiceConsumerTest {
     private AuthTokenGenerator authTokenGenerator;
 
     @Autowired
-    private DocumentService documentService ;
+    private DocumentService documentService;
 
     @Value("${document_management.url}")
     private String documentManagementUrl;
@@ -92,7 +86,7 @@ public class DocumentServiceConsumerTest {
     public void verifyDeleteDocumentPact() throws JSONException {
         when(authTokenGenerator.generate()).thenReturn(SOME_SERVICE_AUTHORIZATION_TOKEN);
 
-        ResponseEntity<?> responses = documentService.delete(USER_ID , DOCUMENT_ID);
+        ResponseEntity<?> responses = documentService.delete(USER_ID, DOCUMENT_ID);
 
         assertThat(responses.getStatusCode().is2xxSuccessful());
 
