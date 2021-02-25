@@ -28,9 +28,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 /**
- * PACT interactions for calls made from DocumentService (the Consumer)
+ * PACT interactions for calls made from DocumentService (the Consumer).
  * to DocumentManagement Store (aka dm-store) [the Provider]
- */
+*/
 
 @ExtendWith(PactConsumerTestExt.class)
 @ExtendWith(SpringExtension.class)

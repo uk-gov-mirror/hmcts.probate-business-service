@@ -28,11 +28,11 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRestPactRunner.class)
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, properties = {
-        "server.port=8123", "spring.application.name=PACT_TEST",
-        "services.pdf.service.url=http://localhost:989"
+    "server.port=8123", "spring.application.name=PACT_TEST",
+    "services.pdf.service.url=http://localhost:989"
 })
 @Ignore
-public class BusinessDocumentControllerProviderTest extends ControllerProviderTest{
+public class BusinessDocumentControllerProviderTest extends ControllerProviderTest {
 
 
     @TestTarget
@@ -43,44 +43,43 @@ public class BusinessDocumentControllerProviderTest extends ControllerProviderTe
     private PDFGenerationService pdfGenerationService;
 
     @State({"business service returns check your answers document with success",
-            "business service returns check your answers document with success"})
+        "business service returns check your answers document with success"})
     public void toReturnCheckAnswersSummaryWithSuccess() throws IOException, JSONException {
 
-        when(pdfGenerationService.generatePdf( any(CheckAnswersSummary.class)
-                , any(DocumentType.class)))
-                .thenReturn("".getBytes());
+        when(pdfGenerationService.generatePdf(any(CheckAnswersSummary.class), any(DocumentType.class)))
+            .thenReturn("".getBytes());
     }
 
     @State({"business service returns legal declaration document with success",
-            "business service returns legal declaration document with success"})
+        "business service returns legal declaration document with success"})
     public void toReturnLegalDeclarationWithSuccess() throws IOException, JSONException {
 
-        when(pdfGenerationService.generatePdf( any(LegalDeclaration.class)
-                , any(DocumentType.class)))
-                .thenReturn("".getBytes());
+        when(pdfGenerationService.generatePdf(any(LegalDeclaration.class), any(DocumentType.class)))
+            .thenReturn("".getBytes());
     }
 
     @State({"business service returns bulk scan coversheet document with success",
-            "business service returns bulk scan coversheet document with success"})
+        "business service returns bulk scan coversheet document with success"})
     public void toReturnBulkScanCoversheetWithSuccess() throws IOException, JSONException {
 
-        when(pdfGenerationService.generatePdf( any(BulkScanCoverSheet.class)
-                , any(DocumentType.class)))
-                .thenReturn("".getBytes());
+        when(pdfGenerationService.generatePdf(any(BulkScanCoverSheet.class), any(DocumentType.class)))
+            .thenReturn("".getBytes());
     }
 
     @State({"business service returns validation errors for invalid bulk scan coversheet",
-            "business service returns validation errors for invalid bulk scan coversheet"})
+        "business service returns validation errors for invalid bulk scan coversheet"})
     public void toReturnErrorForInvalidBulkScanCoversheet() throws IOException, JSONException {
 
     }
+
     @State({"business service returns validation errors for invalid check answers summary",
-            "business service returns validation errors for invalid check answers summary"})
+        "business service returns validation errors for invalid check answers summary"})
     public void toReturnErrorForInvalidCheckAnswersSummary() throws IOException, JSONException {
 
     }
+
     @State({"business service returns validation errors for invalid legal declaration",
-            "business service returns validation errors for invalid legal declaration"})
+        "business service returns validation errors for invalid legal declaration"})
     public void toReturnErrorForInvalidLegalDeclaration() throws IOException, JSONException {
 
     }

@@ -74,7 +74,8 @@ public class PdfServiceConsumerTest {
             .uponReceiving("A request to generate a Probate PDF document")
             .method("POST")
             //.headers(SERVICE_AUTHORIZATION_HEADER, someServiceAuthToken)
-            .body(createJsonObject(buildGenerateDocumentRequest(DocumentType.CHECK_ANSWERS_SUMMARY.getTemplateName(), answersSummary())),
+            .body(createJsonObject(
+                buildGenerateDocumentRequest(DocumentType.CHECK_ANSWERS_SUMMARY.getTemplateName(), answersSummary())),
                 "application/vnd.uk.gov.hmcts.pdf-service.v2+json;charset=UTF-8")
             .path("/pdfs")
             .willRespondWith()
