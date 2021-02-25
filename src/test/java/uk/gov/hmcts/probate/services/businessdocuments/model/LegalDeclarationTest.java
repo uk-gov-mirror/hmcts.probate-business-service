@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.services.businessdocuments.model;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.core.io.FileSystemResource;
 import uk.gov.hmcts.probate.services.businessdocuments.services.FileSystemResourceService;
@@ -20,7 +19,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 public class LegalDeclarationTest {
@@ -35,7 +38,7 @@ public class LegalDeclarationTest {
     @Before
     public void setUp() {
         objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE,true);
+        objectMapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
         fileSystemResourceService = new FileSystemResourceService();
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -55,11 +58,12 @@ public class LegalDeclarationTest {
 
         List<String> headers = legalDeclaration.getDeclarations().stream().findFirst().get().getHeaders();
         assertThat(headers.size(), is(equalTo(3)));
-        for (int i = 0; i < headers.size() ; i++) {
+        for (int i = 0; i < headers.size(); i++) {
             assertThat(headers.get(i), is(equalTo("header" + i)));
         }
 
-        DeclarationSection declarationSection = legalDeclaration.getDeclarations().stream().findFirst().get().getSections().get(0);
+        DeclarationSection declarationSection =
+            legalDeclaration.getDeclarations().stream().findFirst().get().getSections().get(0);
         assertThat(declarationSection.getHeadingType(), is(equalTo("large")));
         assertThat(declarationSection.getTitle(), is(equalTo("section title")));
 
@@ -71,7 +75,7 @@ public class LegalDeclarationTest {
 
         List<String> values = item.getValues();
         assertThat(values.size(), is(equalTo(3)));
-        for (int i = 0; i < values.size() ; i++) {
+        for (int i = 0; i < values.size(); i++) {
             assertThat(values.get(i), is(equalTo("value" + i)));
         }
     }

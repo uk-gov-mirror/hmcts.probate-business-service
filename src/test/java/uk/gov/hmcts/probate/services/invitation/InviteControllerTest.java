@@ -22,20 +22,16 @@ import static org.mockito.Mockito.when;
 
 public class InviteControllerTest {
 
-    @InjectMocks
-    private InvitationController invitationController;
-
-    @Mock
-    private IdGeneratorService idGeneratorService;
-
-    @Mock
-    private InvitationService invitationService;
-
-    @Mock
-    private RestTemplate restTemplate;
-
     @Mock
     BindingResult mockBindingResult;
+    @InjectMocks
+    private InvitationController invitationController;
+    @Mock
+    private IdGeneratorService idGeneratorService;
+    @Mock
+    private InvitationService invitationService;
+    @Mock
+    private RestTemplate restTemplate;
 
     @Before
     public void initMocks() {
@@ -67,7 +63,7 @@ public class InviteControllerTest {
 
         Invitation invitation = setUpInvitationMock();
 
-        invitationController.invite( invitation, mockBindingResult, "");
+        invitationController.invite(invitation, mockBindingResult, "");
 
         verify(invitationService).sendEmail("1233445", invitation, Boolean.FALSE);
     }
@@ -87,7 +83,7 @@ public class InviteControllerTest {
     public void shouldSendInvitationWithId() throws UnsupportedEncodingException, NotificationClientException {
 
         Invitation invitation = setUpInvitationMock();
-        invitationController.invite( invitation, mockBindingResult, "");
+        invitationController.invite(invitation, mockBindingResult, "");
 
         verify(invitationService).sendEmail("1233445", invitation, Boolean.FALSE);
     }

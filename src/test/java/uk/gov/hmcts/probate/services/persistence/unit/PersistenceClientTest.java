@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -43,10 +42,10 @@ public class PersistenceClientTest {
 
     @Test
     public void saveInviteData() {
-        InviteData inviteData = new InviteData("link", "formdata", "MainName", "07777777777", "test@test.com" ,  false);
+        InviteData inviteData = new InviteData("link", "formdata", "MainName", "07777777777", "test@test.com", false);
         JsonNode jsonNode = mapper.convertValue(inviteData, JsonNode.class);
         when(restTemplate.postForEntity(INVITE_URL, inviteData, JsonNode.class))
-                .thenReturn(new ResponseEntity<>(jsonNode, HttpStatus.OK));
+            .thenReturn(new ResponseEntity<>(jsonNode, HttpStatus.OK));
 
         JsonNode result = persistenceClient.saveInviteData(inviteData);
 
@@ -60,10 +59,10 @@ public class PersistenceClientTest {
 
     @Test
     public void getInvitesByFormData() {
-        InviteData inviteData = new InviteData("link", "formdata", "MainName", "07777777777", "test@test.com" ,  false);
+        InviteData inviteData = new InviteData("link", "formdata", "MainName", "07777777777", "test@test.com", false);
         JsonNode jsonNode = mapper.convertValue(inviteData, JsonNode.class);
         when(restTemplate.getForEntity(INVITE_URL + "/search/formdata?id=formdata", JsonNode.class))
-                .thenReturn(new ResponseEntity<>(jsonNode, HttpStatus.OK));
+            .thenReturn(new ResponseEntity<>(jsonNode, HttpStatus.OK));
 
         JsonNode result = persistenceClient.getInvitesByFormdataId("formdata");
 
@@ -77,10 +76,10 @@ public class PersistenceClientTest {
 
     @Test
     public void getFormData() {
-        InviteData inviteData = new InviteData("link", "formdata", "MainName", "07777777777", "test@test.com" ,  false);
+        InviteData inviteData = new InviteData("link", "formdata", "MainName", "07777777777", "test@test.com", false);
         JsonNode jsonNode = mapper.convertValue(inviteData, JsonNode.class);
         when(restTemplate.getForEntity(FORMDATA_URL + "/formdata", JsonNode.class))
-                .thenReturn(new ResponseEntity<>(jsonNode, HttpStatus.OK));
+            .thenReturn(new ResponseEntity<>(jsonNode, HttpStatus.OK));
 
         JsonNode result = persistenceClient.getFormdata("formdata");
 

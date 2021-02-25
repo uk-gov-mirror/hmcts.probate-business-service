@@ -64,7 +64,7 @@ public class BusinessDocumentControllerTest {
     public void shouldConsumeValidCheckSummaryMessage() throws Exception {
         ResultActions resultActions = mockMvc.perform(post(CHECK_ANSWERS_SUMMARY_URL)
                 .header("serviceAuthorization", "dummyKey")
-                .content(utils.getJSONFromFile("businessdocuments/validCheckAnswersSummary.json"))
+                .content(utils.getJsonFromFile("businessdocuments/validCheckAnswersSummary.json"))
                 .contentType(contentType))
                 .andExpect(status().isOk());
     }
@@ -73,7 +73,7 @@ public class BusinessDocumentControllerTest {
     public void shouldThrowAnExceptionOnInValidCheckSummaryMessage() throws Exception {
         ResultActions resultActions = mockMvc.perform(post(CHECK_ANSWERS_SUMMARY_URL)
                 .header("serviceAuthorization", "dummyKey")
-                .content(utils.getJSONFromFile("businessdocuments/invalidCheckAnswersSummary.json"))
+                .content(utils.getJsonFromFile("businessdocuments/invalidCheckAnswersSummary.json"))
                 .contentType(contentType))
                 .andExpect(status().isBadRequest());
     }
@@ -82,7 +82,7 @@ public class BusinessDocumentControllerTest {
     public void shouldConsumeValidLegalDeclarationMessage() throws Exception {
         ResultActions resultActions = mockMvc.perform(post(LEGAL_DECLARATION_URL)
                 .header("serviceAuthorization", "dummyKey")
-                .content(utils.getJSONFromFile("businessdocuments/validLegalDeclaration.json"))
+                .content(utils.getJsonFromFile("businessdocuments/validLegalDeclaration.json"))
                 .contentType(contentType))
                 .andExpect(status().isOk());
     }
@@ -91,7 +91,7 @@ public class BusinessDocumentControllerTest {
     public void shouldThrowAnExceptionOnInValidLegalDeclarationMessage() throws Exception {
         ResultActions resultActions = mockMvc.perform(post(LEGAL_DECLARATION_URL)
                 .header("serviceAuthorization", "dummyKey")
-                .content(utils.getJSONFromFile("businessdocuments/invalidLegalDeclaration.json"))
+                .content(utils.getJsonFromFile("businessdocuments/invalidLegalDeclaration.json"))
                 .contentType(contentType))
                 .andExpect(status().isBadRequest());
     }
@@ -100,7 +100,7 @@ public class BusinessDocumentControllerTest {
     public void shouldConsumeValidLegalDeclarationMessageWhenBilingualIsOn() throws Exception {
         ResultActions resultActions = mockMvc.perform(post(LEGAL_DECLARATION_URL)
             .header("serviceAuthorization", "dummyKey")
-            .content(utils.getJSONFromFile("businessdocuments/validLegalDeclarationOneDec.json"))
+            .content(utils.getJsonFromFile("businessdocuments/validLegalDeclarationOneDec.json"))
             .contentType(contentType))
             .andExpect(status().isOk());
     }

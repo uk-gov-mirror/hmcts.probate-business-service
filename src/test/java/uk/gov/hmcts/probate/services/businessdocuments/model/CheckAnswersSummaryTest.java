@@ -18,9 +18,12 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 public class CheckAnswersSummaryTest {
 
@@ -34,7 +37,7 @@ public class CheckAnswersSummaryTest {
     @Before
     public void setUp() {
         objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE,true);
+        objectMapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
         fileSystemResourceService = new FileSystemResourceService();
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -44,7 +47,8 @@ public class CheckAnswersSummaryTest {
     @Test
     public void shouldCreateACheckAnswersSummaryInstance() throws IOException {
         Optional<FileSystemResource> optional = getFile(VALID_CHECK_ANSWERS_SUMMARY_JSON);
-        CheckAnswersSummary checkAnswerSummary = objectMapper.readValue(optional.get().getFile(), CheckAnswersSummary.class);
+        CheckAnswersSummary checkAnswerSummary =
+            objectMapper.readValue(optional.get().getFile(), CheckAnswersSummary.class);
         assertThat(checkAnswerSummary, is(notNullValue()));
         Set<ConstraintViolation<CheckAnswersSummary>> violations = validator.validate(checkAnswerSummary);
         assertThat(violations, is(empty()));
@@ -68,7 +72,8 @@ public class CheckAnswersSummaryTest {
     @Test
     public void shouldFailToCreateACheckAnswersSummaryInstance() throws IOException {
         Optional<FileSystemResource> optional = getFile(INVALID_CHECK_ANSWERS_SUMMARY_JSON);
-        CheckAnswersSummary checkAnswerSummary = objectMapper.readValue(optional.get().getFile(), CheckAnswersSummary.class);
+        CheckAnswersSummary checkAnswerSummary =
+            objectMapper.readValue(optional.get().getFile(), CheckAnswersSummary.class);
         Set<ConstraintViolation<CheckAnswersSummary>> violations = validator.validate(checkAnswerSummary);
         assertThat(violations, is(not(empty())));
         assertThat(violations.size(), is(equalTo(2)));

@@ -5,18 +5,14 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.core.io.FileSystemResource;
 import uk.gov.hmcts.probate.services.businessdocuments.exceptions.FileSystemException;
-import uk.gov.hmcts.probate.services.businessdocuments.services.FileSystemResourceService;
 
 import java.io.File;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.isNotNull;
-import static org.mockito.Matchers.notNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -69,7 +65,8 @@ public class FileSystemResourceSystemTest {
         File mockFile = Mockito.mock(File.class);
         FileSystemResource fileSystemResource = mock(FileSystemResource.class);
         Mockito.when(fileSystemResource.getFile()).thenReturn(mockFile);
-        when(fileSystemResourceServiceSpy.getFileSystemResource(anyString())).thenReturn(Optional.of(fileSystemResource));
+        when(fileSystemResourceServiceSpy.getFileSystemResource(anyString()))
+            .thenReturn(Optional.of(fileSystemResource));
 
         String resource = fileSystemResourceServiceSpy.getFileFromResourceAsString("");
     }
