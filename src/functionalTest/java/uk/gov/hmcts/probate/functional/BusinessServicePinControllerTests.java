@@ -2,12 +2,10 @@ package uk.gov.hmcts.probate.functional;
 
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.containsString;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class BusinessServicePinControllerTests extends IntegrationTestBase {

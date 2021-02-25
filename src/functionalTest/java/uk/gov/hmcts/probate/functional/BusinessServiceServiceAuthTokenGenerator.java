@@ -58,12 +58,12 @@ public class BusinessServiceServiceAuthTokenGenerator {
         String code = generateClientCode();
         String token = "";
 
-        String jsonResponse = post(baseServiceOauth2Url + "/oauth2/token?code=" + code +
-                "&client_secret=" + clientSecret +
-                "&client_id=" + clientId +
-                "&redirect_uri=" + redirectUri +
-                "&grant_type=authorization_code")
-                .body().asString();
+        String jsonResponse = post(baseServiceOauth2Url + "/oauth2/token?code=" + code
+            + "&client_secret=" + clientSecret
+            + "&client_id=" + clientId
+            + "&redirect_uri=" + redirectUri
+            + "&grant_type=authorization_code")
+            .body().asString();
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -79,12 +79,12 @@ public class BusinessServiceServiceAuthTokenGenerator {
     private String generateClientCode() {
         String code = "";
         String jsonResponse = given()
-                .relaxedHTTPSValidation()
-                .header("Authorization", "Basic dGVzdEBURVNULkNPTToxMjM=")
-                .post(baseServiceOauth2Url + "/oauth2/authorize?response_type=code" +
-                        "&client_id=" + clientId +
-                        "&redirect_uri=" + redirectUri)
-                .asString();
+            .relaxedHTTPSValidation()
+            .header("Authorization", "Basic dGVzdEBURVNULkNPTToxMjM=")
+            .post(baseServiceOauth2Url + "/oauth2/authorize?response_type=code"
+                + "&client_id=" + clientId
+                + "&redirect_uri=" + redirectUri)
+            .asString();
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -99,8 +99,10 @@ public class BusinessServiceServiceAuthTokenGenerator {
 
     public void createNewUser() {
         given().headers("Content-type", "application/json")
-                .relaxedHTTPSValidation()
-                .body("{ \"email\":\"test@TEST.COM\", \"forename\":\"test@TEST.COM\",\"surname\":\"test@TEST.COM\",\"password\":\"123\",\"continue-url\":\"test\"}")
-                .post(baseServiceOauth2Url + "/testing-support/accounts");
+            .relaxedHTTPSValidation()
+            .body(
+                "{ \"email\":\"test@TEST.COM\", \"forename\":\"test@TEST.COM\",\"surname\":\"test@TEST.COM\","
+                    + "\"password\":\"123\",\"continue-url\":\"test\"}")
+            .post(baseServiceOauth2Url + "/testing-support/accounts");
     }
 }

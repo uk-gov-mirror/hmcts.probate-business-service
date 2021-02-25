@@ -25,7 +25,7 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
     private static final String INVALID_FILE_NAME = "invalid.txt";
 
     @Before
-    public void setUp(){
+    public void setUp() {
         RestAssured.baseURI = businessServiceUrl;
         RestAssured.defaultParser = Parser.JSON;
     }
@@ -36,14 +36,14 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
         final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/" + VALID_FILE_NAME));
 
         given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeaders())
-                .multiPart("file", VALID_FILE_NAME, bytes, "image/png")
-                .contentType("multipart/form-data")
-        .when()
-                .post("/document/upload")
-        .then()
-                .statusCode(HttpStatus.OK.value());
+            .relaxedHTTPSValidation()
+            .headers(utils.getDocumentUploadHeaders())
+            .multiPart("file", VALID_FILE_NAME, bytes, "image/png")
+            .contentType("multipart/form-data")
+            .when()
+            .post("/document/upload")
+            .then()
+            .statusCode(HttpStatus.OK.value());
     }
 
     @Test
@@ -52,28 +52,28 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
         final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/" + INVALID_FILE_NAME));
 
         given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeaders())
-                .multiPart("file", INVALID_FILE_NAME, bytes, "text/plain")
-                .contentType("multipart/form-data")
-        .when()
-                .post(businessServiceUrl + "/document/upload")
-        .then()
-                .body(containsString("Error: invalid file type"));
+            .relaxedHTTPSValidation()
+            .headers(utils.getDocumentUploadHeaders())
+            .multiPart("file", INVALID_FILE_NAME, bytes, "text/plain")
+            .contentType("multipart/form-data")
+            .when()
+            .post(businessServiceUrl + "/document/upload")
+            .then()
+            .body(containsString("Error: invalid file type"));
     }
 
     @Test
     @Pending
     public void shouldThrowErrorWhenNoFilesArePosted() {
         given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeaders())
-                .multiPart("file", "myFile")
-                .contentType("multipart/form-data")
-        .when()
-                .post(businessServiceUrl + "/document/upload")
-        .then()
-                .body(containsString("Error: no files passed"));
+            .relaxedHTTPSValidation()
+            .headers(utils.getDocumentUploadHeaders())
+            .multiPart("file", "myFile")
+            .contentType("multipart/form-data")
+            .when()
+            .post(businessServiceUrl + "/document/upload")
+            .then()
+            .body(containsString("Error: no files passed"));
     }
 
     @Test
@@ -81,14 +81,14 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
         final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/valid_file.png"));
 
         given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeadersWithInvalidToken())
-                .multiPart("file", "myFile", bytes, "image/png")
-                .contentType("multipart/form-data")
-        .when()
-                .post(businessServiceUrl + "/document/upload")
-        .then()
-                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            .relaxedHTTPSValidation()
+            .headers(utils.getDocumentUploadHeadersWithInvalidToken())
+            .multiPart("file", "myFile", bytes, "image/png")
+            .contentType("multipart/form-data")
+            .when()
+            .post(businessServiceUrl + "/document/upload")
+            .then()
+            .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 
     @Test
@@ -97,26 +97,26 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
         final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/valid_file.png"));
 
         given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeadersWithInvalidUserId())
-                .multiPart("file", "myFile", bytes, "image/png")
-                .contentType("multipart/form-data")
-        .when()
-                .post(businessServiceUrl + "/document/upload")
-        .then()
-                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            .relaxedHTTPSValidation()
+            .headers(utils.getDocumentUploadHeadersWithInvalidUserId())
+            .multiPart("file", "myFile", bytes, "image/png")
+            .contentType("multipart/form-data")
+            .when()
+            .post(businessServiceUrl + "/document/upload")
+            .then()
+            .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 
     @Test
     @Pending
     public void shouldReturn404ForInvalidUrlRoute() {
         given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeaders())
-        .when()
-                .post("/document/invalid_path")
-        .then()
-                .assertThat().statusCode(HttpStatus.NOT_FOUND.value());
+            .relaxedHTTPSValidation()
+            .headers(utils.getDocumentUploadHeaders())
+            .when()
+            .post("/document/invalid_path")
+            .then()
+            .assertThat().statusCode(HttpStatus.NOT_FOUND.value());
     }
 
     @Test
@@ -124,34 +124,34 @@ public class BusinessServiceDocumentControllerTests extends IntegrationTestBase 
     public void shouldDeleteValidDocument() throws IOException {
         final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/" + VALID_FILE_NAME));
         List<String> urls = (ArrayList) given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeaders())
-                .multiPart("file", VALID_FILE_NAME, bytes, "image/png")
-                .contentType("multipart/form-data")
-                .when()
-                .post("/document/upload")
-                .then().extract().response().getBody().jsonPath().get("");
+            .relaxedHTTPSValidation()
+            .headers(utils.getDocumentUploadHeaders())
+            .multiPart("file", VALID_FILE_NAME, bytes, "image/png")
+            .contentType("multipart/form-data")
+            .when()
+            .post("/document/upload")
+            .then().extract().response().getBody().jsonPath().get("");
 
         String id = StringUtils.substringAfterLast(urls.get(0), "/");
 
         given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeaders())
-        .when()
-                .delete("/document/delete/" + id)
-        .then()
-                .assertThat().statusCode(HttpStatus.NO_CONTENT.value());
+            .relaxedHTTPSValidation()
+            .headers(utils.getDocumentUploadHeaders())
+            .when()
+            .delete("/document/delete/" + id)
+            .then()
+            .assertThat().statusCode(HttpStatus.NO_CONTENT.value());
     }
 
     @Test
     @Pending
     public void shouldDeleteInvalidDocument() {
         given()
-                .relaxedHTTPSValidation()
-                .headers(utils.getDocumentUploadHeaders())
-        .when()
-                .delete("/document/delete/invalid_file_path")
-        .then()
-                .assertThat().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            .relaxedHTTPSValidation()
+            .headers(utils.getDocumentUploadHeaders())
+            .when()
+            .delete("/document/delete/invalid_file_path")
+            .then()
+            .assertThat().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 }
