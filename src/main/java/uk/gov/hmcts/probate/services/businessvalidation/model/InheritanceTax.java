@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import java.io.Serializable;
 
 @JsonRootName("iht")
-public class InheritanceTax implements Serializable{
+public class InheritanceTax implements Serializable {
 
     @JsonProperty("netValue")
     private float netValue;
@@ -18,12 +18,12 @@ public class InheritanceTax implements Serializable{
         return netValue;
     }
 
-    public float getGrossValue() {
-        return grossValue;
-    }
-
     public void setNetValue(float netValue) {
         this.netValue = netValue;
+    }
+
+    public float getGrossValue() {
+        return grossValue;
     }
 
     public void setGrossValue(float grossValue) {

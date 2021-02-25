@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.services.persistence.PersistenceClient;
 import uk.gov.hmcts.reform.probate.model.multiapplicant.Invitation;
-import uk.gov.hmcts.reform.probate.model.multiapplicant.InviteData;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -35,8 +34,10 @@ public class InvitationService {
     @Autowired
     private NotificationClient notificationClient;
 
-    public void sendEmail(String linkId, Invitation invitation, Boolean isBilingual) throws NotificationClientException {
-        notificationClient.sendEmail(isBilingual? bilingualTemplateId: templateId, invitation.getEmail(), createPersonalisation(linkId, invitation), linkId);
+    public void sendEmail(String linkId, Invitation invitation, Boolean isBilingual)
+        throws NotificationClientException {
+        notificationClient.sendEmail(isBilingual ? bilingualTemplateId : templateId, invitation.getEmail(),
+            createPersonalisation(linkId, invitation), linkId);
     }
 
 
@@ -74,7 +75,7 @@ public class InvitationService {
         return invitation;
     }
 
-    private String decodeURLParam(String URIParam) throws UnsupportedEncodingException {
-        return URLDecoder.decode(URIParam, StandardCharsets.UTF_8.toString());
+    private String decodeURLParam(String uriParam) throws UnsupportedEncodingException {
+        return URLDecoder.decode(uriParam, StandardCharsets.UTF_8.toString());
     }
 }

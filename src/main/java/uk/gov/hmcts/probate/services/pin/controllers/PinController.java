@@ -1,10 +1,6 @@
 package uk.gov.hmcts.probate.services.pin.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import uk.gov.hmcts.probate.services.pin.PinService;
 import uk.gov.service.notify.NotificationClientException;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @Tag(name = "Pin Service")
@@ -33,17 +32,20 @@ public class PinController {
 
     @RequestMapping(path = "/pin", method = RequestMethod.GET)
     public ResponseEntity<String> invite(@RequestParam String phoneNumber,
-                         @RequestHeader("Session-Id") String sessionId) throws NotificationClientException, UnsupportedEncodingException {
+                                         @RequestHeader("Session-Id") String sessionId)
+        throws NotificationClientException, UnsupportedEncodingException {
         return getStringResponseEntity(phoneNumber, sessionId, Boolean.FALSE);
     }
 
     @RequestMapping(path = "/pin/bilingual", method = RequestMethod.GET)
     public ResponseEntity<String> inviteBilingual(@RequestParam String phoneNumber,
-                                         @RequestHeader("Session-Id") String sessionId) throws NotificationClientException, UnsupportedEncodingException {
-        return getStringResponseEntity(phoneNumber, sessionId,  Boolean.TRUE);
+                                                  @RequestHeader("Session-Id") String sessionId)
+        throws NotificationClientException, UnsupportedEncodingException {
+        return getStringResponseEntity(phoneNumber, sessionId, Boolean.TRUE);
     }
 
-    private ResponseEntity<String> getStringResponseEntity(String phoneNumber, String sessionId, Boolean isBilingual) throws UnsupportedEncodingException, NotificationClientException {
+    private ResponseEntity<String> getStringResponseEntity(String phoneNumber, String sessionId, Boolean isBilingual)
+        throws UnsupportedEncodingException, NotificationClientException {
         if (sessionId == null) {
             LOGGER.error("Session-Id request header not found");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -60,8 +62,8 @@ public class PinController {
 
     @RequestMapping(path = "/pin/{phoneNumber}", method = RequestMethod.GET)
     public String inviteLegacy(@PathVariable String phoneNumber,
-                           @RequestHeader("Session-Id") String sessionId) throws NotificationClientException {
-	    LOGGER.info("Processing session id " + sessionId);
+                               @RequestHeader("Session-Id") String sessionId) throws NotificationClientException {
+        LOGGER.info("Processing session id " + sessionId);
         return pinService.generateAndSend(phoneNumber, Boolean.FALSE);
     }
 

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Deceased implements Serializable{
+public class Deceased implements Serializable {
 
     @JsonProperty("dob_date")
     private Date dateOfBirth;

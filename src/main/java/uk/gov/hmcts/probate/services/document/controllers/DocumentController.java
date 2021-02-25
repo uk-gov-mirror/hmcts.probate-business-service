@@ -7,7 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.services.document.DocumentService;
 import uk.gov.hmcts.probate.services.document.validators.DocumentValidation;
@@ -24,9 +31,9 @@ import java.util.stream.Collectors;
 public class DocumentController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentController.class);
+    private final AuthTokenGenerator authTokenGenerator;
     private DocumentService documentService;
     private DocumentValidation documentValidation;
-    private final AuthTokenGenerator authTokenGenerator;
 
     @Autowired
     public DocumentController(DocumentService documentService,
@@ -39,15 +46,15 @@ public class DocumentController {
     }
 
     @PostMapping(
-            value = "/upload",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+        value = "/upload",
+        consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
     public List<String> upload(
-            @RequestHeader(value = "Authorization", required = false) String authorizationToken,
-            @RequestHeader("user-id") String userID,
-            @RequestPart("file") List<MultipartFile> files
+        @RequestHeader(value = "Authorization", required = false) String authorizationToken,
+        @RequestHeader("user-id") String userID,
+        @RequestPart("file") List<MultipartFile> files
     ) {
         List<String> result = new ArrayList<>();
         if (files == null || files.isEmpty()) {
@@ -62,33 +69,33 @@ public class DocumentController {
             return result;
         }
 
-        List<String> invalidFiles = files.stream()
-                .filter(f -> !documentValidation.isValid(f))
-                .map(f -> "Error: invalid file type")
-                .collect(Collectors.toList());
-
         boolean noValidFilesReceived = files.stream()
-                .noneMatch(f -> documentValidation.isValid(f));
+            .noneMatch(f -> documentValidation.isValid(f));
 
         if (noValidFilesReceived) {
             LOGGER.error("No valid file types passed to the API endpoint.");
             return files.stream()
-                    .map(f -> "Error: invalid file type")
-                    .collect(Collectors.toList());
+                .map(f -> "Error: invalid file type")
+                .collect(Collectors.toList());
         }
 
         files = files.stream()
-                .filter(f -> documentValidation.isValid(f))
-                .collect(Collectors.toList());
+            .filter(f -> documentValidation.isValid(f))
+            .collect(Collectors.toList());
+
+        List<String> invalidFiles = files.stream()
+            .filter(f -> !documentValidation.isValid(f))
+            .map(f -> "Error: invalid file type")
+            .collect(Collectors.toList());
 
         LOGGER.info("Uploading document");
         result = documentService
-                .upload(authorizationToken, authTokenGenerator.generate(), userID, files)
-                .getEmbedded()
-                .getDocuments()
-                .stream()
-                .map(f -> f.links.self.href)
-                .collect(Collectors.toList());
+            .upload(authorizationToken, authTokenGenerator.generate(), userID, files)
+            .getEmbedded()
+            .getDocuments()
+            .stream()
+            .map(f -> f.links.self.href)
+            .collect(Collectors.toList());
         result.addAll(invalidFiles);
         return result;
     }
@@ -96,8 +103,8 @@ public class DocumentController {
     @DeleteMapping(value = "/delete/{documentId}")
     @ResponseBody
     public ResponseEntity<String> delete(
-            @RequestHeader("user-id") String userID,
-            @PathVariable("documentId") String documentId
+        @RequestHeader("user-id") String userID,
+        @PathVariable("documentId") String documentId
     ) {
         return documentService.delete(userID, documentId);
     }

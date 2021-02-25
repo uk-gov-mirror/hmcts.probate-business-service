@@ -29,7 +29,8 @@ class BusinessExceptionHandler {
     public ResponseEntity<ErrorResponse> handle(BusinessDocumentException exception) {
 
         log.warn("Business Document exception: {}", exception.getMessage(), exception);
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), BUSINESS_DOC_ERROR, exception.getMessage());
+        ErrorResponse errorResponse =
+            new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), BUSINESS_DOC_ERROR, exception.getMessage());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -40,7 +41,8 @@ class BusinessExceptionHandler {
     public ResponseEntity<ErrorResponse> handle(PDFServiceClientException exception) {
         log.warn("PDF Service Client exception: {}", exception.getMessage(), exception);
 
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), PDF_CLIENT_ERROR, exception.getMessage());
+        ErrorResponse errorResponse =
+            new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), PDF_CLIENT_ERROR, exception.getMessage());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -51,7 +53,8 @@ class BusinessExceptionHandler {
     public ResponseEntity<ErrorResponse> handle(FileSystemException exception) {
         log.warn("File system exception: {}", exception.getMessage(), exception);
 
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), FILE_SYSTEM_ERROR, exception.getMessage());
+        ErrorResponse errorResponse =
+            new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), FILE_SYSTEM_ERROR, exception.getMessage());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -62,7 +65,9 @@ class BusinessExceptionHandler {
     public ResponseEntity<ErrorResponse> handle(PDFGenerationException exception) {
         log.warn("PDF generation exception: {}", exception.getMessage(), exception);
 
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), PDF_GENERATION_EXCEPTION, exception.getMessage());
+        ErrorResponse errorResponse =
+            new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), PDF_GENERATION_EXCEPTION,
+                exception.getMessage());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 

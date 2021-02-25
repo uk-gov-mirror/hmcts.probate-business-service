@@ -13,7 +13,8 @@ public class BusinessValidationResponse implements Serializable {
     private List<FieldError> errors;
     private List<BusinessValidationError> businessErrors;
 
-    public BusinessValidationResponse(BusinessValidationStatus status, List<FieldError> fieldErrors, List<BusinessValidationError> businessErrors) {
+    public BusinessValidationResponse(BusinessValidationStatus status, List<FieldError> fieldErrors,
+                                      List<BusinessValidationError> businessErrors) {
         this.status = status;
         this.errors = fieldErrors;
         this.businessErrors = businessErrors;
@@ -26,9 +27,9 @@ public class BusinessValidationResponse implements Serializable {
 
     public List<BusinessValidationError> getErrors() {
         List<BusinessValidationError> allErrors = errors
-                .stream()
-                .map(error -> new BusinessValidationError().generateError(error.getField(), error.getDefaultMessage()))
-                .collect(Collectors.toList());
+            .stream()
+            .map(error -> new BusinessValidationError().generateError(error.getField(), error.getDefaultMessage()))
+            .collect(Collectors.toList());
         allErrors.addAll(businessErrors);
         return allErrors;
     }
