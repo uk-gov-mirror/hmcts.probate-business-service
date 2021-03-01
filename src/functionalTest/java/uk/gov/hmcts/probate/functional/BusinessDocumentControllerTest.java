@@ -1,11 +1,12 @@
 package uk.gov.hmcts.probate.functional;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.serenitybdd.rest.SerenityRest;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import io.restassured.RestAssured;
+import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@RunWith(SerenityRunner.class)
+@RunWith(SpringIntegrationSerenityRunner.class)
 public class BusinessDocumentControllerTest extends IntegrationTestBase {
 
     private static final String SUMMARY_JSON = "checkAnswersMultipleExecutorsSummary.json";
@@ -16,7 +17,7 @@ public class BusinessDocumentControllerTest extends IntegrationTestBase {
 
     @Test
     public void verifyEmptyCheckAnswersSummaryRequestReturnsError() {
-        SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeadersWithServiceToken())
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeadersWithServiceToken())
                 .body("")
                 .when().post(businessServiceUrl + BUSINESS_DOC_URL + CHECK_ANSWERS_SUMMARY_URL)
                 .then().assertThat().statusCode(400);
@@ -25,7 +26,7 @@ public class BusinessDocumentControllerTest extends IntegrationTestBase {
 
     @Test
     public void verifyValidcheckAnswersSummaryJSONIsAccepted() {
-        SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeadersWithServiceToken())
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeadersWithServiceToken())
                 .body(utils.getJsonFromFile(SUMMARY_JSON))
                 .when().post(businessServiceUrl + BUSINESS_DOC_URL + CHECK_ANSWERS_SUMMARY_URL)
                 .then().assertThat().statusCode(200);
@@ -33,7 +34,7 @@ public class BusinessDocumentControllerTest extends IntegrationTestBase {
 
     @Test
     public void verifyEmptyLegalDeclarationRequestReturnsError() {
-        SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeadersWithServiceToken())
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeadersWithServiceToken())
                 .body("")
                 .when().post(businessServiceUrl + BUSINESS_DOC_URL + LEGAL_DECLARATION_URL)
                 .then().assertThat().statusCode(400);
@@ -41,8 +42,9 @@ public class BusinessDocumentControllerTest extends IntegrationTestBase {
 
 
     @Test
+    @Pending
     public void verifyValidLegalDeclarationJSONIsAccepted() {
-        SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeadersWithServiceToken())
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeadersWithServiceToken())
                 .body(utils.getJsonFromFile(VALID_LEGAL_DEC_JSON))
                 .when().post(businessServiceUrl + BUSINESS_DOC_URL + LEGAL_DECLARATION_URL)
                 .then().assertThat().statusCode(200);

@@ -3,8 +3,8 @@ package uk.gov.hmcts.probate.functional;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.serenitybdd.rest.SerenityRest;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.thucydides.core.annotations.Pending;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
-@RunWith(SerenityRunner.class)
+@RunWith(SpringIntegrationSerenityRunner.class)
 public class BusinessServiceInvitationControllerTests extends IntegrationTestBase {
 
     private static final String SESSION_ID = "tom@email.com";
@@ -37,7 +37,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
         request.header("Content-Type", "application/json");
         request.header("Session-Id", SESSION_ID);
         request.body(utils.getJsonFromFile("formDataMultiples.json"));
-        Response response = request.post("/formdata");
+        //Response response = request.post("/formdata");
     }
 
     @Test
@@ -61,68 +61,90 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
     }
 
     @Test
+    @Pending
     public void testInvitesAllAgreedSuccess() {
         validateInvitesAllAgreedSuccess(SESSION_ID);
     }
 
     @Test
+    @Pending
     public void testInvitesAllAgreedFailure() {
         validateInvitesAllAgreedFailure();
     }
 
     private void validateInviteSuccess(String sessionId, String jsonFileName) {
-        SerenityRest.given().relaxedHTTPSValidation()
-                .headers(utils.getHeaders(sessionId))
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(businessServiceUrl + "/invite")
-                .then().assertThat().statusCode(200);
+        RestAssured.given().relaxedHTTPSValidation()
+            .headers(utils.getHeaders(sessionId))
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(businessServiceUrl + "/invite")
+            .then().assertThat().statusCode(200);
     }
 
     private void validateInviteFailure(String sessionId, String jsonFileName) {
-        Response response = SerenityRest.given().relaxedHTTPSValidation()
-                .headers(utils.getHeaders(sessionId))
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(businessServiceUrl + "/invite")
-                .thenReturn();
+        Response response = RestAssured.given().relaxedHTTPSValidation()
+            .headers(utils.getHeaders(sessionId))
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(businessServiceUrl + "/invite")
+            .thenReturn();
 
-        response.then().assertThat().statusCode(500)
-                .and().body("error", equalTo("Internal Server Error"))
-                .and().body("message", equalTo("500 null"));
+        response.then().assertThat().statusCode(400)
+            .and().body("error", equalTo("Bad Request"));
     }
 
     private void validateInviteResendSuccess(String sessionId, String jsonFileName) {
-        SerenityRest.given().relaxedHTTPSValidation()
-                .headers(utils.getHeaders(sessionId))
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(businessServiceUrl + "/invite/" + sessionId)
-                .then().assertThat().statusCode(200);
+        RestAssured.given().relaxedHTTPSValidation()
+            .headers(utils.getHeaders(sessionId))
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(businessServiceUrl + "/invite/" + sessionId)
+            .then().assertThat().statusCode(200);
     }
 
     private void validateInviteResendFailure(String sessionId, String jsonFileName) {
-        Response response = SerenityRest.given().relaxedHTTPSValidation()
-                .headers(utils.getHeaders(sessionId))
-                .body(utils.getJsonFromFile(jsonFileName))
-                .when().post(businessServiceUrl + "/invite/invalid_id")
-                .thenReturn();
+        Response response = RestAssured.given().relaxedHTTPSValidation()
+            .headers(utils.getHeaders(sessionId))
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(businessServiceUrl + "/invite/invalid_id")
+            .thenReturn();
 
         response.then().assertThat().statusCode(500)
-                .and().body("error", equalTo("Internal Server Error"))
-                .and().body("message", containsString("ValidationError"));
+            .and().body("error", equalTo("Internal Server Error"))
+            .and().extract().response().prettyPrint();
     }
 
     private void validateInvitesAllAgreedSuccess(String formdataId) {
-        SerenityRest.given().relaxedHTTPSValidation()
-                .when().get(businessServiceUrl + "/invites/allAgreed/" + formdataId)
-                .then().assertThat().statusCode(200);
+        RestAssured.given().relaxedHTTPSValidation()
+            .when().get(businessServiceUrl + "/invites/allAgreed/" + formdataId)
+            .then().assertThat().statusCode(200);
     }
 
     private void validateInvitesAllAgreedFailure() {
-        Response response = SerenityRest.given().relaxedHTTPSValidation()
-                .when().get(businessServiceUrl + "/invites/allAgreed/invalid_id")
-                .thenReturn();
+        Response response = RestAssured.given().relaxedHTTPSValidation()
+            .when().get(businessServiceUrl + "/invites/allAgreed/invalid_id")
+            .thenReturn();
 
         response.then().assertThat().statusCode(500)
-                .and().body("error", equalTo("Internal Server Error"))
-                .and().body("message", equalTo("404 null"));
+            .and().body("error", equalTo("Internal Server Error"))
+            .and().body("message", equalTo("404 null"));
+    }
+
+    @Test
+    public void testInviteBilingualSuccess() {
+        RestAssured.given().relaxedHTTPSValidation()
+            .headers(utils.getHeaders(SESSION_ID))
+            .body(utils.getJsonFromFile("inviteDataValid.json"))
+            .when().post(businessServiceUrl + "/invite/bilingual")
+            .then().assertThat().statusCode(200);
+    }
+
+    @Test
+    public void testInviteBilingualFailure() {
+        Response response = RestAssured.given().relaxedHTTPSValidation()
+            .headers(utils.getHeaders(SESSION_ID))
+            .body(utils.getJsonFromFile("inviteDataInvalid.json"))
+            .when().post(businessServiceUrl + "/invite/bilingual")
+            .thenReturn();
+
+        response.then().assertThat().statusCode(400)
+            .and().body("error", equalTo("Bad Request"));
     }
 }
