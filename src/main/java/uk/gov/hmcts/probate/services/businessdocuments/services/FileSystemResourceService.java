@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.services.businessdocuments.services;
 
+import com.google.common.io.Files;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -21,11 +22,12 @@ public class FileSystemResourceService {
         "Business Document template could not be found";
 
     public Optional<FileSystemResource> getFileSystemResource(String resourcePath) {
-
+        final String secureTempDir = Files.createTempDir().getAbsolutePath();
         return Optional.ofNullable(this.getClass().getClassLoader().getResourceAsStream(resourcePath))
             .map(in -> {
                 try {
-                    File tempFile = File.createTempFile(String.valueOf(in.hashCode()), ".html");
+                    File tempFile =
+                        File.createTempFile(String.valueOf(in.hashCode()), ".html", new File(secureTempDir));
                     tempFile.deleteOnExit();
                     FileOutputStream out = new FileOutputStream(tempFile);
                     IOUtils.copy(in, out);
