@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.services.businessdocuments.services;
 
-import com.google.common.io.Files;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -12,6 +11,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.Optional;
 
 @Slf4j
@@ -21,13 +21,25 @@ public class FileSystemResourceService {
     public static final String BUSINESS_DOCUMENT_TEMPLATE_COULD_NOT_BE_FOUND =
         "Business Document template could not be found";
 
+    public static final String SECURE_DIRECTORY_COULD_NOT_BE_CREATED =
+        "Secure temporary directory could not be created";
+
     public Optional<FileSystemResource> getFileSystemResource(String resourcePath) {
-        final String secureTempDir = Files.createTempDir().getAbsolutePath();
+        String secureTempDir;
+        try {
+            secureTempDir = Files.createTempDirectory("secureDirectory").toFile().getAbsolutePath();
+        } catch (IOException e) {
+            log.error("secure directory could not be created ", e);
+            throw new FileSystemException(SECURE_DIRECTORY_COULD_NOT_BE_CREATED, e);
+        }
+
+        String finalSecureTempDir = secureTempDir;
         return Optional.ofNullable(this.getClass().getClassLoader().getResourceAsStream(resourcePath))
             .map(in -> {
                 try {
                     File tempFile =
-                        File.createTempFile(String.valueOf(in.hashCode()), ".html", new File(secureTempDir));
+                        File.createTempFile(String.valueOf(in.hashCode()), ".html", new File(finalSecureTempDir));
+                    new File(finalSecureTempDir).deleteOnExit();
                     tempFile.deleteOnExit();
                     FileOutputStream out = new FileOutputStream(tempFile);
                     IOUtils.copy(in, out);
