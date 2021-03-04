@@ -23,12 +23,13 @@ public class FileSystemResourceService {
 
     public Optional<FileSystemResource> getFileSystemResource(String resourcePath) {
         final String secureTempDir = Files.createTempDir().getAbsolutePath();
+        final File secureDir = new File(secureTempDir);
         return Optional.ofNullable(this.getClass().getClassLoader().getResourceAsStream(resourcePath))
             .map(in -> {
                 try {
                     File tempFile =
-                        File.createTempFile(String.valueOf(in.hashCode()), ".html", new File(secureTempDir));
-                    new File(secureTempDir).deleteOnExit();
+                        File.createTempFile(String.valueOf(in.hashCode()), ".html", secureDir);
+                    secureDir.deleteOnExit();
                     tempFile.deleteOnExit();
                     FileOutputStream out = new FileOutputStream(tempFile);
                     IOUtils.copy(in, out);
