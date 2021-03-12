@@ -151,7 +151,6 @@ task pactTask(type: Test) {
     classpath = sourceSets.testContract.runtimeClasspath
 }
 
-
 pmd {
     toolVersion = "6.3.0"
     ignoreFailures = true
