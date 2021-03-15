@@ -47,7 +47,8 @@ public class DobBeforeDodRuleTest {
     public void testValidateWithFailure() throws Exception {
         formData.getDeceased().setDateOfBirth(new Date(101));
         formData.getDeceased().setDateOfDeath(new Date(100));
-        when(businessValidationError.generateError(DobBeforeDodRule.BUSINESS_ERROR, DobBeforeDodRule.CODE)).thenReturn(businessValidationError);
+        when(businessValidationError.generateError(DobBeforeDodRule.BUSINESS_ERROR, DobBeforeDodRule.CODE))
+            .thenReturn(businessValidationError);
 
         Optional<BusinessValidationError> validationError = dobBeforeDodRule.validate(formData);
 

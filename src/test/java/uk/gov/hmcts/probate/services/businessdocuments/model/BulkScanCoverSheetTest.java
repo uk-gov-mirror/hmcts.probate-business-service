@@ -16,20 +16,26 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 public class BulkScanCoverSheetTest {
 
     public static final String VALID_BULK_SCAN_COVER_SHEET_JSON = "businessdocuments/validBulkScanCoverSheet.json";
-    public static final String VALID_BULK_SCAN_COVER_SHEET_STATIC_TEXT_OVERRIDE_JSON = "businessdocuments/validBulkScanCoverSheetStaticTextOverride.json";
+    public static final String VALID_BULK_SCAN_COVER_SHEET_STATIC_TEXT_OVERRIDE_JSON =
+        "businessdocuments/validBulkScanCoverSheetStaticTextOverride.json";
     public static final String INVALID_BULK_SCAN_COVER_SHEET_JSON = "businessdocuments/invalidBulkScanCoverSheet.json";
-    
+
     public static final String VALID_COVER_SHEET_APPLICANT_ADDRESS_VALUE = "20 White City\nLondon\nW12 7PD";
     public static final String VALID_COVER_SHEET_APPLICANT_NAME_VALUE = "Joe Bloggs";
     public static final String VALID_COVER_SHEET_CASE_REFERENCE_VALUE = "1542-9021-4510-0350";
-    public static final String VALID_COVER_SHEET_SUBMIT_ADDRESS_VALUE = "Probate Service\nPO BOX 123\nExela BSP Services\nHarlow\nCM19 5QS";
-    
+    public static final String VALID_COVER_SHEET_SUBMIT_ADDRESS_VALUE =
+        "Probate Service\nPO BOX 123\nExela BSP Services\nHarlow\nCM19 5QS";
+
     private ObjectMapper objectMapper;
 
     private FileSystemResourceService fileSystemResourceService;
@@ -38,7 +44,7 @@ public class BulkScanCoverSheetTest {
     @Before
     public void setUp() {
         objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE,true);
+        objectMapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
         fileSystemResourceService = new FileSystemResourceService();
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -53,7 +59,8 @@ public class BulkScanCoverSheetTest {
         Set<ConstraintViolation<BulkScanCoverSheet>> violations = validator.validate(coverSheet);
         assertThat(violations, is(empty()));
         assertThat(coverSheet.getTitle(), is(equalTo(BulkScanCoverSheet.DEFAULT_TITLE)));
-        assertThat(coverSheet.getApplicantAddressIntro(), is(equalTo(BulkScanCoverSheet.DEFAULT_APPLICANT_ADDRESS_INTRO)));
+        assertThat(coverSheet.getApplicantAddressIntro(),
+            is(equalTo(BulkScanCoverSheet.DEFAULT_APPLICANT_ADDRESS_INTRO)));
         assertThat(coverSheet.getApplicantNameIntro(), is(equalTo(BulkScanCoverSheet.DEFAULT_APPLICANT_NAME_INTRO)));
         assertThat(coverSheet.getCaseReferenceIntro(), is(equalTo(BulkScanCoverSheet.DEFAULT_CASE_REFERENCE_INTRO)));
         assertThat(coverSheet.getSubmitAddressIntro(), is(equalTo(BulkScanCoverSheet.DEFAULT_SUBMIT_ADDRESS_INTRO)));
@@ -62,7 +69,7 @@ public class BulkScanCoverSheetTest {
         assertThat(coverSheet.getCaseReference(), is(equalTo(VALID_COVER_SHEET_CASE_REFERENCE_VALUE)));
         assertThat(coverSheet.getSubmitAddress(), is(equalTo(VALID_COVER_SHEET_SUBMIT_ADDRESS_VALUE)));
     }
-    
+
     @Test
     public void shouldCreateACoverSheetInstanceWithStaticTextOverride() throws IOException {
         Optional<FileSystemResource> optional = getFile(VALID_BULK_SCAN_COVER_SHEET_STATIC_TEXT_OVERRIDE_JSON);
@@ -80,7 +87,7 @@ public class BulkScanCoverSheetTest {
         assertThat(coverSheet.getCaseReference(), is(equalTo(VALID_COVER_SHEET_CASE_REFERENCE_VALUE)));
         assertThat(coverSheet.getSubmitAddress(), is(equalTo(VALID_COVER_SHEET_SUBMIT_ADDRESS_VALUE)));
     }
-    
+
     @Test
     public void shouldFailToCreateACoverSheetInstance() throws IOException {
         Optional<FileSystemResource> optional = getFile(INVALID_BULK_SCAN_COVER_SHEET_JSON);
@@ -89,11 +96,11 @@ public class BulkScanCoverSheetTest {
         assertThat(violations, is(not(empty())));
         assertThat(violations.size(), is(equalTo(4)));
     }
-    
+
     @Test
     public void shouldProduceCorrectFormatForCoverSheetCaseReferenceNumber() throws IOException {
-    	BulkScanCoverSheet coverSheet = new BulkScanCoverSheet();
-    	coverSheet.setCaseReference("#1542-9021-4510-0350");
+        BulkScanCoverSheet coverSheet = new BulkScanCoverSheet();
+        coverSheet.setCaseReference("#1542-9021-4510-0350");
         assertThat(coverSheet.getCaseReference(), is(equalTo(VALID_COVER_SHEET_CASE_REFERENCE_VALUE)));
         coverSheet.setCaseReference("`#1542902145100350");
         assertThat(coverSheet.getCaseReference(), is(equalTo(VALID_COVER_SHEET_CASE_REFERENCE_VALUE)));

@@ -47,7 +47,8 @@ public class BusinessApplication {
 
 
     @Bean
-    List<ValidationRule> validationRules(@Autowired ValidationRule dobBeforeDodRule, @Autowired ValidationRule netIHTLessThanGrossRule) {
+    List<ValidationRule> validationRules(@Autowired ValidationRule dobBeforeDodRule,
+                                         @Autowired ValidationRule netIHTLessThanGrossRule) {
         List<ValidationRule> validationRules = new ArrayList<>();
         validationRules.add(dobBeforeDodRule);
         validationRules.add(netIHTLessThanGrossRule);

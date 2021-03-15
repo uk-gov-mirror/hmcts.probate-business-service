@@ -42,7 +42,7 @@ public class TestUtils {
         }
     }
 
-  @Autowired
+    @Autowired
     private IdamTokenGenerator idamTokenGenerator;
 
     public String getJsonFromFile(String fileName) {

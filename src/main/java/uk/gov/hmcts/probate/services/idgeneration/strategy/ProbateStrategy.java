@@ -20,15 +20,16 @@ public class ProbateStrategy implements IdGenerationStrategy {
         if (firstName == null || lastName == null) {
             throw new IllegalArgumentException("Applicant first name or last name cannot be null.");
         }
-        return generateUniqueString(firstName.replaceAll(SPECIAL_CHARACTERS, ""), lastName.replaceAll(SPECIAL_CHARACTERS, ""));
+        return generateUniqueString(firstName.replaceAll(SPECIAL_CHARACTERS, ""),
+            lastName.replaceAll(SPECIAL_CHARACTERS, ""));
     }
 
     private String generateUniqueString(String firstName, String lastName) {
         try {
             return URLEncoder.encode(
-                    firstName.replace(SPACE, HYPHEN) + HYPHEN +
-                            lastName.replace(SPACE, HYPHEN) + HYPHEN +
-                            UUID.randomUUID(), "UTF-8"
+                firstName.replace(SPACE, HYPHEN) + HYPHEN
+                    + lastName.replace(SPACE, HYPHEN) + HYPHEN
+                    + UUID.randomUUID(), "UTF-8"
             ).toLowerCase();
         } catch (UnsupportedEncodingException e) {
             throw new AssertionError("UTF-8 is unknown");

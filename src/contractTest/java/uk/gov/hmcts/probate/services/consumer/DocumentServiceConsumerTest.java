@@ -28,9 +28,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 /**
- * PACT interactions for calls made from DocumentService (the Consumer)
+ * PACT interactions for calls made from DocumentService (the Consumer).
  * to DocumentManagement Store (aka dm-store) [the Provider]
- */
+*/
 
 @ExtendWith(PactConsumerTestExt.class)
 @ExtendWith(SpringExtension.class)
@@ -42,20 +42,15 @@ import static org.mockito.Mockito.when;
 })
 public class DocumentServiceConsumerTest {
 
-    @MockBean
-    private AuthTokenGenerator authTokenGenerator;
-
-    @Autowired
-    private DocumentService documentService;
-
-    @Value("${document_management.url}")
-    private String documentManagementUrl;
-
     public static final String SOME_SERVICE_AUTHORIZATION_TOKEN = "ServiceToken";
     private static final String USER_ID = "id1";
-
     private static final String DOCUMENT_ID = "5c3c3906-2b51-468e-8cbb-a4002eded075";
-
+    @MockBean
+    private AuthTokenGenerator authTokenGenerator;
+    @Autowired
+    private DocumentService documentService;
+    @Value("${document_management.url}")
+    private String documentManagementUrl;
 
     @BeforeEach
     public void setUpEachTest() throws InterruptedException {

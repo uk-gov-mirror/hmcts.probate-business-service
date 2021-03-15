@@ -19,9 +19,8 @@ import uk.gov.hmcts.reform.probate.model.documents.CheckAnswersSummary;
 import uk.gov.hmcts.reform.probate.model.documents.Declaration;
 import uk.gov.hmcts.reform.probate.model.documents.LegalDeclaration;
 
-import java.util.Optional;
-import java.util.stream.Stream;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,19 +32,24 @@ public class BusinessDocumentController {
     private final PDFGenerationService pdfDocumentGenerationService;
 
     @PostMapping(path = "/generateCheckAnswersSummaryPDF", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<byte[]> generateCheckAnswersSummaryPDF(@Valid @RequestBody CheckAnswersSummary checkAnswersSummary, @RequestHeader("ServiceAuthorization") String authorization) {
+    public ResponseEntity<byte[]> generateCheckAnswersSummaryPDF(
+        @Valid @RequestBody CheckAnswersSummary checkAnswersSummary,
+        @RequestHeader("ServiceAuthorization") String authorization) {
         log.info("call to generateCheckAnswersSummaryPDF()");
 
-        byte[] bytes = pdfDocumentGenerationService.generatePdf(checkAnswersSummary, DocumentType.CHECK_ANSWERS_SUMMARY);
+        byte[] bytes =
+            pdfDocumentGenerationService.generatePdf(checkAnswersSummary, DocumentType.CHECK_ANSWERS_SUMMARY);
 
         return new ResponseEntity<>(bytes, HttpStatus.OK);
     }
 
     @PostMapping(path = "/generateLegalDeclarationPDF", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<byte[]> generateLegalDeclarationPDF(@Valid @RequestBody LegalDeclaration legalDeclaration, @RequestHeader("ServiceAuthorization") String authorization) {
+    public ResponseEntity<byte[]> generateLegalDeclarationPDF(@Valid @RequestBody LegalDeclaration legalDeclaration,
+                                                              @RequestHeader("ServiceAuthorization")
+                                                                  String authorization) {
         log.info("call to generateLegalDeclarationPDF()");
-        legalDeclaration.setBilingual(legalDeclaration.getDeclarations().size()>1);
-        getLastDeclaration(legalDeclaration).ifPresent(d-> d.setLastDeclaration(Boolean.TRUE));
+        legalDeclaration.setBilingual(legalDeclaration.getDeclarations().size() > 1);
+        getLastDeclaration(legalDeclaration).ifPresent(d -> d.setLastDeclaration(Boolean.TRUE));
         byte[] bytes = pdfDocumentGenerationService.generatePdf(legalDeclaration, DocumentType.LEGAL_DECLARATION);
 
         return new ResponseEntity<>(bytes, HttpStatus.OK);
@@ -57,7 +61,9 @@ public class BusinessDocumentController {
     }
 
     @PostMapping(path = "/generateBulkScanCoverSheetPDF", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<byte[]> generateBulkScanCoverSheetPDF(@Valid @RequestBody BulkScanCoverSheet coverSheet, @RequestHeader("ServiceAuthorization") String authorization) {
+    public ResponseEntity<byte[]> generateBulkScanCoverSheetPDF(@Valid @RequestBody BulkScanCoverSheet coverSheet,
+                                                                @RequestHeader("ServiceAuthorization")
+                                                                    String authorization) {
         log.info("call to generateBulkScanCoverSheetPDF()");
 
         byte[] bytes = pdfDocumentGenerationService.generatePdf(coverSheet, DocumentType.BULK_SCAN_COVER_SHEET);

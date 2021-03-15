@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -21,7 +20,9 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
 
     @Before
     public void setUp() {
-        if (isInitialized) return;
+        if (isInitialized) {
+            return;
+        }
         populateFormDataTable();
         isInitialized = true;
     }

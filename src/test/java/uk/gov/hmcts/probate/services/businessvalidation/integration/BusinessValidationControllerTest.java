@@ -36,8 +36,8 @@ public class BusinessValidationControllerTest {
     private static final String VALIDATE_SERVICE_URL = "/validate";
 
     private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-            MediaType.APPLICATION_JSON.getSubtype(),
-            Charset.forName("utf8"));
+        MediaType.APPLICATION_JSON.getSubtype(),
+        Charset.forName("utf8"));
 
     private MockMvc mockMvc;
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
@@ -55,9 +55,9 @@ public class BusinessValidationControllerTest {
     void setConverters(HttpMessageConverter<?>[] converters) {
 
         Arrays.stream(converters)
-                .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
-                .findFirst()
-                .ifPresent(converter -> this.mappingJackson2HttpMessageConverter = converter);
+            .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
+            .findFirst()
+            .ifPresent(converter -> this.mappingJackson2HttpMessageConverter = converter);
     }
 
     @Before
@@ -68,25 +68,26 @@ public class BusinessValidationControllerTest {
     @Test
     public void validatePartialApplicant() throws Exception {
         mockMvc.perform(post(VALIDATE_SERVICE_URL)
-                .header("Session-Id", "1234567890")
-                .content(utils.getJSONFromFile("validation/success.PartialApplicant.json"))
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status", is(BusinessValidationStatus.SUCCESS.toString())));
+            .header("Session-Id", "1234567890")
+            .content(utils.getJsonFromFile("validation/success.PartialApplicant.json"))
+            .contentType(contentType))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.status", is(BusinessValidationStatus.SUCCESS.toString())));
     }
 
     @Test
     public void validateApplicantEmptyField() throws Exception {
 
         mockMvc.perform(post(VALIDATE_SERVICE_URL)
-                .header("Session-Id", "1234567890")
-                .content(utils.getJSONFromFile("validation/failure.EmptyField.json"))
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status", is(BusinessValidationStatus.FAILURE.toString())))
-                .andExpect(jsonPath("$.errors[0].param", is("applicant.firstName")))
-                .andExpect(jsonPath("$.errors[0].code", is("fieldMinSize")))
-                .andExpect(jsonPath("$.errors[0].msg", is(messageSource.getMessage("fieldMinSize", null, LocaleContextHolder.getLocale()))));
+            .header("Session-Id", "1234567890")
+            .content(utils.getJsonFromFile("validation/failure.EmptyField.json"))
+            .contentType(contentType))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.status", is(BusinessValidationStatus.FAILURE.toString())))
+            .andExpect(jsonPath("$.errors[0].param", is("applicant.firstName")))
+            .andExpect(jsonPath("$.errors[0].code", is("fieldMinSize")))
+            .andExpect(jsonPath("$.errors[0].msg",
+                is(messageSource.getMessage("fieldMinSize", null, LocaleContextHolder.getLocale()))));
 
     }
 
@@ -94,14 +95,14 @@ public class BusinessValidationControllerTest {
     public void validateDateOfBirthBeforeDateOfDeath() throws Exception {
 
         mockMvc.perform(post(VALIDATE_SERVICE_URL)
-                .header("Session-Id", "1234567890")
-                .content(utils.getJSONFromFile("validation/failure.DodAfterDob.json"))
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status", is(BusinessValidationStatus.FAILURE.toString())))
-                .andExpect(jsonPath("$.errors[0].param", is(ValidationRule.BUSINESS_ERROR)))
-                .andExpect(jsonPath("$.errors[0].code", is(DobBeforeDodRule.CODE)))
-                .andExpect(jsonPath("$.errors[0].msg", is(messageSource.getMessage("dodBeforeDob", null, Locale.UK))));
+            .header("Session-Id", "1234567890")
+            .content(utils.getJsonFromFile("validation/failure.DodAfterDob.json"))
+            .contentType(contentType))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.status", is(BusinessValidationStatus.FAILURE.toString())))
+            .andExpect(jsonPath("$.errors[0].param", is(ValidationRule.BUSINESS_ERROR)))
+            .andExpect(jsonPath("$.errors[0].code", is(DobBeforeDodRule.CODE)))
+            .andExpect(jsonPath("$.errors[0].msg", is(messageSource.getMessage("dodBeforeDob", null, Locale.UK))));
 
     }
 
@@ -109,22 +110,23 @@ public class BusinessValidationControllerTest {
     public void validateNetIHTValueGreaterThanGross() throws Exception {
 
         mockMvc.perform(post(VALIDATE_SERVICE_URL)
-                .header("Session-Id", "1234567890")
-                .content(utils.getJSONFromFile("validation/failure.NetIHTValueGreaterThanGross.json"))
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status", is(BusinessValidationStatus.FAILURE.toString())))
-                .andExpect(jsonPath("$.errors[0].param", is(ValidationRule.BUSINESS_ERROR)))
-                .andExpect(jsonPath("$.errors[0].code", is(NetIHTLessThanGrossRule.CODE)))
-                .andExpect(jsonPath("$.errors[0].msg", is(messageSource.getMessage("ihtNetGreaterThanGross", null, LocaleContextHolder.getLocale()))));
+            .header("Session-Id", "1234567890")
+            .content(utils.getJsonFromFile("validation/failure.NetIHTValueGreaterThanGross.json"))
+            .contentType(contentType))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.status", is(BusinessValidationStatus.FAILURE.toString())))
+            .andExpect(jsonPath("$.errors[0].param", is(ValidationRule.BUSINESS_ERROR)))
+            .andExpect(jsonPath("$.errors[0].code", is(NetIHTLessThanGrossRule.CODE)))
+            .andExpect(jsonPath("$.errors[0].msg",
+                is(messageSource.getMessage("ihtNetGreaterThanGross", null, LocaleContextHolder.getLocale()))));
     }
 
 
     @Test
     public void validateWithoutSessionId() throws Exception {
         mockMvc.perform(post(VALIDATE_SERVICE_URL)
-                .content(utils.getJSONFromFile("validation/failure.DodAfterDob.json"))
-                .contentType(contentType))
-                .andExpect(status().isBadRequest());
+            .content(utils.getJsonFromFile("validation/failure.DodAfterDob.json"))
+            .contentType(contentType))
+            .andExpect(status().isBadRequest());
     }
 }

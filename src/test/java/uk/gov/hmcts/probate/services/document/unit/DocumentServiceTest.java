@@ -35,27 +35,23 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DocumentServiceTest {
 
-    @Mock
-    private AuthTokenGenerator authTokenGenerator;
-
-    @Mock
-    private RestTemplate restTemplate;
-
-    @Mock
-    private ResponseEntity responseEntity;
-
-    private DocumentService documentService;
-
     private static final String SERVICE_AUTH_TOKEN = "authTokenXXXXX";
     private static final String DUMMY_OAUTH_2_TOKEN = "oauth2Token";
     private static final String USER_ID = "33";
     private static final String DOCUMENT_ENDPOINT = "/documents";
     private static final String DOCUMENT_ID = "DOC-ID-12345";
-    private static final String DOCUMENT_MANAGEMENT_URL =  "http://document-management";
-    private static final String DOCUMENT_DELETE_URL =  DOCUMENT_MANAGEMENT_URL + DOCUMENT_ENDPOINT
-            + "/" + DOCUMENT_ID + "?permanent=true";
+    private static final String DOCUMENT_MANAGEMENT_URL = "http://document-management";
+    private static final String DOCUMENT_DELETE_URL = DOCUMENT_MANAGEMENT_URL + DOCUMENT_ENDPOINT
+        + "/" + DOCUMENT_ID + "?permanent=true";
     private static final String SERVICE_AUTHORIZATION_KEY = "ServiceAuthorization";
     private static final String USER_ID_KEY = "user-id";
+    @Mock
+    private AuthTokenGenerator authTokenGenerator;
+    @Mock
+    private RestTemplate restTemplate;
+    @Mock
+    private ResponseEntity responseEntity;
+    private DocumentService documentService;
 
     @Before
     public void setUp() {
@@ -67,14 +63,16 @@ public class DocumentServiceTest {
 
     @Test
     public void shouldUploadDocumentsToEvidenceManagement() throws IOException {
-        MockMultipartFile file = new MockMultipartFile("filename.png", "filename.png", "image/png", "some xml" .getBytes());
+        MockMultipartFile file =
+            new MockMultipartFile("filename.png", "filename.png", "image/png", "some xml".getBytes());
         String response = new String(Files.readAllBytes(Paths.get("src/test/resources/files", "response.json")));
 
         List<MultipartFile> files = Collections.singletonList(file);
         when(restTemplate.postForObject(eq(DOCUMENT_MANAGEMENT_URL + DOCUMENT_ENDPOINT), any(HttpEntity.class),
-                eq(String.class))).thenReturn(response);
+            eq(String.class))).thenReturn(response);
 
-        UploadResponse actualUploadResponse = documentService.upload(DUMMY_OAUTH_2_TOKEN, SERVICE_AUTH_TOKEN, USER_ID, files);
+        UploadResponse actualUploadResponse =
+            documentService.upload(DUMMY_OAUTH_2_TOKEN, SERVICE_AUTH_TOKEN, USER_ID, files);
         assertThat(actualUploadResponse, instanceOf(UploadResponse.class));
     }
 
@@ -85,12 +83,12 @@ public class DocumentServiceTest {
         headers.add(USER_ID_KEY, USER_ID);
         HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
 
-        when(restTemplate.exchange( eq(DOCUMENT_DELETE_URL), eq(HttpMethod.DELETE), eq(httpEntity), eq(String.class)))
-                .thenReturn(responseEntity);
+        when(restTemplate.exchange(eq(DOCUMENT_DELETE_URL), eq(HttpMethod.DELETE), eq(httpEntity), eq(String.class)))
+            .thenReturn(responseEntity);
 
         ResponseEntity actualResponse = documentService.delete(USER_ID, DOCUMENT_ID);
         assertThat(actualResponse, equalTo(responseEntity));
         verify(restTemplate, times(1))
-                .exchange( eq(DOCUMENT_DELETE_URL), eq(HttpMethod.DELETE), eq(httpEntity), eq(String.class));
+            .exchange(eq(DOCUMENT_DELETE_URL), eq(HttpMethod.DELETE), eq(httpEntity), eq(String.class));
     }
 }

@@ -25,7 +25,8 @@ public class BusinessValidatorTest {
 
     @Before
     public void setUp() throws Exception {
-        validationError = new BusinessValidationError().generateError(ValidationRule.BUSINESS_ERROR, DobBeforeDodRule.CODE);
+        validationError =
+            new BusinessValidationError().generateError(ValidationRule.BUSINESS_ERROR, DobBeforeDodRule.CODE);
         failingRule = form -> Optional.of(validationError);
         passingRule = form -> Optional.empty();
 

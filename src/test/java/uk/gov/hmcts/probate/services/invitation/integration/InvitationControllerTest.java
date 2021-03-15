@@ -21,7 +21,7 @@ import uk.gov.service.notify.NotificationClient;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,8 +35,8 @@ public class InvitationControllerTest {
     private static final String BILINGULAL_SERVICE_URL = "/invite/bilingual";
 
     private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-            MediaType.APPLICATION_JSON.getSubtype(),
-            Charset.forName("utf8"));
+        MediaType.APPLICATION_JSON.getSubtype(),
+        Charset.forName("utf8"));
 
     private MockMvc mockMvc;
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
@@ -60,9 +60,9 @@ public class InvitationControllerTest {
     void setConverters(HttpMessageConverter<?>[] converters) {
 
         Arrays.stream(converters)
-                .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
-                .findFirst()
-                .ifPresent(converter -> this.mappingJackson2HttpMessageConverter = converter);
+            .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
+            .findFirst()
+            .ifPresent(converter -> this.mappingJackson2HttpMessageConverter = converter);
     }
 
     @Before
@@ -73,29 +73,29 @@ public class InvitationControllerTest {
     @Test
     public void generateLinkId() throws Exception {
         ResultActions resultActions = mockMvc.perform(post(SERVICE_URL)
-                .header("Session-Id", "1234567890")
-                .content(utils.getJSONFromFile("invitation/success.json"))
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("king-michael-i")));
+            .header("Session-Id", "1234567890")
+            .content(utils.getJsonFromFile("invitation/success.json"))
+            .contentType(contentType))
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("king-michael-i")));
     }
 
 
     @Test
     public void resendInvitation() throws Exception {
-        ResultActions resultActions = mockMvc.perform(post(SERVICE_URL +"/2321312312")
-                .header("Session-Id", "1234567890")
-                .content(utils.getJSONFromFile("invitation/success.json"))
-                .contentType(contentType))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("2321312312")));
+        ResultActions resultActions = mockMvc.perform(post(SERVICE_URL + "/2321312312")
+            .header("Session-Id", "1234567890")
+            .content(utils.getJsonFromFile("invitation/success.json"))
+            .contentType(contentType))
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("2321312312")));
     }
 
     @Test
     public void sendInvitation() throws Exception {
-        ResultActions resultActions = mockMvc.perform(post(SERVICE_URL +"/2321312312")
+        ResultActions resultActions = mockMvc.perform(post(SERVICE_URL + "/2321312312")
             .header("Session-Id", "1234567890")
-            .content(utils.getJSONFromFile("invitation/success.json"))
+            .content(utils.getJsonFromFile("invitation/success.json"))
             .contentType(contentType))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("2321312312")));
@@ -103,9 +103,9 @@ public class InvitationControllerTest {
 
     @Test
     public void sendBilingualInvitation() throws Exception {
-        ResultActions resultActions = mockMvc.perform(post(BILINGULAL_SERVICE_URL +"/2321312312")
+        ResultActions resultActions = mockMvc.perform(post(BILINGULAL_SERVICE_URL + "/2321312312")
             .header("Session-Id", "1234567890")
-            .content(utils.getJSONFromFile("invitation/success.json"))
+            .content(utils.getJsonFromFile("invitation/success.json"))
             .contentType(contentType))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("2321312312")));

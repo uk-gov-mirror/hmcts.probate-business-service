@@ -46,7 +46,9 @@ public class NetIHTValueLessThanGrossRuleTest {
         formData.getIht().setGrossValue(123);
         formData.getIht().setNetValue(12123);
 
-        when(businessValidationError.generateError(NetIHTLessThanGrossRule.BUSINESS_ERROR, NetIHTLessThanGrossRule.CODE)).thenReturn(businessValidationError);
+        when(
+            businessValidationError.generateError(NetIHTLessThanGrossRule.BUSINESS_ERROR, NetIHTLessThanGrossRule.CODE))
+            .thenReturn(businessValidationError);
 
         Optional<BusinessValidationError> validationError = netIHTLessThanGrossRule.validate(formData);
 

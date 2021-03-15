@@ -1,7 +1,5 @@
 package uk.gov.hmcts.probate.services.businessdocuments.controllers;
 
-import org.hamcrest.*;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,12 +15,8 @@ import uk.gov.hmcts.reform.probate.model.documents.LegalDeclaration;
 import java.util.Arrays;
 import java.util.Optional;
 
-import uk.gov.hmcts.reform.probate.model.documents.BulkScanCoverSheet;
-import uk.gov.hmcts.reform.probate.model.documents.CheckAnswersSummary;
-import uk.gov.hmcts.reform.probate.model.documents.LegalDeclaration;
-
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BusinessDocumentControllerTest {
@@ -52,23 +46,26 @@ public class BusinessDocumentControllerTest {
 
     @Test
     public void shouldGenerateACheckAnswersSummaryPDF() {
-        ResponseEntity<byte[]> result = businessDocumentController.generateCheckAnswersSummaryPDF(checkAnswersSummary, "authorisation");
+        ResponseEntity<byte[]> result =
+            businessDocumentController.generateCheckAnswersSummaryPDF(checkAnswersSummary, "authorisation");
     }
 
     @Test
     public void shouldGenerateALegalDeclarationPDF() {
-        ResponseEntity<byte[]> result = businessDocumentController.generateLegalDeclarationPDF(legalDeclaration, "authorisation");
+        ResponseEntity<byte[]> result =
+            businessDocumentController.generateLegalDeclarationPDF(legalDeclaration, "authorisation");
 
     }
 
     @Test
-    public void shouldGetLastDeclaration(){
+    public void shouldGetLastDeclaration() {
         Optional<Declaration> result = businessDocumentController.getLastDeclaration(legalDeclaration);
         result.ifPresent(declaration -> assertThat(declaration, is(lastDeclaration)));
     }
 
     @Test
     public void shouldGenerateABulkScanCoverSheetPDF() {
-        ResponseEntity<byte[]> result = businessDocumentController.generateBulkScanCoverSheetPDF(coverSheet, "authorisation");
+        ResponseEntity<byte[]> result =
+            businessDocumentController.generateBulkScanCoverSheetPDF(coverSheet, "authorisation");
     }
 }

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.services.businessdocuments.services;
 
+import com.google.common.io.Files;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -17,23 +18,27 @@ import java.util.Optional;
 @Component
 public class FileSystemResourceService {
 
-    public static final String BUSINESS_DOCUMENT_TEMPLATE_COULD_NOT_BE_FOUND = "Business Document template could not be found";
+    public static final String BUSINESS_DOCUMENT_TEMPLATE_COULD_NOT_BE_FOUND =
+        "Business Document template could not be found";
 
     public Optional<FileSystemResource> getFileSystemResource(String resourcePath) {
-
+        final String secureTempDir = Files.createTempDir().getAbsolutePath();
+        final File secureDir = new File(secureTempDir);
         return Optional.ofNullable(this.getClass().getClassLoader().getResourceAsStream(resourcePath))
-                .map(in -> {
-                    try {
-                        File tempFile = File.createTempFile(String.valueOf(in.hashCode()), ".html");
-                        tempFile.deleteOnExit();
-                        FileOutputStream out = new FileOutputStream(tempFile);
-                        IOUtils.copy(in, out);
-                        return new FileSystemResource(tempFile);
-                    } catch (IOException e) {
-                        log.error("File system [ {} ] could not be found", resourcePath, e);
-                        throw new FileSystemException(BUSINESS_DOCUMENT_TEMPLATE_COULD_NOT_BE_FOUND, e);
-                    }
-                });
+            .map(in -> {
+                try {
+                    File tempFile =
+                        File.createTempFile(String.valueOf(in.hashCode()), ".html", secureDir);
+                    secureDir.deleteOnExit();
+                    tempFile.deleteOnExit();
+                    FileOutputStream out = new FileOutputStream(tempFile);
+                    IOUtils.copy(in, out);
+                    return new FileSystemResource(tempFile);
+                } catch (IOException e) {
+                    log.error("File system [ {} ] could not be found", resourcePath, e);
+                    throw new FileSystemException(BUSINESS_DOCUMENT_TEMPLATE_COULD_NOT_BE_FOUND, e);
+                }
+            });
     }
 
     public String getFileFromResourceAsString(String resourcePath) {

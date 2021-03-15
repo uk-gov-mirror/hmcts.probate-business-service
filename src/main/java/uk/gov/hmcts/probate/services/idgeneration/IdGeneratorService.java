@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.services.idgeneration;
 
-import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.services.idgeneration.strategy.IdGenerationStrategy;
 
 import java.util.Collections;

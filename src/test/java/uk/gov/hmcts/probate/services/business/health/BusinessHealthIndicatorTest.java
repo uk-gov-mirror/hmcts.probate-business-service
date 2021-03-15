@@ -63,7 +63,8 @@ public class BusinessHealthIndicatorTest {
     @Test
     public void shouldReturnStatusOfDownWhenResourceAccessExceptionIsThrown() {
         final String message = "EXCEPTION MESSAGE";
-        when(mockRestTemplate.getForEntity(URL + "/health", String.class)).thenThrow(new ResourceAccessException(message));
+        when(mockRestTemplate.getForEntity(URL + "/health", String.class))
+            .thenThrow(new ResourceAccessException(message));
 
         Health health = businessHealthIndicator.health();
 
@@ -75,7 +76,8 @@ public class BusinessHealthIndicatorTest {
 
     @Test
     public void shouldReturnStatusOfDownWhenHttpStatusCodeExceptionIsThrown() {
-        when(mockRestTemplate.getForEntity(URL + "/health", String.class)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
+        when(mockRestTemplate.getForEntity(URL + "/health", String.class))
+            .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
 
         Health health = businessHealthIndicator.health();
 
@@ -89,7 +91,7 @@ public class BusinessHealthIndicatorTest {
     public void shouldReturnStatusOfDownWhenUnknownHttpStatusCodeExceptionIsThrown() {
         final String statusText = "status text";
         when(mockRestTemplate.getForEntity(URL + "/health", String.class))
-                .thenThrow(new UnknownHttpStatusCodeException(1000, statusText, null, null, null));
+            .thenThrow(new UnknownHttpStatusCodeException(1000, statusText, null, null, null));
 
         Health health = businessHealthIndicator.health();
 

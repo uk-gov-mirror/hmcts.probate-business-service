@@ -10,7 +10,7 @@ plugins {
     id 'pmd'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'org.springframework.boot' version '2.3.4.RELEASE'
-    id 'org.owasp.dependencycheck' version '6.0.1'
+    id 'uk.gov.hmcts.java' version '0.12.2'
     id 'com.github.ben-manes.versions' version '0.27.0'
     id 'com.gorylenko.gradle-git-properties' version '2.2.0'
     id 'info.solidsoft.pitest' version '1.5.2'
@@ -73,12 +73,7 @@ pitest {
 test.finalizedBy jacocoTestReport
 
 dependencyCheck {
-    failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
-    suppressionFiles = ['config/owasp/suppressions.xml']
-    analyzers {
-        assemblyEnabled = false
-    }
-    scanConfigurations = ['compile']
+  suppressionFile = 'suppressions.xml'
 }
 
 def isNonStable = { String version ->
@@ -156,7 +151,6 @@ task pactTask(type: Test) {
     classpath = sourceSets.testContract.runtimeClasspath
 }
 
-
 pmd {
     toolVersion = "6.3.0"
     ignoreFailures = true
@@ -216,7 +210,7 @@ dependencies {
     implementation group: 'org.pitest', name: 'pitest', version: '1.4.10'
     implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.3.0'
     implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.9.8")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.11.2")
     implementation group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: '1.1.2.1'
     implementation 'org.springdoc:springdoc-openapi-ui:1.5.4'
 
@@ -247,7 +241,7 @@ dependencies {
     testFunctionalImplementation sourceSets.test.runtimeClasspath
     testFunctionalImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     testFunctionalAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-    testFunctionalImplementation("com.fasterxml.jackson.core:jackson-databind:2.9.8")
+    testFunctionalImplementation("com.fasterxml.jackson.core:jackson-databind:2.11.2")
 
     testImplementation group: 'io.rest-assured', name: 'rest-assured'
     testSmokeImplementation sourceSets.main.runtimeClasspath

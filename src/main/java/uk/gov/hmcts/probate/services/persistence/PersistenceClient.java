@@ -29,20 +29,22 @@ public class PersistenceClient {
 
     @Retryable(backoff = @Backoff(delay = 100, maxDelay = 500))
     public JsonNode saveInviteData(InviteData inviteData) {
-        HttpEntity<JsonNode> persistenceResponse = restTemplate.postForEntity(inviteDataPersistenceUrl, inviteData, JsonNode.class);
+        HttpEntity<JsonNode> persistenceResponse =
+            restTemplate.postForEntity(inviteDataPersistenceUrl, inviteData, JsonNode.class);
         return persistenceResponse.getBody();
     }
 
     @Retryable(backoff = @Backoff(delay = 100, maxDelay = 500))
     public JsonNode getInvitesByFormdataId(String formdataId) {
         HttpEntity<JsonNode> persistenceResponse = restTemplate
-                .getForEntity(inviteDataPersistenceUrl + "/search/formdata?id=" + formdataId, JsonNode.class);
+            .getForEntity(inviteDataPersistenceUrl + "/search/formdata?id=" + formdataId, JsonNode.class);
 
         return persistenceResponse.getBody();
     }
 
     public JsonNode getFormdata(String formdataId) {
-        HttpEntity<JsonNode> persistenceResponse = restTemplate.getForEntity(formDataPersistenceUrl+ '/' + formdataId, JsonNode.class);
+        HttpEntity<JsonNode> persistenceResponse =
+            restTemplate.getForEntity(formDataPersistenceUrl + '/' + formdataId, JsonNode.class);
         return persistenceResponse.getBody();
     }
 }

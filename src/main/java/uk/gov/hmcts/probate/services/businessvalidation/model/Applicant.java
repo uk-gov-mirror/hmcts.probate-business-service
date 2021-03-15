@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+
 @JsonRootName(value = "applicant")
 public class Applicant implements Serializable {
 
