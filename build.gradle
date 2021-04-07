@@ -180,7 +180,7 @@ def versions = [
         serenity         : '2.0.23',
         serenityreporter : '2.1.4',
         lombok           : '1.18.12',
-        tomcat           : '9.0.39',
+        tomcat           : '9.0.43',
         pact_version     : '4.1.11',
         junit_jupiter    : '5.7.1'
 ]
@@ -190,8 +190,16 @@ ext["jackson-bom.version"] = '2.10.1'
 
 dependencyManagement {
   dependencies {
+    //CVE-2020-26939
     dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.67'
-    // CVE-2018-10237 - Unbounded memory allocation
+
+    //CVE-2020-15250
+    dependency group: 'junit', name: 'junit', version: '4.13.2'
+
+    //CVE-2021-22112
+    dependencySet(group: 'org.springframework.security', version: '5.3.8.RELEASE') {
+      entry 'spring-security-crypto'
+    }
   }
 }
 
@@ -205,6 +213,8 @@ dependencies {
     compileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
+    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
     implementation group: 'com.google.guava', name: 'guava', version: '30.1-jre'
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas'
     implementation group: 'org.hibernate.validator', name: 'hibernate-validator'
