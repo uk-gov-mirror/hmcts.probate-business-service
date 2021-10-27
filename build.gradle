@@ -184,7 +184,7 @@ def versions = [
         pact_version     : '4.1.11',
         springCloud      : '3.0.3',
         junit_jupiter    : '5.8.0-M1',
-        probateCommons   : '1.2.5_DTSPB-2132-add-probate-doc-type-caveats2'
+        probateCommons   : '1.2.6'
 ]
 
 ext["rest-assured.version"] = '4.4.0'
