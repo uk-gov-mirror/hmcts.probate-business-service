@@ -74,6 +74,3 @@ services:
 idam:
   s2s-auth:
     url: ${services.auth.provider.baseUrl}
-
-document_management:
-  url: false
