@@ -12,6 +12,7 @@ import org.springframework.web.client.RestOperations;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.services.businessdocuments.exceptions.FileSystemException;
 import uk.gov.hmcts.probate.services.businessdocuments.exceptions.PDFGenerationException;
+import uk.gov.hmcts.probate.services.businessdocuments.model.BulkScanCoverSheet;
 import uk.gov.hmcts.probate.services.businessdocuments.model.DocumentType;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.probate.model.documents.CheckAnswersSummary;
@@ -36,6 +37,9 @@ public class PDFGenerationServiceTest {
 
     @Mock
     private CheckAnswersSummary mockCheckAnswersSummary;
+
+    @Mock
+    BulkScanCoverSheet mockBulkScanCoverSheet;
 
     private PDFGenerationService pdfGenerationService;
 
@@ -81,6 +85,13 @@ public class PDFGenerationServiceTest {
     public void shouldProcessAValidPDFRequest() throws Exception {
         byte[] pdfInBytes =
             pdfGenerationService.generatePdf(mockCheckAnswersSummary, DocumentType.CHECK_ANSWERS_SUMMARY);
+        verify(pdfServiceClient).generateFromHtml(Mockito.any(), Mockito.anyMap());
+    }
+
+    @Test
+    public void shouldProcessAValidPDFRequestCover() throws Exception {
+        byte[] pdfInBytes =
+            pdfGenerationService.generatePdf(mockBulkScanCoverSheet, DocumentType.BULK_SCAN_COVER_SHEET);
         verify(pdfServiceClient).generateFromHtml(Mockito.any(), Mockito.anyMap());
     }
 
