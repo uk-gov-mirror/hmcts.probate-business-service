@@ -7,7 +7,7 @@
   "applicantName": "Joe Bloggs",
   "caseReference": "1542-9021-4510-0350",
   "submitAddress": "Probate Service\nPO BOX 123\nExela BSP Services\nHarlow\nCM19 5QS",
-  "checkListItemsIntro": "Documents to send to probate registry:",
+  "checkListItemsIntro": "Send your documents and coversheet",
   "checkListItems": [
     {
       "type": "textOnly",
