@@ -150,7 +150,8 @@
     </table>
     {% if checkListItems | length > 0 %}
     <div style="height: 50px;">&nbsp;</div>
-    <p class="content-text-small">{{ checkListItemsIntro }}</p>
+    <p class="content-text-medium"><strong>{{ checkListItemsIntro }}</strong></p>
+    <p class="content-text-small">{{ submitAddressIntro }}</p>
     <ul>
       {% for item in checkListItems %}
       <li class="content-text-small">
@@ -170,7 +171,6 @@
 
     <div style="height: 50px;">&nbsp;</div>
 
-    <p class="content-text-small">{{ submitAddressIntro }}</p>
     <table>
         <tr><td class="submitAddressTableCell"><p class="content-text-medium">{{ submitAddress }}</p></td></tr>
     </table>
