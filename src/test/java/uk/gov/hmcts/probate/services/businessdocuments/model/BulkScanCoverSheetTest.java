@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.springframework.core.io.FileSystemResource;
 import uk.gov.hmcts.probate.services.businessdocuments.services.FileSystemResourceService;
 import uk.gov.hmcts.reform.probate.model.documents.BulkScanCoverSheet;
+import uk.gov.hmcts.reform.probate.model.documents.CheckListItemType;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -21,11 +22,14 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class BulkScanCoverSheetTest {
 
     public static final String VALID_BULK_SCAN_COVER_SHEET_JSON = "businessdocuments/validBulkScanCoverSheet.json";
+    public static final String VALID_BULK_SCAN_COVER_SHEET_NO_CHECKLIST_ITEMS =
+        "businessdocuments/validBulkScanCoverSheetNoCheckListItems.json";
     public static final String VALID_BULK_SCAN_COVER_SHEET_STATIC_TEXT_OVERRIDE_JSON =
         "businessdocuments/validBulkScanCoverSheetStaticTextOverride.json";
     public static final String INVALID_BULK_SCAN_COVER_SHEET_JSON = "businessdocuments/invalidBulkScanCoverSheet.json";
@@ -35,6 +39,10 @@ public class BulkScanCoverSheetTest {
     public static final String VALID_COVER_SHEET_CASE_REFERENCE_VALUE = "1542-9021-4510-0350";
     public static final String VALID_COVER_SHEET_SUBMIT_ADDRESS_VALUE =
         "Probate Service\nPO BOX 123\nExela BSP Services\nHarlow\nCM19 5QS";
+    public static final String VALID_COVER_SHEET_CHECKLIST_TEXT = "item text";
+    public static final String VALID_COVER_SHEET_CHECKLIST_URL = "http://example-url.com";
+    public static final String VALID_COVER_SHEET_CHECKLIST_BEFORE_LINK_TEXT = "text before link";
+    public static final String VALID_COVER_SHEET_CHECKLIST_AFTER_LINK_TEXT = "text after link";
 
     private ObjectMapper objectMapper;
 
@@ -68,6 +76,15 @@ public class BulkScanCoverSheetTest {
         assertThat(coverSheet.getApplicantName(), is(equalTo(VALID_COVER_SHEET_APPLICANT_NAME_VALUE)));
         assertThat(coverSheet.getCaseReference(), is(equalTo(VALID_COVER_SHEET_CASE_REFERENCE_VALUE)));
         assertThat(coverSheet.getSubmitAddress(), is(equalTo(VALID_COVER_SHEET_SUBMIT_ADDRESS_VALUE)));
+        assertEquals(coverSheet.getCheckListItems().get(0).getText(), VALID_COVER_SHEET_CHECKLIST_TEXT);
+        assertEquals(coverSheet.getCheckListItems().get(0).getType(), CheckListItemType.TEXT_ONLY);
+        assertEquals(coverSheet.getCheckListItems().get(1).getText(), VALID_COVER_SHEET_CHECKLIST_TEXT);
+        assertEquals(coverSheet.getCheckListItems().get(1).getType(), CheckListItemType.TEXT_WITH_LINK);
+        assertEquals(coverSheet.getCheckListItems().get(1).getUrl(), VALID_COVER_SHEET_CHECKLIST_URL);
+        assertEquals(coverSheet.getCheckListItems().get(1).getBeforeLinkText(),
+            VALID_COVER_SHEET_CHECKLIST_BEFORE_LINK_TEXT);
+        assertEquals(coverSheet.getCheckListItems().get(1).getAfterLinkText(),
+            VALID_COVER_SHEET_CHECKLIST_AFTER_LINK_TEXT);
     }
 
     @Test
@@ -94,7 +111,7 @@ public class BulkScanCoverSheetTest {
         BulkScanCoverSheet coverSheet = objectMapper.readValue(optional.get().getFile(), BulkScanCoverSheet.class);
         Set<ConstraintViolation<BulkScanCoverSheet>> violations = validator.validate(coverSheet);
         assertThat(violations, is(not(empty())));
-        assertThat(violations.size(), is(equalTo(4)));
+        assertThat(violations.size(), is(equalTo(5)));
     }
 
     @Test
@@ -108,6 +125,13 @@ public class BulkScanCoverSheetTest {
         assertThat(coverSheet.getCaseReference(), is(equalTo(VALID_COVER_SHEET_CASE_REFERENCE_VALUE)));
         coverSheet.setCaseReference("CaseReferenceNumber:#1542-9021-4510-0350");
         assertThat(coverSheet.getCaseReference(), is(equalTo(VALID_COVER_SHEET_CASE_REFERENCE_VALUE)));
+    }
+
+    @Test
+    public void shouldReturnCoversheetWithEmptyChecklistItems() throws IOException {
+        Optional<FileSystemResource> optional = getFile(VALID_BULK_SCAN_COVER_SHEET_NO_CHECKLIST_ITEMS);
+        BulkScanCoverSheet coverSheet = objectMapper.readValue(optional.get().getFile(), BulkScanCoverSheet.class);
+        assertEquals(coverSheet.getCheckListItems().toString(), "[]");
     }
 
     private Optional<FileSystemResource> getFile(String fileName) {

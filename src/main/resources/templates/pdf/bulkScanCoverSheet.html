@@ -148,10 +148,29 @@
             </td>
         </tr>
     </table>
+    {% if checkListItems | length > 0 %}
+    <div style="height: 50px;">&nbsp;</div>
+    <p class="content-text-medium"><strong>{{ checkListItemsIntro }}</strong></p>
+    <p class="content-text-small">{{ submitAddressIntro }}</p>
+    <ul>
+      {% for item in checkListItems %}
+      <li class="content-text-small">
+
+        {% if item.type == "textOnly" %}
+          {{ item.text }}
+        {% endif %}
+
+        {% if item.type == "textWithLink" %}
+          {{ item.beforeLinkText }}<a href="{{ item.url }}" target="_blank" aria-label="{{ item.text }}">{{ item.text }}</a>{{ item.afterLinkText }}
+        {% endif %}
+
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
 
     <div style="height: 50px;">&nbsp;</div>
 
-    <p class="content-text-small">{{ submitAddressIntro }}</p>
     <table>
         <tr><td class="submitAddressTableCell"><p class="content-text-medium">{{ submitAddress }}</p></td></tr>
     </table>

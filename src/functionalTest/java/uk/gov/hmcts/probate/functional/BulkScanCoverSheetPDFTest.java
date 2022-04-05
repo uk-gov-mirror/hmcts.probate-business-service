@@ -4,6 +4,7 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.reform.probate.model.documents.BulkScanCoverSheet;
+import uk.gov.hmcts.reform.probate.model.documents.CheckListItemType;
 
 /**
  * Test class to compare the contents of the inbound JSON file against the content of the generated
@@ -35,6 +36,14 @@ public class BulkScanCoverSheetPDFTest extends PDFIntegrationBase<BulkScanCoverS
         assertContent(pdfContentAsString, bulkScanCoverSheet.getCaseReference());
         assertContent(pdfContentAsString, BulkScanCoverSheet.DEFAULT_SUBMIT_ADDRESS_INTRO);
         assertContent(pdfContentAsString, bulkScanCoverSheet.getSubmitAddress());
+        assertContent(pdfContentAsString, BulkScanCoverSheet.DEFAULT_SEND_DOCS_INTRO);
+        bulkScanCoverSheet.getCheckListItems().forEach(checkListItem -> {
+            if (checkListItem.getType().equals(CheckListItemType.TEXT_WITH_LINK)) {
+                assertContent(pdfContentAsString, checkListItem.getBeforeLinkText());
+                assertContent(pdfContentAsString, checkListItem.getAfterLinkText());
+            }
+            assertContent(pdfContentAsString, checkListItem.getText());
+        });
     }
 
 }
