@@ -170,7 +170,7 @@ repositories {
 }
 
 def versions = [
-        springBootVersion: '2.6.3',
+        springBootVersion: '2.6.6',
         logging          : '5.1.7',
         serenity         : '2.5.8',
         serenityreporter : '2.5.8',
