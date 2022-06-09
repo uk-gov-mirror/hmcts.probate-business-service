@@ -9,6 +9,7 @@
   "caseReference": "1542-9021-4510-0350",
   "submitAddressIntro": "This is the place to send the documents",
   "submitAddress": "Probate Service\nPO BOX 123\nExela BSP Services\nHarlow\nCM19 5QS",
-  "checkListItems": []
+  "checkListItems": [],
+  "noDocumentsRequired": false
   }
 }

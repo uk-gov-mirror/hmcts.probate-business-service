@@ -24,6 +24,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class BulkScanCoverSheetTest {
 
@@ -43,6 +44,9 @@ public class BulkScanCoverSheetTest {
     public static final String VALID_COVER_SHEET_CHECKLIST_URL = "http://example-url.com";
     public static final String VALID_COVER_SHEET_CHECKLIST_BEFORE_LINK_TEXT = "text before link";
     public static final String VALID_COVER_SHEET_CHECKLIST_AFTER_LINK_TEXT = "text after link";
+    public static final String VALID_COVERSHEET_NO_DOCS_REQUIRED_TEXT = "Based on the details in the application no"
+        + " documents are required. However if documents are requested from you in the future, please send them along"
+        + " with this cover sheet to the address below";
 
     private ObjectMapper objectMapper;
 
@@ -85,6 +89,7 @@ public class BulkScanCoverSheetTest {
             VALID_COVER_SHEET_CHECKLIST_BEFORE_LINK_TEXT);
         assertEquals(coverSheet.getCheckListItems().get(1).getAfterLinkText(),
             VALID_COVER_SHEET_CHECKLIST_AFTER_LINK_TEXT);
+        assertEquals(coverSheet.getNoDocumentsRequired(), false);
     }
 
     @Test
@@ -111,7 +116,7 @@ public class BulkScanCoverSheetTest {
         BulkScanCoverSheet coverSheet = objectMapper.readValue(optional.get().getFile(), BulkScanCoverSheet.class);
         Set<ConstraintViolation<BulkScanCoverSheet>> violations = validator.validate(coverSheet);
         assertThat(violations, is(not(empty())));
-        assertThat(violations.size(), is(equalTo(5)));
+        assertThat(violations.size(), is(equalTo(6)));
     }
 
     @Test
@@ -132,6 +137,8 @@ public class BulkScanCoverSheetTest {
         Optional<FileSystemResource> optional = getFile(VALID_BULK_SCAN_COVER_SHEET_NO_CHECKLIST_ITEMS);
         BulkScanCoverSheet coverSheet = objectMapper.readValue(optional.get().getFile(), BulkScanCoverSheet.class);
         assertEquals(coverSheet.getCheckListItems().toString(), "[]");
+        assertEquals(coverSheet.getNoDocumentsRequired(), true);
+        assertEquals(coverSheet.getNoDocumentsRequiredText(), VALID_COVERSHEET_NO_DOCS_REQUIRED_TEXT);
     }
 
     private Optional<FileSystemResource> getFile(String fileName) {

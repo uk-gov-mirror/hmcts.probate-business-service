@@ -16,6 +16,7 @@
       "beforeLinkText": "text before link",
       "afterLinkText": "text after link"
     }
-  ]
+  ],
+  "noDocumentsRequired": false
   }
 }
