@@ -21,6 +21,7 @@
       "afterLinkText": "text after link"
     }
   ],
-  "noDocumentsRequired": false
+  "noDocumentsRequired": false,
+  "noDocumentsRequiredText": null
 }
 }
