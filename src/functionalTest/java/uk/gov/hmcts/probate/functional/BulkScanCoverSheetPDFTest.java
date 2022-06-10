@@ -45,6 +45,7 @@ public class BulkScanCoverSheetPDFTest extends PDFIntegrationBase<BulkScanCoverS
             assertContent(pdfContentAsString, checkListItem.getText());
         });
         assertContent(pdfContentAsString, bulkScanCoverSheet.getNoDocumentsRequired().toString());
+        assertContent(pdfContentAsString, bulkScanCoverSheet.getNoDocumentsRequiredText());
     }
 
 }
