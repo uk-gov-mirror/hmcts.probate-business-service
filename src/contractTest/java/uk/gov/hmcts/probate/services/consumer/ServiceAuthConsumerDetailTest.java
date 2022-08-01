@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @PactTestFor(providerName = "s2s_auth", port = "4502")
 @SpringBootTest(classes = ServiceAuthorisationApi.class)
-public class ServiceAuthenConsummerLeaseTest {
+public class ServiceAuthConsumerDetailTest {
 
     private static final String AUTHORISATION_TOKEN = "Bearer someAuthorisationToken";
     public static final String SOME_MICRO_SERVICE_NAME = "someMicroServiceName";
@@ -53,28 +53,27 @@ public class ServiceAuthenConsummerLeaseTest {
     }
 
     @Pact(provider = "s2s_auth",consumer = "probate_businessService")
-    public RequestResponsePact executeLease(PactDslWithProvider builder) throws JsonProcessingException {
+    public RequestResponsePact executeDetails(PactDslWithProvider builder) throws JsonProcessingException {
 
-        return builder.given("microservice with valid credentials")
-                .uponReceiving("a request for a token")
-                .path("/lease")
-                .method(HttpMethod.POST.toString())
-                .body(buildJsonPayload())
+        return builder.given("microservice with valid token")
+                .uponReceiving("a request to validate details")
+                .path("/details")
+                .headers(HttpHeaders.AUTHORIZATION, AUTHORISATION_TOKEN)
+                .method(HttpMethod.GET.toString())
                 .willRespondWith()
                 .headers(Map.of(HttpHeaders.CONTENT_TYPE, "text/plain"))
                 .status(HttpStatus.OK.value())
-                .body(PactDslRootValue.stringType(SOME_MICRO_SERVICE_TOKEN))
+                .body(PactDslRootValue.stringType(SOME_MICRO_SERVICE_NAME))
                 .toPact();
     }
 
     @Test
-    @PactTestFor(pactMethod = "executeLease")
-    void verifyLease() {
+    @PactTestFor(pactMethod = "executeDetails")
+    void verifyDetails() {
 
-        String token = serviceAuthorisationApi.serviceToken(jsonPayload);
+        String token = serviceAuthorisationApi.getServiceName(AUTHORISATION_TOKEN);
         assertThat(token)
-                .isEqualTo("someMicroServiceToken");
-
+                .isEqualTo("someMicroServiceName");
     }
 
     private String buildJsonPayload() throws JsonProcessingException {
