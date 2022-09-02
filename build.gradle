@@ -246,6 +246,7 @@ dependencies {
     implementation(group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: versions.tomcat) {
         force = true
     }
+    implementation group: 'org.yaml', name: 'snakeyaml', version: '1.31'
 
     testImplementation("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
         exclude group: "com.vaadin.external.google", module: "android-json"
