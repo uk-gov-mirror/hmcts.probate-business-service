@@ -40,4 +40,8 @@
     <cve>CVE-2022-38752</cve>
     <cve>CVE-2022-41854</cve>
   </suppress>
+  <suppress>
+    <packageUrl regex="true">^pkg:maven/commons\-beanutils/commons\-beanutils@.*$</packageUrl>
+    <cve>CVE-2021-37533</cve>
+  </suppress>
 </suppressions>
