@@ -15,8 +15,6 @@
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
     <cve>CVE-2016-1000027</cve>
-    <cve>CVE-2022-22970</cve>
-    <cve>CVE-2022-22971</cve>
   </suppress>
   <suppress until="2023-01-07">
     <cve>CVE-2022-31569</cve>
@@ -84,11 +82,9 @@
     <cve>CVE-2022-3064</cve>
   </suppress>
   <suppress>
-    <notes>
-      <![CDATA[
-   file name: spring-cloud-netflix-archaius-2.1.1.RELEASE.jar
+    <notes><![CDATA[
+   file name: spring-cloud-starter-hystrix-1.4.2.RELEASE.jar
    ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring-cloud-netflix-ribbon@.*$</packageUrl>
     <cve>CVE-2020-5412</cve>
   </suppress>
   <suppress>
@@ -101,5 +97,19 @@
     <cve>CVE-2022-22978</cve>
     <cve>CVE-2022-22976</cve>
     <cve>CVE-2022-31692</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    file name: spring-core-5.2.21.RELEASE.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-core@.*$</packageUrl>
+    <cve>CVE-2022-22970</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+    file name: spring-core-5.2.21.RELEASE.jar
+    ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-core@.*$</packageUrl>
+    <cve>CVE-2022-22971</cve>
   </suppress>
 </suppressions>
