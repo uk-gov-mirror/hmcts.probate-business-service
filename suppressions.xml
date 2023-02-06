@@ -99,6 +99,7 @@
     <cve>CVE-2022-31692</cve>
   </suppress>
   <suppress>
+    <notes>spring-core-5.3.19.jar</notes>
     <cve>CVE-2022-22970</cve>
     <cve>CVE-2022-22971</cve>
   </suppress>
