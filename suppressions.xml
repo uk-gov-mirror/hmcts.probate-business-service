@@ -14,9 +14,9 @@
    file name: spring-core-5.3.19.jar
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
-    <vulnerabilityName>CVE-2016-1000027</vulnerabilityName>
-    <vulnerabilityName>CVE-2022-22970</vulnerabilityName>
-    <vulnerabilityName>CVE-2022-22971</vulnerabilityName>
+    <cve>CVE-2016-1000027</cve>
+    <cve>CVE-2022-22970</cve>
+    <cve>CVE-2022-22971</cve>
   </suppress>
   <suppress until="2023-01-07">
     <cve>CVE-2022-31569</cve>
@@ -86,22 +86,6 @@
   <suppress>
     <notes>
       <![CDATA[
-   file name: spring-beans-5.3.19.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-beans@.*$</packageUrl>
-    <cve>CVE-2022-22971</cve>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: spring-core-5.3.19.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
-    <cve>CVE-2022-22970</cve>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
    file name: spring-cloud-netflix-archaius-2.1.1.RELEASE.jar
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring-cloud-netflix-ribbon@.*$</packageUrl>
@@ -115,6 +99,7 @@
     <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring-security-crypto@.*$</packageUrl>
     <cve>CVE-2022-31690</cve>
     <cve>CVE-2022-22978</cve>
+    <cve>CVE-2022-22976</cve>
     <cve>CVE-2022-31692</cve>
   </suppress>
 </suppressions>
