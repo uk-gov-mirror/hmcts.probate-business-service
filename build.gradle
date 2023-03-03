@@ -247,7 +247,7 @@ dependencies {
     implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '7.0.1'
     implementation group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.1.1'
     implementation group: 'org.pitest', name: 'pitest', version: '1.6.7'
-    implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.6.0'
+    implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.9.11'
     implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonDatabind
