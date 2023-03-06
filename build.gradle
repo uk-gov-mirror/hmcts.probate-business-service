@@ -197,7 +197,7 @@ def versions = [
         serenityreporter : '2.5.8',
         lombok           : '1.18.26',
         tomcat           : '9.0.69',
-        pact_version     : '4.1.11',
+        pact_version     : '4.5.1',
         springCloud      : '3.1.1',
         junit_jupiter    : '5.8.0-M1',
         probateCommons   : '1.4.8',
