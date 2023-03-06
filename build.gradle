@@ -167,7 +167,7 @@ task pactTask(type: Test) {
 }
 
 pmd {
-    toolVersion = "6.3.0"
+    toolVersion = "6.55.0"
     ignoreFailures = true
     sourceSets = [sourceSets.main, sourceSets.test, sourceSets.testFunctional, sourceSets.testSmoke]
     reportsDir = file("$project.buildDir/reports/pmd")
