@@ -1,9 +1,9 @@
-ARG APP_INSIGHTS_AGENT_VERSION=2.5.1
-FROM hmctspublic.azurecr.io/base/java:11-distroless
-
-COPY lib/AI-Agent.xml /opt/app/
+ # renovate: datasource=github-releases depName=microsoft/ApplicationInsights-Java
+ARG APP_INSIGHTS_AGENT_VERSION=3.4.12
+FROM hmctspublic.azurecr.io/base/java:17-distroless
 
 COPY build/libs/business-service.jar /opt/app/
+COPY lib/applicationinsights.json /opt/app/
 
 EXPOSE 8080
 CMD [ "business-service.jar" ]
