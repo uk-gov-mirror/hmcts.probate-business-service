@@ -308,6 +308,15 @@ dependencies {
     testContractImplementation sourceSets.test.runtimeClasspath
 }
 
+tasks.withType(JavaCompile) {
+  options.compilerArgs << '-parameters'
+}
+
+// https://github.com/gradle/gradle/issues/16791
+tasks.withType(JavaExec).configureEach {
+  javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
+}
+
 bootJar {
     archiveFileName = 'business-service.jar'
     manifest {
@@ -322,7 +331,7 @@ project.ext {
 }
 
 task fortifyScan(type: JavaExec)  {
-  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+  getMainClass().set("uk.gov.hmcts.fortifyclient.FortifyClientMainApp")
   classpath += sourceSets.test.runtimeClasspath
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
