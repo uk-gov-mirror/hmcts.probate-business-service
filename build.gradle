@@ -203,7 +203,7 @@ def versions = [
         pact_version     : '4.1.11',
         springCloud      : '3.1.1',
         junit_jupiter    : '5.8.0-M1',
-        probateCommons   : 'DTSPB-3524-v1.4.10',
+        probateCommons   : 'DTSPB-3524-A-v1.4.10',
         jacksonDatabind  : '2.14.2',
         springDocUi      : '1.6.14'
 ]
