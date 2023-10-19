@@ -204,12 +204,12 @@ def versions = [
         springCloud      : '3.1.1',
         junit_jupiter    : '5.8.0-M1',
         probateCommons   : '1.4.15',
-        jacksonDatabind  : '2.13.2',
+        jacksonDatabind  : '2.15.3',
         springDocUi      : '1.6.14'
 ]
 
 ext["rest-assured.version"] = '4.5.1'
-ext["jackson-bom.version"] = '2.13.2'
+ext["jackson-bom.version"] = '2.15.2'
 
 dependencyManagement {
   dependencies {
