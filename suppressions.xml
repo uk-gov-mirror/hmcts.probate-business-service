@@ -110,6 +110,7 @@
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.json/json@.*$</packageUrl>
     <cve>CVE-2022-45688</cve>
+    <cve>CVE-2023-5072</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -131,6 +132,7 @@
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-core@.*$</packageUrl>
     <cve>CVE-2022-45688</cve>
+    <cve>CVE-2023-5072</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -153,6 +155,9 @@
     <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-websocket@.*$</packageUrl>
     <cve>CVE-2023-28708</cve>
     <cve>CVE-2023-41080</cve>
+    <cve>CVE-2023-42795</cve>
+    <cve>CVE-2023-45648</cve>
+    <cve>CVE-2023-44487</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -161,6 +166,9 @@
     <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-core@.*$</packageUrl>
     <cve>CVE-2023-28708</cve>
     <cve>CVE-2023-41080</cve>
+    <cve>CVE-2023-42795</cve>
+    <cve>CVE-2023-45648</cve>
+    <cve>CVE-2023-44487</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -182,10 +190,11 @@
   </suppress>
   <suppress>
     <notes><![CDATA[
-   file name: accessors-smart-2.4.8.jar
+   file name: accessors-smart-2.4.11.jar
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/net\.minidev/accessors\-smart@.*$</packageUrl>
     <cve>CVE-2022-45688</cve>
+    <cve>CVE-2023-5072</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
