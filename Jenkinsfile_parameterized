@@ -21,7 +21,8 @@ List<LinkedHashMap<String, Object>> secrets = [
     secret('s2sAuthTotpSecret', 'S2S_AUTH_TOTP_SECRET'),
     secret('probateIdamSecret', 'IDAM_SECRET'),
     secret('probateIdamUserName', 'IDAM_USERNAME'),
-    secret('probateIdamPassword', 'IDAM_USERPASSWORD')
+    secret('probateIdamPassword', 'IDAM_USERPASSWORD'),
+    secret('probate-notify-invite-apikey', 'PROBATE_NOTIFY_KEY')
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {

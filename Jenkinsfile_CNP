@@ -16,7 +16,7 @@ def secrets = [
     secret('probateIdamSecret', 'IDAM_SECRET'),
     secret('probateIdamUserName', 'IDAM_USERNAME'),
     secret('probateIdamPassword', 'IDAM_USERPASSWORD'),
-    secret('probate-notify-invite-apikey', 'PROBATE_NOTIFY_KEY'),
+    secret('probate-notify-invite-apikey', 'PROBATE_NOTIFY_KEY')
   ]
 ]
 
