@@ -17,13 +17,6 @@
     <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
     <cve>CVE-2016-1000027</cve>
   </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: spring-boot-2.7.14.jar
-   ]]></notes>
-    <packageUrl regex="true">^pkg:maven/org\.springframework/spring-boot@.*$</packageUrl>
-    <cve>CVE-2023-34055</cve>
-  </suppress>
   <suppress until="2023-01-07">
     <cve>CVE-2022-31569</cve>
   </suppress>
@@ -230,5 +223,12 @@
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.bouncycastle/bcprov\-jdk15on@.*$</packageUrl>
     <cve>CVE-2023-33202</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: spring-boot-2.7.14.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot@.*$</packageUrl>
+    <cve>CVE-2023-34055</cve>
   </suppress>
 </suppressions>
