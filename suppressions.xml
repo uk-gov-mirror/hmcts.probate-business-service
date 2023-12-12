@@ -330,6 +330,7 @@
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/ch\.qos\.logback/logback-classic@.*$</packageUrl>
     <cve>CVE-2023-6378</cve>
+    <cve>CVE-2023-6481</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[
@@ -337,5 +338,6 @@
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/ch\.qos\.logback/logback-core@.*$</packageUrl>
     <cve>CVE-2023-6378</cve>
+    <cve>CVE-2023-6481</cve>
   </suppress>
 </suppressions>
