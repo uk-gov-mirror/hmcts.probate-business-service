@@ -9,14 +9,19 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
+import uk.gov.service.notify.SendSmsResponse;
 import static org.hamcrest.Matchers.equalTo;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
+
+
 public class BusinessServiceInvitationControllerTests extends IntegrationTestBase {
+
+
 
     private static final String SESSION_ID = "tom@email.com";
     private static boolean isInitialized = false;
+    private SendSmsResponse smsResponse;
 
     @Before
     public void setUp() {

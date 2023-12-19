@@ -23,7 +23,7 @@ import java.util.List;
 
 @SpringBootApplication()
 @Configuration
-@EnableFeignClients(basePackages = {"uk.gov.hmcts.reform.authorisation"})
+@EnableFeignClients(basePackages = {"com.github.hmcts.reform.authorisation"})
 @PropertySource(value = "git.properties", ignoreResourceNotFound = true)
 @OpenAPIDefinition(
     info = @Info(
