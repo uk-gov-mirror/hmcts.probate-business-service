@@ -7,18 +7,24 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
+import uk.gov.service.notify.NotificationClient;
+import uk.gov.service.notify.NotificationClientException;
+import uk.gov.service.notify.SendSmsResponse;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,6 +41,8 @@ public class PinControllerTest {
     private static final String TEST_INT_PHONE_NUMBER = "%2B447700900111";
     private static final String TEST_BAD_PHONE_NUMBER = "$447700900111";
     private static final String TEST_LARGE_PHONE_NUMBER = "%2B109001110001110";
+    private SendSmsResponse smsResponse;
+
 
     private MediaType contentType = new MediaType(MediaType.TEXT_PLAIN.getType(),
         MediaType.TEXT_PLAIN.getSubtype(),
@@ -43,6 +51,9 @@ public class PinControllerTest {
     private MockMvc mockMvc;
     @SuppressWarnings("unused")
     private HttpMessageConverter<?> mappingJackson2HttpMessageConverter;
+
+    @MockBean
+    private NotificationClient notificationClient;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -56,7 +67,8 @@ public class PinControllerTest {
     }
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws NotificationClientException {
+        when(notificationClient.sendSms(any(), any(), any(), any())).thenReturn(smsResponse);
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
     }
 

@@ -29,6 +29,7 @@ public class PinService {
     public String generateAndSend(String phoneNumber, Boolean isBilingual) throws NotificationClientException {
         String pin = pinGeneratorService.generate();
         notificationClient
+
             .sendSms(isBilingual ? bilingualTemplateId : templateId, phoneNumber, createPersonalisation(pin), pin);
         return pin;
     }

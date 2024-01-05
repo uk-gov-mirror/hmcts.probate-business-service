@@ -23,7 +23,7 @@ spring:
   application:
     name: probate-business-service
   config:
-      import: "optional:configtree:/mnt/secrets/probate/"
+    import: "optional:configtree:/mnt/secrets/probate/"
 
   messages:
     basename: messages
@@ -47,7 +47,7 @@ services:
   auth:
     provider:
       totp_secret: "AAAAAAAAAAAAAAAA"
-      baseUrl: http://localhost:4502
+      baseUrl: ${SERVICE_AUTH_PROVIDER_BASE_URL:http://localhost:4502}
       microservice: "probate_backend"
       tokenTimeToLiveInSeconds: '900'
   persistence:
@@ -57,7 +57,7 @@ services:
     formdata:
       url: ${services.persistence.baseUrl}/formdata
   notify:
-    apiKey: "davejlive-fce47f9c-7bbe-4f41-829e-5144a3820768-191c9e6a-53c0-443b-8b30-cd7dd80e8764"
+    apiKey: ${PROBATE_NOTIFY_KEY:dummykey}
     invitedata:
       templateId: "3b8d806e-cc80-4729-b99a-19854ff60ad2"
       bilingualTemplateId: "23354df7-862c-4e8c-a500-50946df608c2"
@@ -67,7 +67,7 @@ services:
       bilingualTemplateId: "724a2e58-f0fd-421d-986d-ad5c4b5a47c2"
   pdf:
     service:
-      url: http://localhost:5500
+      url: ${PDF_SERVICE_URL:http://localhost:5500}
       pdfApi: /api/v2/pdf-generator/html
       templatesDirectory: templates/pdf/
 
