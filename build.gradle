@@ -190,6 +190,7 @@ def versions = [
 
 ext["rest-assured.version"] = '4.5.1'
 ext["jackson-bom.version"] = '2.15.2'
+ext["snakeyaml.version"] = '2.0'
 
 dependencyManagement {
   imports {
@@ -228,7 +229,7 @@ dependencies {
     implementation group: 'com.google.guava', name: 'guava', version: '33.1.0-jre'
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas'
     implementation group: 'org.hibernate.validator', name: 'hibernate-validator'
-    implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.19.1-RELEASE'
+    implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.0.1-RELEASE'
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.logging
     implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.logging
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '4.1.2'
