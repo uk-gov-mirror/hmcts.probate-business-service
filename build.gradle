@@ -244,6 +244,7 @@ dependencies {
     implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommons
     implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: versions.springDocUi
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-openfeign-core', version: versions.springCloud
+    implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.4'
 
     implementation('org.apache.tomcat.embed:tomcat-embed-core') {
       version {
