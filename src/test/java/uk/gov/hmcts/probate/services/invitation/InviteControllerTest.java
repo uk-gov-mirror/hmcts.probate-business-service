@@ -39,7 +39,7 @@ public class InviteControllerTest {
     }
 
     @Test
-    public void shouldSendInvitationAndGenerateId() throws UnsupportedEncodingException, NotificationClientException {
+    void shouldSendInvitationAndGenerateId() throws UnsupportedEncodingException, NotificationClientException {
 
         Invitation invitation = setUpInvitationMock();
 
@@ -49,7 +49,7 @@ public class InviteControllerTest {
     }
 
     @Test
-    public void shouldReSendInvitation() throws UnsupportedEncodingException, NotificationClientException {
+    void shouldReSendInvitation() throws UnsupportedEncodingException, NotificationClientException {
 
         Invitation invitation = Invitation.builder().firstName("firstName").lastName("lastName").build();
 
@@ -59,7 +59,7 @@ public class InviteControllerTest {
     }
 
     @Test
-    public void shouldSendInvitation() throws UnsupportedEncodingException, NotificationClientException {
+    void shouldSendInvitation() throws UnsupportedEncodingException, NotificationClientException {
 
         Invitation invitation = setUpInvitationMock();
 
@@ -80,7 +80,7 @@ public class InviteControllerTest {
     }
 
     @Test
-    public void shouldSendInvitationWithId() throws UnsupportedEncodingException, NotificationClientException {
+    void shouldSendInvitationWithId() throws UnsupportedEncodingException, NotificationClientException {
 
         Invitation invitation = setUpInvitationMock();
         invitationController.invite(invitation, mockBindingResult, "");
@@ -89,7 +89,7 @@ public class InviteControllerTest {
     }
 
     @Test
-    public void shouldSendBilingualInvitation() throws UnsupportedEncodingException, NotificationClientException {
+    void shouldSendBilingualInvitation() throws UnsupportedEncodingException, NotificationClientException {
 
         Invitation invitation = Invitation.builder().firstName("firstName").lastName("lastName").build();
 
@@ -99,7 +99,7 @@ public class InviteControllerTest {
     }
 
     @Test
-    public void shouldSendBilingualInvitationWithId() throws UnsupportedEncodingException, NotificationClientException {
+    void shouldSendBilingualInvitationWithId() throws UnsupportedEncodingException, NotificationClientException {
 
         Invitation invitation = setUpInvitationMock();
 
