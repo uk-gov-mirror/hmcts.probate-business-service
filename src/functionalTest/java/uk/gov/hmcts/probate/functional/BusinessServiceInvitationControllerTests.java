@@ -3,18 +3,16 @@ package uk.gov.hmcts.probate.functional;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import net.thucydides.core.annotations.Pending;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.service.notify.SendSmsResponse;
 import static org.hamcrest.Matchers.equalTo;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
-
-
+@ExtendWith(SerenityJUnit5Extension.class)
 public class BusinessServiceInvitationControllerTests extends IntegrationTestBase {
 
 
@@ -23,7 +21,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
     private static boolean isInitialized = false;
     private SendSmsResponse smsResponse;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         if (isInitialized) {
             return;
@@ -32,7 +30,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
         isInitialized = true;
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
 
     }

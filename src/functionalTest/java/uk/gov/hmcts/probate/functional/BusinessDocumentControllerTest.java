@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.functional;
 
 import io.restassured.RestAssured;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import net.thucydides.core.annotations.Pending;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class BusinessDocumentControllerTest extends IntegrationTestBase {
 
     private static final String SUMMARY_JSON = "checkAnswersMultipleExecutorsSummary.json";
