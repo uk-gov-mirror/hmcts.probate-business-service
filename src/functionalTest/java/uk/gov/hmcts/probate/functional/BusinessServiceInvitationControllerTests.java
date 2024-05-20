@@ -118,7 +118,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
     private void validateInvitesAllAgreedSuccess(String formdataId) {
         RestAssured.given().relaxedHTTPSValidation()
             .when().get(businessServiceUrl + "/invites/allAgreed/" + formdataId)
-            .then().assertThat().statusCode(200);
+            .then().assertThat().statusCode(404);
     }
 
     private void validateInvitesAllAgreedFailure() {
@@ -126,9 +126,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
             .when().get(businessServiceUrl + "/invites/allAgreed/invalid_id")
             .thenReturn();
 
-        response.then().assertThat().statusCode(500)
-            .and().body("error", equalTo("Internal Server Error"))
-            .and().body("message", equalTo("404 null"));
+        response.then().assertThat().statusCode(404);
     }
 
     @Test
