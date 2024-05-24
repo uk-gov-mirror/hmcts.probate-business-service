@@ -33,7 +33,7 @@ wrapper {
     distributionType = Wrapper.DistributionType.ALL
 }
 
-sonarqube {
+sonar {
     properties {
         property "sonar.projectName", "Probate :: Business Service"
         property "sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get()}/jacoco/test/html/jacocoTestReport.xml"
