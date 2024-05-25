@@ -4,9 +4,9 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
-import net.thucydides.core.annotations.Pending;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.service.notify.SendSmsResponse;
@@ -65,13 +65,13 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
     }
 
     @Test
-    @Pending
+    @Disabled
     public void testInvitesAllAgreedSuccess() {
         validateInvitesAllAgreedSuccess(SESSION_ID);
     }
 
     @Test
-    @Pending
+    @Disabled
     public void testInvitesAllAgreedFailure() {
         validateInvitesAllAgreedFailure();
     }

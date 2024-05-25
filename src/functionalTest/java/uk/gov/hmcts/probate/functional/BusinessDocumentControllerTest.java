@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.functional;
 
 import io.restassured.RestAssured;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
-import net.thucydides.core.annotations.Pending;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -42,7 +42,7 @@ public class BusinessDocumentControllerTest extends IntegrationTestBase {
 
 
     @Test
-    @Pending
+    @Disabled
     public void verifyValidLegalDeclarationJsonIsAccepted() {
         RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeadersWithServiceToken())
             .body(utils.getJsonFromFile(VALID_LEGAL_DEC_JSON))
