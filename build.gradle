@@ -43,6 +43,7 @@ sonar {
         property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     }
 }
+
 pitest {
     targetClasses = ['uk.gov.hmcts.probate.*']
     threads = 4
@@ -102,6 +103,7 @@ functional.finalizedBy(aggregate)
 
 tasks.withType(Test) {
   maxHeapSize = "1024m"
+  useJUnitPlatform()
 }
 
 task pactTask(type: Test) {
@@ -128,12 +130,14 @@ repositories {
 }
 
 def versions = [
-        jacksonDatabind  : '2.17.0',
-        junit_jupiter    : '5.9.1',
+        jacksonDatabind  : '2.17.1',
+        jjwtApi          : '0.12.5',
+        junit_jupiter    : '5.10.2',
         logging          : '6.1.4',
         lombok           : '1.18.32',
         pact_version     : '4.1.11',
         probateCommons   : '1.5.2',
+        restAssured      : '5.4.0',
         serenity         : '4.1.6',
         serenityreporter : '4.1.6',
         springBootVersion: '3.3.0',
@@ -154,10 +158,10 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBootVersion
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
     implementation group: 'org.springframework.retry', name: 'spring-retry'
-    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.14'
+    implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.3.1'
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas'
     implementation group: 'org.hibernate.validator', name: 'hibernate-validator'
-    implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.0.1-RELEASE'
+    implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.1.0-RELEASE'
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.logging
     implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.logging
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '5.1.2'
@@ -165,7 +169,7 @@ dependencies {
     implementation group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.1.1'
     implementation group: 'org.pitest', name: 'pitest', version: '1.16.0'
     implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
-    implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
+    implementation group: 'org.codehaus.sonar-plugins', name: 'sonar-pitest-plugin', version: '0.5'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonDatabind
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonDatabind
@@ -181,7 +185,7 @@ dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit_jupiter
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junit_jupiter
     testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.1'
-    testImplementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.30'
+    testImplementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '3.0.2'
     testImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
@@ -189,9 +193,8 @@ dependencies {
     testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
     testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
     testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-    testFunctionalImplementation group: 'io.rest-assured', name: 'rest-assured', version: '5.4.0'
-    testFunctionalImplementation group: 'net.thucydides', name: 'thucydides-core', version: '0.9.275'
-    testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.12.5'
+    testFunctionalImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
+    testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: versions.jjwtApi
     testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '8.0.1'
     testFunctionalImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '5.1.2'
     testFunctionalImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
@@ -200,11 +203,11 @@ dependencies {
     testFunctionalImplementation sourceSets.main.runtimeClasspath
     testFunctionalImplementation sourceSets.test.runtimeClasspath
 
-    testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: '5.4.0'
+    testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
     testSmokeImplementation sourceSets.main.runtimeClasspath
     testSmokeImplementation sourceSets.test.runtimeClasspath
 
-    testContractImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.12.5'
+    testContractImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: versions.jjwtApi
     testContractImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBootVersion
     testContractImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit_jupiter
     testContractImplementation group: 'au.com.dius', name: 'pact-jvm-provider-spring', version: '4.0.10'
