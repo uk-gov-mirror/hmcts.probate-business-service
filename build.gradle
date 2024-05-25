@@ -4,7 +4,7 @@ plugins {
     id 'jacoco'
     id 'io.spring.dependency-management' version '1.1.5'
     id 'org.springframework.boot' version '3.3.0'
-    id 'uk.gov.hmcts.java' version '0.12.61'
+    id 'uk.gov.hmcts.java' version '0.12.62'
     id 'com.github.ben-manes.versions' version '0.51.0'
     id 'com.gorylenko.gradle-git-properties' version '2.4.2'
     id 'info.solidsoft.pitest' version '1.15.0'
@@ -36,7 +36,7 @@ wrapper {
 sonar {
     properties {
         property "sonar.projectName", "Probate :: Business Service"
-        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+        property "sonar.jacoco.reportPath", "${layout.buildDirectory.get()}/jacoco/test.exec"
         property "sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get()}/jacoco/test/html/jacocoTestReport.xml"
         property "sonar.host.url", "https://sonar.reform.hmcts.net/"
         property "sonar.pitest.mode", "reuseReport"
