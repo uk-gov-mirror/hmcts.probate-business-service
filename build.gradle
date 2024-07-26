@@ -254,7 +254,6 @@ task runAndPublishConsumerPactTests(type: Test) {
 }
 
 runAndPublishConsumerPactTests.dependsOn pactTask
-runAndPublishConsumerPactTests.finalizedBy pactPublish
 
 def getCheckedOutGitCommitHash() {
     'git rev-parse --verify --short HEAD'.execute().text.trim()
