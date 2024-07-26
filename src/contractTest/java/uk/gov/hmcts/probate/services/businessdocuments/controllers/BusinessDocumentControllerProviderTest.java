@@ -7,7 +7,7 @@ import au.com.dius.pact.provider.junitsupport.target.Target;
 import au.com.dius.pact.provider.junitsupport.target.TestTarget;
 import au.com.dius.pact.provider.spring.SpringRestPactRunner;
 import org.json.JSONException;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
     "server.port=8123", "spring.application.name=PACT_TEST",
     "services.pdf.service.url=http://localhost:989"
 })
-@Ignore
+@Disabled
 public class BusinessDocumentControllerProviderTest extends ControllerProviderTest {
 
 
