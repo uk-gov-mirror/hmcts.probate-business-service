@@ -4,7 +4,7 @@ provider "azurerm" {
 
 #s2s vault
 data "azurerm_key_vault" "s2s_vault" {
-  name = "s2s-${var.env}"
+  name                = "s2s-${var.env}"
   resource_group_name = "rpe-service-auth-provider-${var.env}"
 }
 
@@ -13,12 +13,12 @@ locals {
 }
 
 data "azurerm_key_vault" "probate_key_vault" {
-  name = local.vaultName
+  name                = local.vaultName
   resource_group_name = local.vaultName
 }
 
 data "azurerm_key_vault_secret" "s2s_key" {
-  name      = "microservicekey-probate-backend"
+  name         = "microservicekey-probate-backend"
   key_vault_id = data.azurerm_key_vault.s2s_vault.id
 }
 
