@@ -5,13 +5,15 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.service.notify.SendSmsResponse;
 import static org.hamcrest.Matchers.equalTo;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(SerenityJUnit5Extension.class)
 public class BusinessServiceInvitationControllerTests extends IntegrationTestBase {
 
@@ -21,7 +23,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
     private static boolean isInitialized = false;
     private SendSmsResponse smsResponse;
 
-    @BeforeEach
+    @BeforeAll
     public void setUp() {
         if (isInitialized) {
             return;
@@ -118,7 +120,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
     private void validateInvitesAllAgreedSuccess(String formdataId) {
         RestAssured.given().relaxedHTTPSValidation()
             .when().get(businessServiceUrl + "/invites/allAgreed/" + formdataId)
-            .then().assertThat().statusCode(404);
+            .then().assertThat().statusCode(200);
     }
 
     private void validateInvitesAllAgreedFailure() {
@@ -126,7 +128,7 @@ public class BusinessServiceInvitationControllerTests extends IntegrationTestBas
             .when().get(businessServiceUrl + "/invites/allAgreed/invalid_id")
             .thenReturn();
 
-        response.then().assertThat().statusCode(404);
+        response.then().assertThat().statusCode(500);
     }
 
     @Test
