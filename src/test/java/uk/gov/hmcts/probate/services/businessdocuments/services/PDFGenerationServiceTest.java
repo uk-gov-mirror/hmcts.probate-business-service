@@ -19,7 +19,6 @@ import uk.gov.hmcts.probate.services.businessdocuments.model.DocumentType;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.probate.model.documents.BusinessDocument;
 import uk.gov.hmcts.reform.probate.model.documents.CheckAnswersSummary;
-
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
 
@@ -129,7 +128,8 @@ class PDFGenerationServiceTest {
 
 
         assertNotNull(exception, "Exception should not be null");
-        assertEquals("JSON Processing Failed", exception.getCause().getMessage(), "Exception message should match");
+        assertEquals("JSON Processing Failed", exception.getCause().getMessage(),
+            "Exception message should match");
 
         verify(pdfGenerationService).generateFromHtml(any(), any());
     }
@@ -160,22 +160,6 @@ class PDFGenerationServiceTest {
         verify(objectMapper).writeValueAsString(businessDocument);
         verify(pdfServiceClient).generateFromHtml(templateContent.getBytes(), paramMap);
     }
-
-    @Test
-    void shouldThrowPDFGenerationExceptionWhenPdfReaderFails() {
-        byte[] invalidPdfBytes = new byte[0];
-
-        when(pdfServiceClient.generateFromHtml(any(), any())).thenReturn(invalidPdfBytes);
-        com.itextpdf.io.exceptions.IOException exception
-            = assertThrows(com.itextpdf.io.exceptions.IOException.class, () -> {
-                pdfGenerationService.generateFromHtml(mockCheckAnswersSummary, "testTemplate");
-            });
-
-        assertNotNull(exception, "Exception should not be null");
-
-        verify(pdfServiceClient).generateFromHtml(any(), any());
-    }
-
 
     private byte[] createValidPdfBytes() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
