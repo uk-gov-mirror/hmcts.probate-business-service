@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.services.businessdocuments.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -61,17 +60,17 @@ public class PDFGenerationService {
         // Add tagging for accessibility using iText
         ByteArrayOutputStream taggedPdfOutputStream = new ByteArrayOutputStream();
         PdfWriter writer = new PdfWriter(taggedPdfOutputStream);
-            PdfDocument pdfDocument = new PdfDocument(new PdfReader(new ByteArrayInputStream(pdfBytes)), writer);
-            pdfDocument.setTagged();
+        PdfDocument pdfDocument = new PdfDocument(new PdfReader(new ByteArrayInputStream(pdfBytes)), writer);
+        pdfDocument.setTagged();
 
-            Document document = new Document(pdfDocument);
-            document.setProperty(ROLE, StandardRoles.DOCUMENT);
+        Document document = new Document(pdfDocument);
+        document.setProperty(ROLE, StandardRoles.DOCUMENT);
 
-            document.close();
-            writer.close();
-            byte[] result = taggedPdfOutputStream.toByteArray();
-            verifyPdfBytes(result); // Verify the integrity of the generated PDF bytes
-            return result;
+        document.close();
+        writer.close();
+        byte[] result = taggedPdfOutputStream.toByteArray();
+        verifyPdfBytes(result); // Verify the integrity of the generated PDF bytes
+        return result;
     }
 
     private void verifyPdfBytes(byte[] pdfBytes) throws IOException {
