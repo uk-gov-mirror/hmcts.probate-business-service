@@ -149,18 +149,33 @@ class PDFGenerationServiceTest {
         when(objectMapper.writeValueAsString(businessDocument)).thenReturn(businessDocumentJson);
         when(pdfServiceClient.generateFromHtml(templateContent.getBytes(), paramMap)).thenReturn(mockPdfBytes);
 
-        // Call method under test
         byte[] result = pdfGenerationService.generateFromHtml(businessDocument, templateName);
 
         // Assertions
         assertNotNull(result, "Generated PDF should not be null");
         assertTrue(result.length > 0, "Generated PDF should not be empty");
 
-        // Verify interactions
+        // Verify
         verify(fileSystemResourceService).getFileFromResourceAsString(templatePath);
         verify(objectMapper).writeValueAsString(businessDocument);
         verify(pdfServiceClient).generateFromHtml(templateContent.getBytes(), paramMap);
     }
+
+    @Test
+    void shouldThrowPDFGenerationExceptionWhenPdfReaderFails() {
+        byte[] invalidPdfBytes = new byte[0];
+
+        when(pdfServiceClient.generateFromHtml(any(), any())).thenReturn(invalidPdfBytes);
+        com.itextpdf.io.exceptions.IOException exception
+            = assertThrows(com.itextpdf.io.exceptions.IOException.class, () -> {
+                pdfGenerationService.generateFromHtml(mockCheckAnswersSummary, "testTemplate");
+            });
+
+        assertNotNull(exception, "Exception should not be null");
+
+        verify(pdfServiceClient).generateFromHtml(any(), any());
+    }
+
 
     private byte[] createValidPdfBytes() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
