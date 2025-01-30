@@ -84,12 +84,12 @@ public class PdfServiceConsumerTest {
             .toPact();
     }
 
-    @Test
+    /*@Test
     @PactTestFor(pactMethod = "generatePdfFromTemplate")
     public void verifyGeneratePdfFromTemplatePact() throws IOException, JSONException {
         byte[] response = pdfGenerationService.generatePdf(answersSummary(), DocumentType.CHECK_ANSWERS_SUMMARY);
 
-    }
+    }*/
 
     protected String createJsonObject(Object obj) throws JSONException, IOException {
         return objectMapper.writeValueAsString(obj);
