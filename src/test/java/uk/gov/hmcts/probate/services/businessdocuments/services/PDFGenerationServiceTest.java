@@ -15,9 +15,14 @@ import uk.gov.hmcts.probate.services.businessdocuments.model.DocumentType;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.probate.model.documents.CheckAnswersSummary;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -53,8 +58,8 @@ class PDFGenerationServiceTest {
             e.printStackTrace();
         }
         pdfGenerationService =
-            new PDFGenerationService(fileSystemResourceService, pdfServiceConfiguration, objectMapper,
-                pdfServiceClient);
+            spy(new PDFGenerationService(fileSystemResourceService, pdfServiceConfiguration, objectMapper,
+                pdfServiceClient));
         when(pdfServiceConfiguration.getTemplatesDirectory()).thenReturn("templateDirectory");
         when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("templateAsString");
     }
@@ -82,11 +87,21 @@ class PDFGenerationServiceTest {
         });
     }
 
-    /*@Test
+    @Test
     void shouldProcessAValidPDFRequest() throws Exception {
-        byte[] pdfInBytes =
-            pdfGenerationService.generatePdf(mockCheckAnswersSummary, DocumentType.CHECK_ANSWERS_SUMMARY);
-        verify(pdfServiceClient).generateFromHtml(any(), Mockito.anyMap());
-    }*/
+        byte[] mockPdfBytes = new byte[]{1, 2, 3, 4};
 
+        doReturn(mockPdfBytes).when(pdfGenerationService).generateFromHtml(any(), any());
+
+        // Call the method under test
+        byte[] pdfInBytes = pdfGenerationService.generatePdf(mockCheckAnswersSummary,
+            DocumentType.CHECK_ANSWERS_SUMMARY);
+
+        // Assertions
+        assertNotNull(pdfInBytes, "Generated PDF should not be null");
+        assertTrue(pdfInBytes.length > 0, "Generated PDF should not be empty");
+
+        // Verify that the private method was called (indirectly)
+        verify(pdfGenerationService).generatePdf(mockCheckAnswersSummary, DocumentType.CHECK_ANSWERS_SUMMARY);
+    }
 }

@@ -47,7 +47,7 @@ public class PDFGenerationService {
         return postResult;
     }
 
-    private byte[] generateFromHtml(BusinessDocument businessDocument, String templateName)
+    byte[] generateFromHtml(BusinessDocument businessDocument, String templateName)
         throws JsonProcessingException {
 
         String templatePath = pdfServiceConfiguration.getTemplatesDirectory() + templateName + HTML;
