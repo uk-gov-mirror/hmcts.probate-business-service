@@ -21,7 +21,6 @@ import uk.gov.hmcts.reform.probate.model.documents.BusinessDocument;
 import uk.gov.hmcts.reform.probate.model.documents.CheckAnswersSummary;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
