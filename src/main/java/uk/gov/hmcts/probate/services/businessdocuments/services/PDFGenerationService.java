@@ -5,8 +5,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfPage;
+import com.itextpdf.kernel.pdf.canvas.parser.PdfCanvasProcessor;
+import com.itextpdf.kernel.pdf.canvas.parser.data.IEventData;
+import com.itextpdf.kernel.pdf.canvas.parser.data.TextRenderInfo;
+import com.itextpdf.kernel.pdf.canvas.parser.listener.IEventListener;
+import com.itextpdf.kernel.pdf.canvas.parser.EventType;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.IElement;
+import com.itextpdf.layout.element.Table;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,11 +25,11 @@ import uk.gov.hmcts.probate.services.businessdocuments.model.DocumentType;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.probate.model.documents.BusinessDocument;
 
+import javax.swing.text.TableView;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -63,14 +72,54 @@ public class PDFGenerationService {
         PdfDocument pdfDocument = new PdfDocument(new PdfReader(new ByteArrayInputStream(pdfBytes)), writer);
         pdfDocument.setTagged();
 
-        Document document = new Document(pdfDocument);
-        document.setProperty(ROLE, StandardRoles.DOCUMENT);
 
-        document.close();
+        tagTablesForAccessibility(pdfDocument);
+        pdfDocument.close();
         writer.close();
         byte[] result = taggedPdfOutputStream.toByteArray();
         verifyPdfBytes(result); // Verify the integrity of the generated PDF bytes
         return result;
+    }
+
+    private void tagTablesForAccessibility(PdfDocument pdfDocument) {
+        for (int i = 1; i <= pdfDocument.getNumberOfPages(); i++) {
+            PdfPage page = pdfDocument.getPage(i);
+            CustomEventListener listener = new CustomEventListener();
+            PdfCanvasProcessor processor = new PdfCanvasProcessor(listener);
+            processor.processPageContent(page);
+
+            for (IElement element : listener.getElements()) {
+                if (element instanceof Table) {
+                    Table table = (Table) element;
+                    table.getAccessibilityProperties().setRole(StandardRoles.TABLE);
+                    for (IElement cell : table.getChildren()) {
+                        if (cell instanceof Cell) {
+                            ((Cell) cell).getAccessibilityProperties().setRole(StandardRoles.TD); // Use TD for table cells
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static class CustomEventListener implements IEventListener {
+        private final List<IElement> elements = new ArrayList<>();
+
+        @Override
+        public void eventOccurred(IEventData data, EventType type) {
+            if (data instanceof TextRenderInfo) {
+                // Capture text elements or other types of elements as needed
+            }
+        }
+
+        @Override
+        public Set<EventType> getSupportedEvents() {
+            return null;
+        }
+
+        public List<IElement> getElements() {
+            return elements;
+        }
     }
 
     private void verifyPdfBytes(byte[] pdfBytes) throws IOException {
