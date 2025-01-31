@@ -200,11 +200,7 @@ class PDFGenerationServiceTest {
         PdfDocument readPdfDocument = new PdfDocument(new PdfReader(new ByteArrayInputStream(outputStream
             .toByteArray())));
 
-
-        PDFGenerationService pdfGenerationService = new PDFGenerationService(fileSystemResourceService,
-            pdfServiceConfiguration, objectMapper, pdfServiceClient);
         pdfGenerationService.tagTablesForAccessibility(readPdfDocument);
-
 
         for (int i = 1; i <= readPdfDocument.getNumberOfPages(); i++) {
             PdfPage page = readPdfDocument.getPage(i);
