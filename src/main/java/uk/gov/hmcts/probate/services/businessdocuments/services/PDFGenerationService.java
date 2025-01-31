@@ -7,10 +7,6 @@ import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfCanvasProcessor;
-import com.itextpdf.kernel.pdf.canvas.parser.data.IEventData;
-import com.itextpdf.kernel.pdf.canvas.parser.data.TextRenderInfo;
-import com.itextpdf.kernel.pdf.canvas.parser.listener.IEventListener;
-import com.itextpdf.kernel.pdf.canvas.parser.EventType;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.IElement;
@@ -21,17 +17,15 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.services.businessdocuments.exceptions.PDFGenerationException;
 import uk.gov.hmcts.probate.services.businessdocuments.model.DocumentType;
+import uk.gov.hmcts.probate.services.businessvalidation.validators.CustomEventListener;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.probate.model.documents.BusinessDocument;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -83,7 +77,7 @@ public class PDFGenerationService {
         return result;
     }
 
-    private void tagTablesForAccessibility(PdfDocument pdfDocument) {
+    void tagTablesForAccessibility(PdfDocument pdfDocument) {
         for (int i = 1; i <= pdfDocument.getNumberOfPages(); i++) {
             PdfPage page = pdfDocument.getPage(i);
             CustomEventListener listener = new CustomEventListener();
@@ -101,26 +95,6 @@ public class PDFGenerationService {
                     }
                 }
             }
-        }
-    }
-
-    private static class CustomEventListener implements IEventListener {
-        private final List<IElement> elements = new ArrayList<>();
-
-        @Override
-        public void eventOccurred(IEventData data, EventType type) {
-            if (data instanceof TextRenderInfo) {
-                // Capture text elements or other types of elements as needed
-            }
-        }
-
-        @Override
-        public Set<EventType> getSupportedEvents() {
-            return null;
-        }
-
-        public List<IElement> getElements() {
-            return elements;
         }
     }
 
