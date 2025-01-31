@@ -12,7 +12,6 @@ import com.itextpdf.kernel.pdf.canvas.parser.data.TextRenderInfo;
 import com.itextpdf.kernel.pdf.canvas.parser.listener.IEventListener;
 import com.itextpdf.kernel.pdf.canvas.parser.EventType;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
-import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.IElement;
 import com.itextpdf.layout.element.Table;
@@ -25,11 +24,14 @@ import uk.gov.hmcts.probate.services.businessdocuments.model.DocumentType;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.probate.model.documents.BusinessDocument;
 
-import javax.swing.text.TableView;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -94,7 +96,7 @@ public class PDFGenerationService {
                     table.getAccessibilityProperties().setRole(StandardRoles.TABLE);
                     for (IElement cell : table.getChildren()) {
                         if (cell instanceof Cell) {
-                            ((Cell) cell).getAccessibilityProperties().setRole(StandardRoles.TD); // Use TD for table cells
+                            ((Cell) cell).getAccessibilityProperties().setRole(StandardRoles.TD);
                         }
                     }
                 }
