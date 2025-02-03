@@ -2,11 +2,17 @@ package uk.gov.hmcts.probate.services.businessdocuments.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
+import com.itextpdf.kernel.pdf.tagutils.TagTreePointer;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.IElement;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,10 +22,9 @@ import uk.gov.hmcts.probate.services.businessdocuments.model.DocumentType;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.probate.model.documents.BusinessDocument;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -59,8 +64,25 @@ public class PDFGenerationService {
         PdfDocument pdfDocument = new PdfDocument(new PdfReader(new ByteArrayInputStream(pdfBytes)), writer);
         pdfDocument.setTagged();
 
+        TagTreePointer tagPointer = new TagTreePointer(pdfDocument);
+        tagPointer.addTag(StandardRoles.DOCUMENT);
+
+        // Add tags for headings and tables
+        List<IElement> elements = HtmlConverter.convertToElements(new FileInputStream(templateAsString));
+        for (IElement element : elements) {
+            log.info("call to elements--- {}", element);
+            if (element instanceof Paragraph) {
+                tagPointer.addTag(StandardRoles.H1); // Tag as heading
+            } else if (element instanceof Table) {
+                tagPointer.addTag(StandardRoles.TABLE); // Tag as table
+            } else if (element instanceof Cell) {
+                tagPointer.addTag(StandardRoles.TR); // Tag as table
+            }
+        }
+
         Document document = new Document(pdfDocument);
         document.setProperty(ROLE, StandardRoles.DOCUMENT);
+
 
         document.close();
         pdfDocument.close();
