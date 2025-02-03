@@ -68,15 +68,13 @@ public class PDFGenerationService {
         tagPointer.addTag(StandardRoles.DOCUMENT);
 
         // Add tags for headings and tables
-        List<IElement> elements = HtmlConverter.convertToElements(new FileInputStream(templateAsString));
+        List<IElement> elements = HtmlConverter.convertToElements(templateAsString);
         for (IElement element : elements) {
             log.info("call to elements--- {}", element);
             if (element instanceof Paragraph) {
                 tagPointer.addTag(StandardRoles.H1); // Tag as heading
             } else if (element instanceof Table) {
                 tagPointer.addTag(StandardRoles.TABLE); // Tag as table
-            } else if (element instanceof Cell) {
-                tagPointer.addTag(StandardRoles.TR); // Tag as table
             }
         }
 

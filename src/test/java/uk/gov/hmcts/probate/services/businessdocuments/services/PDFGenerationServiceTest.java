@@ -139,7 +139,7 @@ class PDFGenerationServiceTest {
     void shouldGeneratePDFSuccessfully() throws Exception {
         String templateName = "testTemplate";
         String templatePath = "/templates/" + templateName + ".html";
-        String templateContent = "<html><body>Test PDF Content</body></html>";
+        String templateContent = "<html><body><table><tr><td>column1</td><td>column2</td></tr> </table></body></html>";
         byte[] mockPdfBytes = createValidPdfBytes();
         String businessDocumentJson = "{\"key\": \"value\"}";
         Map<String, Object> paramMap = Map.of("key", "value");
