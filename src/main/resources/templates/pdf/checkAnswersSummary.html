@@ -1,83 +1,90 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title th:remove="all" th:text="${title}">Probate application</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <style type="text/css">
+<head>
+  <title th:remove="all" th:text="${title}">Probate application</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <style type="text/css">
+    body {
+      font-family: "nta", sans-serif;
+      margin-top: 25px;
+      margin-bottom: 25px;
+      margin-right: 50px;
+      margin-left: 50px;
+    }
 
-            body {
-                font-family: "nta", sans-serif;
-                margin-top: 25px;
-                margin-bottom: 25px;
-                margin-right: 50px;
-                margin-left: 50px;
-            }
+    .table-content {
+      display: block;
+    }
 
-            .table-content {
-                display: block;
-            }
-            tr.border_bottom td {
-                border-bottom: 0.5pt solid black;
-            }
-            .no-page-break {
-                page-break-inside : avoid;
-                -fs-keep-with-inline : keep;
-                -fs-table-paginate: paginate;
-            }
-            td.column1 {
-                width: 50%;
-            }
-            td.column2 {
-                width: 10%;
-            }
-            td.column3{
-                width: 40%;
-            }
-        </style>
-    </head>
-    <body>
-        <div role="document">
-            <table role="table">
-                <tbody class="table-content">
-                <tr>
-                    <td class="column1"  role="cell"></td>
-                    <td class="column2"  role="cell"></td>
-                    <td class="column3"  role="cell"></td>
-                </tr>
-                <tr>
-                    <td colspan="3" valign="top" style="font-weight: bold"  role="cell"><h1>{{pageTitle}}</h1></td>
-                </tr>
-                <tr>
-                    <td colspan="3"  role="cell">
-                        <p>{{mainParagraph}}</p>
-                  </td>
-                </tr>
+    tr.border_bottom td {
+      border-bottom: 0.5pt solid black;
+    }
 
-                {% for section in sections %}
-                <div class="no-page-break">
-                <tr class="border_bottom">
-                    <td colspan="3" valign="top" style="font-weight: bold"  role="cell"><h2>{{ section.title}}</h2></td>
-                </tr>
-                {% for questionAndAnswerRow in section.questionAndAnswers %}
-                <tr class="border_bottom" role="row">
-                    <td class="column1"  role="cell">{{ questionAndAnswerRow.question }}</td>
-                  <td class="column2"  role="cell"></td>
-                    <td class="column3"  role="cell">
+    .no-page-break {
+      page-break-inside: avoid;
+      -fs-keep-with-inline: keep;
+      -fs-table-paginate: paginate;
+    }
 
-                        {% for ans in questionAndAnswerRow.answers %}
-                        <div  role="cell">
-                            {{ ans}}
-                        </div>
-                        {% endfor %}
+    td.column1 {
+      width: 50%;
+    }
 
-                    </td>
-                </tr>
-                {% endfor %}
+    td.column2 {
+      width: 10%;
+    }
+
+    td.column3 {
+      width: 40%;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <table>
+    <tbody class="table-content">
+    <tr>
+      <td class="column1"></td>
+      <td class="column2"></td>
+      <td class="column3"></td>
+    </tr>
+    <tr>
+      <td colspan="3" valign="top" style="font-weight: bold"><h1>{{pageTitle}}</h1></td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <p>{{mainParagraph}}</p>
+      </td>
+    </tr>
+
+    {% for section in sections %}
+    <div class="no-page-break">
+      <tr class="border_bottom">
+        <td colspan="3" valign="top" style="font-weight: bold"><h2>{{ section.title}}</h2></td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <dl>
+            {% for questionAndAnswerRow in section.questionAndAnswers %}
+            <tr class="border_bottom">
+              <td class="column1">{{ questionAndAnswerRow.question }}</td>
+              <td class="column2"></td>
+              <td class="column3">
+                {% for ans in questionAndAnswerRow.answers %}
+                <div>
+                  {{ ans}}
                 </div>
                 {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </body>
+              </td>
+            </tr>
+            {% endfor %}
+          </dl>
+        </td>
+      </tr>
+    </div>
+    {% endfor %}
+    </tbody>
+  </table>
+</main>
+</body>
 </html>
-
