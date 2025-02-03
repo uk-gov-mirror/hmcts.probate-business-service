@@ -37,30 +37,55 @@
     td.column3 {
       width: 40%;
     }
+
+    th {
+      text-align: left;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-<main role="main">
-  <h1>{{pageTitle}}</h1>
-  <p>{{mainParagraph}}</p>
+<main>
+  <table role="table" aria-label="Probate Application Content">
+    <thead>
+    <tr>
+      <th scope="col" class="column1">Question</th>
+      <th scope="col" class="column2"></th>
+      <th scope="col" class="column3">Answer</th>
+    </tr>
+    </thead>
+    <tbody class="table-content">
+    <tr>
+      <td colspan="3" valign="top" style="font-weight: bold"><h1>{{pageTitle}}</h1></td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <p>{{mainParagraph}}</p>
+      </td>
+    </tr>
 
-  {% for section in sections %}
-  <section aria-labelledby="section-{{ loop.index }}-title" class="no-page-break">
-    <h2 id="section-{{ loop.index }}-title">{{ section.title }}</h2>
-    <dl>
+    {% for section in sections %}
+    <div class="no-page-break">
+      <tr class="border_bottom">
+        <td colspan="3" valign="top" style="font-weight: bold"><h2>{{ section.title}}</h2></td>
+      </tr>
       {% for questionAndAnswerRow in section.questionAndAnswers %}
-      <div class="border_bottom">
-        <dt>{{ questionAndAnswerRow.question }}</dt>
-        <dd>
+      <tr class="border_bottom" role="row">
+        <td class="column1" role="cell">{{ questionAndAnswerRow.question }}</td>
+        <td class="column2" role="cell"></td>
+        <td class="column3" role="cell">
           {% for ans in questionAndAnswerRow.answers %}
-          <div>{{ ans }}</div>
+          <div>
+            {{ ans}}
+          </div>
           {% endfor %}
-        </dd>
-      </div>
+        </td>
+      </tr>
       {% endfor %}
-    </dl>
-  </section>
-  {% endfor %}
+    </div>
+    {% endfor %}
+    </tbody>
+  </table>
 </main>
 </body>
 </html>
