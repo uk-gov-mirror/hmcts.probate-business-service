@@ -40,51 +40,27 @@
   </style>
 </head>
 <body>
-<main>
-  <table>
-    <tbody class="table-content">
-    <tr>
-      <td class="column1"></td>
-      <td class="column2"></td>
-      <td class="column3"></td>
-    </tr>
-    <tr>
-      <td colspan="3" valign="top" style="font-weight: bold"><h1>{{pageTitle}}</h1></td>
-    </tr>
-    <tr>
-      <td colspan="3">
-        <p>{{mainParagraph}}</p>
-      </td>
-    </tr>
+<main role="main">
+  <h1>{{pageTitle}}</h1>
+  <p>{{mainParagraph}}</p>
 
-    {% for section in sections %}
-    <div class="no-page-break">
-      <tr class="border_bottom">
-        <td colspan="3" valign="top" style="font-weight: bold"><h2>{{ section.title}}</h2></td>
-      </tr>
-      <tr>
-        <td colspan="3">
-          <dl>
-            {% for questionAndAnswerRow in section.questionAndAnswers %}
-            <tr class="border_bottom">
-              <td class="column1">{{ questionAndAnswerRow.question }}</td>
-              <td class="column2"></td>
-              <td class="column3">
-                {% for ans in questionAndAnswerRow.answers %}
-                <div>
-                  {{ ans}}
-                </div>
-                {% endfor %}
-              </td>
-            </tr>
-            {% endfor %}
-          </dl>
-        </td>
-      </tr>
-    </div>
-    {% endfor %}
-    </tbody>
-  </table>
+  {% for section in sections %}
+  <section aria-labelledby="section-{{ loop.index }}-title" class="no-page-break">
+    <h2 id="section-{{ loop.index }}-title">{{ section.title }}</h2>
+    <dl>
+      {% for questionAndAnswerRow in section.questionAndAnswers %}
+      <div class="border_bottom">
+        <dt>{{ questionAndAnswerRow.question }}</dt>
+        <dd>
+          {% for ans in questionAndAnswerRow.answers %}
+          <div>{{ ans }}</div>
+          {% endfor %}
+        </dd>
+      </div>
+      {% endfor %}
+    </dl>
+  </section>
+  {% endfor %}
 </main>
 </body>
 </html>
