@@ -42,6 +42,11 @@
       text-align: left;
       font-weight: bold;
     }
+
+    [tabindex]:focus {
+      outline: 2px solid #005ea5;
+      outline-offset: 2px;
+    }
   </style>
 </head>
 <body>
@@ -56,33 +61,31 @@
     </thead>
     <tbody class="table-content">
     <tr>
-      <td colspan="3" valign="top" style="font-weight: bold"><h1>{{pageTitle}}</h1></td>
+      <td colspan="3" valign="top" style="font-weight: bold" tabindex="0"><h1>{{pageTitle}}</h1></td>
     </tr>
     <tr>
-      <td colspan="3">
+      <td colspan="3" tabindex="0">
         <p>{{mainParagraph}}</p>
       </td>
     </tr>
 
     {% for section in sections %}
-    <div class="no-page-break">
-      <tr class="border_bottom">
-        <td colspan="3" valign="top" style="font-weight: bold"><h2>{{ section.title}}</h2></td>
-      </tr>
-      {% for questionAndAnswerRow in section.questionAndAnswers %}
-      <tr class="border_bottom" role="row">
-        <td class="column1" role="cell">{{ questionAndAnswerRow.question }}</td>
-        <td class="column2" role="cell"></td>
-        <td class="column3" role="cell">
-          {% for ans in questionAndAnswerRow.answers %}
-          <div>
-            {{ ans}}
-          </div>
-          {% endfor %}
-        </td>
-      </tr>
-      {% endfor %}
-    </div>
+    <tr class="border_bottom no-page-break">
+      <td colspan="3" valign="top" style="font-weight: bold" tabindex="0"><h2>{{ section.title}}</h2></td>
+    </tr>
+    {% for questionAndAnswerRow in section.questionAndAnswers %}
+    <tr class="border_bottom" role="row">
+      <td class="column1" role="cell" tabindex="0">{{ questionAndAnswerRow.question }}</td>
+      <td class="column2" role="cell" tabindex="0"></td>
+      <td class="column3" role="cell" tabindex="0">
+        {% for ans in questionAndAnswerRow.answers %}
+        <div tabindex="0">
+          {{ ans}}
+        </div>
+        {% endfor %}
+      </td>
+    </tr>
+    {% endfor %}
     {% endfor %}
     </tbody>
   </table>
