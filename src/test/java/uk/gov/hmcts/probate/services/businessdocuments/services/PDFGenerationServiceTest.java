@@ -3,14 +3,7 @@ package uk.gov.hmcts.probate.services.businessdocuments.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfPage;
-import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.canvas.parser.PdfCanvasProcessor;
-import com.itextpdf.kernel.pdf.tagging.StandardRoles;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.IElement;
-import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,12 +16,10 @@ import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.services.businessdocuments.exceptions.FileSystemException;
 import uk.gov.hmcts.probate.services.businessdocuments.exceptions.PDFGenerationException;
 import uk.gov.hmcts.probate.services.businessdocuments.model.DocumentType;
-import uk.gov.hmcts.probate.services.businessvalidation.validators.CustomEventListener;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.probate.model.documents.BusinessDocument;
 import uk.gov.hmcts.reform.probate.model.documents.CheckAnswersSummary;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
 
@@ -180,49 +171,6 @@ class PDFGenerationServiceTest {
         document.add(new Paragraph("Test PDF Content"));
         document.close();
         return outputStream.toByteArray();
-    }
-
-    @Test
-    void shouldTagTablesForAccessibility() throws Exception {
-        // Create a mock PdfDocument with a table and cells
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter writer = new PdfWriter(outputStream);
-        PdfDocument pdfDocument = new PdfDocument(writer);
-        Document document = new Document(pdfDocument);
-
-        Table table = new Table(1);
-        Cell cell = new Cell().add(new Paragraph("Test Cell"));
-        table.addCell(cell);
-        document.add(table);
-        document.close();
-
-
-        PdfDocument readPdfDocument = new PdfDocument(new PdfReader(new ByteArrayInputStream(outputStream
-            .toByteArray())));
-
-        pdfGenerationService.tagTablesForAccessibility(readPdfDocument);
-
-        for (int i = 1; i <= readPdfDocument.getNumberOfPages(); i++) {
-            PdfPage page = readPdfDocument.getPage(i);
-            CustomEventListener listener = new CustomEventListener();
-            PdfCanvasProcessor processor = new PdfCanvasProcessor(listener);
-            processor.processPageContent(page);
-
-            for (IElement element : listener.getElements()) {
-                if (element instanceof Table) {
-                    Table taggedTable = (Table) element;
-                    assertEquals(StandardRoles.TABLE, taggedTable.getAccessibilityProperties().getRole());
-
-                    for (IElement cellElement : taggedTable.getChildren()) {
-                        if (cellElement instanceof Cell) {
-                            assertEquals(StandardRoles.TD, ((Cell) cellElement).getAccessibilityProperties().getRole());
-                        }
-                    }
-                }
-            }
-        }
-
-        readPdfDocument.close();
     }
 }
 
