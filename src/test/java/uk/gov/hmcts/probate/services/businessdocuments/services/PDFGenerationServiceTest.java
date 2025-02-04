@@ -2,10 +2,15 @@ package uk.gov.hmcts.probate.services.businessdocuments.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.IElement;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +25,9 @@ import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.probate.model.documents.BusinessDocument;
 import uk.gov.hmcts.reform.probate.model.documents.CheckAnswersSummary;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -139,7 +146,7 @@ class PDFGenerationServiceTest {
     void shouldGeneratePDFSuccessfully() throws Exception {
         String templateName = "testTemplate";
         String templatePath = "/templates/" + templateName + ".html";
-        String templateContent = "<html><body><table><tr><td>column1</td><td>column2</td></tr> </table></body></html>";
+        String templateContent = "<html><body><h1>Heading</h1><p>Paragraph</p><table><tr><td>column1</td><td>column2</td></tr></table></body></html>";
         byte[] mockPdfBytes = createValidPdfBytes();
         String businessDocumentJson = "{\"key\": \"value\"}";
         Map<String, Object> paramMap = Map.of("key", "value");
@@ -160,6 +167,20 @@ class PDFGenerationServiceTest {
         verify(fileSystemResourceService).getFileFromResourceAsString(templatePath);
         verify(objectMapper).writeValueAsString(businessDocument);
         verify(pdfServiceClient).generateFromHtml(templateContent.getBytes(), paramMap);
+
+        // Additional verification to ensure tagging
+        PdfDocument pdfDocument = new PdfDocument(new PdfReader(new ByteArrayInputStream(result)));
+        Document document = new Document(pdfDocument);
+        List<IElement> elements = HtmlConverter.convertToElements(templateContent);
+        for (IElement element : elements) {
+            if (element instanceof Paragraph) {
+                Paragraph paragraph = (Paragraph) element;
+                assertEquals(StandardRoles.P, paragraph.getAccessibilityProperties().getRole(), "Paragraph should be tagged as H1");
+            } else if (element instanceof Table) {
+                Table table = (Table) element;
+                assertEquals(StandardRoles.TABLE, table.getAccessibilityProperties().getRole(), "Table should be tagged as TABLE");
+            }
+        }
     }
 
     private byte[] createValidPdfBytes() {
