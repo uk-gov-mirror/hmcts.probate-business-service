@@ -2,11 +2,16 @@ package uk.gov.hmcts.probate.services.businessdocuments.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.BlockElement;
+import com.itextpdf.layout.element.IElement;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,6 +26,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -54,29 +60,31 @@ public class PDFGenerationService {
         Map<String, Object> paramMap = asMap(objectMapper.writeValueAsString(businessDocument));
         // Generate PDF using existing service
         byte[] pdfBytes = pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
+
         // Add tagging for accessibility using iText
         ByteArrayOutputStream taggedPdfOutputStream = new ByteArrayOutputStream();
         PdfWriter writer = new PdfWriter(taggedPdfOutputStream);
         PdfDocument pdfDocument = new PdfDocument(new PdfReader(new ByteArrayInputStream(pdfBytes)), writer);
         pdfDocument.setTagged();
 
-        /*TagTreePointer tagPointer = new TagTreePointer(pdfDocument);
-        tagPointer.addTag(StandardRoles.DOCUMENT);
+        Document document = new Document(pdfDocument);
+        document.setProperty(ROLE, StandardRoles.DOCUMENT);
 
         // Add tags for headings and tables
         List<IElement> elements = HtmlConverter.convertToElements(templateAsString);
         for (IElement element : elements) {
-            log.info("call to elements--- {}", element);
             if (element instanceof Paragraph) {
-                tagPointer.addTag(StandardRoles.H1); // Tag as heading
+                Paragraph paragraph = (Paragraph) element;
+                paragraph.getAccessibilityProperties().setRole(StandardRoles.H1); // Tag as heading
+                document.add(paragraph);
             } else if (element instanceof Table) {
-                tagPointer.addTag(StandardRoles.TABLE); // Tag as table
+                Table table = (Table) element;
+                table.getAccessibilityProperties().setRole(StandardRoles.TABLE); // Tag as table
+                document.add(table);
+            } else {
+                document.add((BlockElement<?>) element);
             }
-        }*/
-
-        Document document = new Document(pdfDocument);
-        document.setProperty(ROLE, StandardRoles.DOCUMENT);
-
+        }
 
         document.close();
         pdfDocument.close();
