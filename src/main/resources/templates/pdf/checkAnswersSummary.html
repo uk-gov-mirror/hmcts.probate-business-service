@@ -1,85 +1,85 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-  <title th:remove="all" th:text="${title}">Probate application</title>
+  <title>Probate Application</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <style type="text/css">
     body {
-      font-family: "nta", sans-serif;
+      font-family: Arial, sans-serif;
       margin-top: 25px;
       margin-bottom: 25px;
       margin-right: 50px;
       margin-left: 50px;
     }
 
-    .table-content {
-      display: block;
+    table {
+      width: 100%;
+      border-collapse: collapse;
     }
 
-    tr.border_bottom td {
-      border-bottom: 0.5pt solid black;
-    }
-
-    .no-page-break {
-      page-break-inside: avoid;
-      -fs-keep-with-inline: keep;
-      -fs-table-paginate: paginate;
-    }
-
-    td.column1 {
-      width: 50%;
-    }
-
-    td.column2 {
-      width: 10%;
-    }
-
-    td.column3 {
-      width: 40%;
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
     }
 
     th {
-      text-align: left;
+      background-color: #f4f4f4;
       font-weight: bold;
     }
 
-    [tabindex]:focus {
-      outline: 2px solid #005ea5;
-      outline-offset: 2px;
+    h1, h2 {
+      color: #333;
     }
   </style>
 </head>
 <body>
 <main>
-  <table role="table" aria-label="Probate Application Content">
+  <h1>Probate Application Summary</h1>
+  <p>Please review the details below carefully.</p>
+
+  <!-- Accessible Table -->
+  <table aria-label="Probate Application Details">
     <thead>
     <tr>
-      <th scope="col" class="column1">Question</th>
-      <th scope="col" class="column2"></th>
-      <th scope="col" class="column3">Answer</th>
+      <th scope="col">Question</th>
+      <th scope="col">Answer</th>
     </tr>
     </thead>
-    <tbody class="table-content">
+    <tbody>
+    <!-- Section: Deceased's Details -->
     <tr>
-      <td colspan="3" valign="top" style="font-weight: bold" tabindex="0"><h1>{{pageTitle}}</h1></td>
-    </tr>
-    <tr>
-      <td colspan="3" tabindex="0">
-        <p>{{mainParagraph}}</p>
+      <td colspan="2">
+        <h2>Deceased's Details</h2>
       </td>
     </tr>
+    <tr>
+      <th scope="row">Full Name</th>
+      <td>John Doe</td>
+    </tr>
+    <tr>
+      <th scope="row">Date of Birth</th>
+      <td>01/01/1950</td>
+    </tr>
+    <tr>
+      <th scope="row">Date of Death</th>
+      <td>01/01/2023</td>
+    </tr>
 
-    {% for section in sections %}
-    <tr class="border_bottom no-page-break">
-      <td colspan="3" valign="top" style="font-weight: bold" tabindex="0"><h2>{{ section.title}}</h2></td>
+    <!-- Section: Will Details -->
+    <tr>
+      <td colspan="2">
+        <h2>Will Details</h2>
+      </td>
     </tr>
-    {% for questionAndAnswerRow in section.questionAndAnswers %}
-    <tr class="border_bottom" role="row">
-      <td class="column1" role="cell" tabindex="0" colspan="2">{{ questionAndAnswerRow.question }}</td>
-      <td class="column3" role="cell" tabindex="0">YES</td>
+    <tr>
+      <th scope="row">Will Dated</th>
+      <td>01/01/2020</td>
     </tr>
-    {% endfor %}
-    {% endfor %}
+    <tr>
+      <th scope="row">Will Signed</th>
+      <td>Yes</td>
+    </tr>
     </tbody>
   </table>
 </main>
