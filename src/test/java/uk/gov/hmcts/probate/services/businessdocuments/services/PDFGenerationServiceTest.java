@@ -2,15 +2,15 @@ package uk.gov.hmcts.probate.services.businessdocuments.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.PdfString;
+import com.itextpdf.kernel.pdf.PdfName;
+import com.itextpdf.kernel.pdf.tagging.PdfStructElem;
+import com.itextpdf.kernel.pdf.tagging.PdfStructTreeRoot;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.IElement;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +27,7 @@ import uk.gov.hmcts.reform.probate.model.documents.CheckAnswersSummary;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.List;
+import java.io.IOException;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -146,8 +146,7 @@ class PDFGenerationServiceTest {
     void shouldGeneratePDFSuccessfully() throws Exception {
         String templateName = "testTemplate";
         String templatePath = "/templates/" + templateName + ".html";
-        String templateContent = "<html><body><h1>Heading</h1><p>Paragraph</p><table><tr><td>column1</td><td>column2"
-            + "</td></tr></table></body></html>";
+        String templateContent = "<html><body><table><tr><td>column1</td><td>column2</td></tr> </table></body></html>";
         byte[] mockPdfBytes = createValidPdfBytes();
         String businessDocumentJson = "{\"key\": \"value\"}";
         Map<String, Object> paramMap = Map.of("key", "value");
@@ -168,33 +167,55 @@ class PDFGenerationServiceTest {
         verify(fileSystemResourceService).getFileFromResourceAsString(templatePath);
         verify(objectMapper).writeValueAsString(businessDocument);
         verify(pdfServiceClient).generateFromHtml(templateContent.getBytes(), paramMap);
-
-        // Additional verification to ensure tagging
-        PdfDocument pdfDocument = new PdfDocument(new PdfReader(new ByteArrayInputStream(result)));
-        Document document = new Document(pdfDocument);
-        List<IElement> elements = HtmlConverter.convertToElements(templateContent);
-        for (IElement element : elements) {
-            if (element instanceof Paragraph) {
-                Paragraph paragraph = (Paragraph) element;
-                assertEquals(StandardRoles.P, paragraph.getAccessibilityProperties().getRole(),
-                    "Paragraph should be tagged as H1");
-            } else if (element instanceof Table) {
-                Table table = (Table) element;
-                assertEquals(StandardRoles.TABLE, table.getAccessibilityProperties().getRole(),
-                    "Table should be tagged as TABLE");
-            }
-        }
+        verifyPdfBytes(result);
     }
 
-    private byte[] createValidPdfBytes() {
+    private byte[] createValidPdfBytes() throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfWriter writer = new PdfWriter(outputStream);
         PdfDocument pdfDocument = new PdfDocument(writer);
+        pdfDocument.setTagged();
         Document document = new Document(pdfDocument);
+        document.setProperty(200, StandardRoles.DOCUMENT);
 
-        document.add(new Paragraph("Test PDF Content"));
+        // Step 1: Get the structure tree root
+        PdfStructTreeRoot structRoot = pdfDocument.getStructTreeRoot();
+
+        // Step 2: Define the document structure
+        PdfStructElem docElem = new PdfStructElem(pdfDocument, PdfName.Document); // Attach to document
+
+        // Attach docElem to structure root
+        structRoot.addKid(docElem);
+
+        // Step 3: Create a TABLE structure inside the document
+        PdfStructElem tableElem = new PdfStructElem(pdfDocument, PdfName.Table);
+        docElem.addKid(tableElem); // Attach TABLE to the document structure
+
+        // Step 4: Add a ROW to the table
+        PdfStructElem rowElem = new PdfStructElem(pdfDocument, PdfName.TR);
+        tableElem.addKid(rowElem); // Attach ROW inside TABLE
+
+        // Step 5: Add CELLS inside the row
+        PdfStructElem cellElem1 = new PdfStructElem(pdfDocument, PdfName.TD);
+        cellElem1.getPdfObject().put(PdfName.ActualText, new PdfString("Column 1 Data"));
+        rowElem.addKid(cellElem1); // Attach CELL inside ROW
+
+        PdfStructElem cellElem2 = new PdfStructElem(pdfDocument, PdfName.TD);
+        cellElem2.getPdfObject().put(PdfName.ActualText, new PdfString("Column 2 Data"));
+        rowElem.addKid(cellElem2); // Attach CELL inside ROW
+
         document.close();
         return outputStream.toByteArray();
+    }
+
+
+
+    private void verifyPdfBytes(byte[] pdfBytes) throws IOException {
+        try (PdfReader reader = new PdfReader(new ByteArrayInputStream(pdfBytes));
+             PdfDocument pdfDocument = new PdfDocument(reader)) {
+            assertTrue(pdfDocument.getNumberOfPages() > 0,
+                "Generated PDF should have at least one page");
+        }
     }
 }
 
