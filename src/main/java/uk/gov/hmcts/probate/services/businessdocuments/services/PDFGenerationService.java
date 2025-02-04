@@ -2,16 +2,11 @@ package uk.gov.hmcts.probate.services.businessdocuments.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
-import com.itextpdf.kernel.pdf.tagutils.TagTreePointer;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.IElement;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -26,7 +21,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -66,7 +60,7 @@ public class PDFGenerationService {
         PdfDocument pdfDocument = new PdfDocument(new PdfReader(new ByteArrayInputStream(pdfBytes)), writer);
         pdfDocument.setTagged();
 
-        TagTreePointer tagPointer = new TagTreePointer(pdfDocument);
+        /*TagTreePointer tagPointer = new TagTreePointer(pdfDocument);
         tagPointer.addTag(StandardRoles.DOCUMENT);
 
         // Add tags for headings and tables
@@ -78,7 +72,7 @@ public class PDFGenerationService {
             } else if (element instanceof Table) {
                 tagPointer.addTag(StandardRoles.TABLE); // Tag as table
             }
-        }
+        }*/
 
         Document document = new Document(pdfDocument);
         document.setProperty(ROLE, StandardRoles.DOCUMENT);

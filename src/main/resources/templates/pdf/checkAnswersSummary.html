@@ -75,15 +75,8 @@
     </tr>
     {% for questionAndAnswerRow in section.questionAndAnswers %}
     <tr class="border_bottom" role="row">
-      <td class="column1" role="cell" tabindex="0">{{ questionAndAnswerRow.question }}</td>
-      <td class="column2" role="cell" tabindex="0"></td>
-      <td class="column3" role="cell" tabindex="0">
-        {% for ans in questionAndAnswerRow.answers %}
-        <div tabindex="0">
-          {{ ans}}
-        </div>
-        {% endfor %}
-      </td>
+      <td class="column1" role="cell" tabindex="0" colspan="2">{{ questionAndAnswerRow.question }}</td>
+      <td class="column3" role="cell" tabindex="0">YES</td>
     </tr>
     {% endfor %}
     {% endfor %}
