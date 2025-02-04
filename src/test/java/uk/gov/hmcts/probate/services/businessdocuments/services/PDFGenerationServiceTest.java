@@ -146,7 +146,8 @@ class PDFGenerationServiceTest {
     void shouldGeneratePDFSuccessfully() throws Exception {
         String templateName = "testTemplate";
         String templatePath = "/templates/" + templateName + ".html";
-        String templateContent = "<html><body><h1>Heading</h1><p>Paragraph</p><table><tr><td>column1</td><td>column2</td></tr></table></body></html>";
+        String templateContent = "<html><body><h1>Heading</h1><p>Paragraph</p><table><tr><td>column1</td><td>column2"
+            + "</td></tr></table></body></html>";
         byte[] mockPdfBytes = createValidPdfBytes();
         String businessDocumentJson = "{\"key\": \"value\"}";
         Map<String, Object> paramMap = Map.of("key", "value");
@@ -175,10 +176,12 @@ class PDFGenerationServiceTest {
         for (IElement element : elements) {
             if (element instanceof Paragraph) {
                 Paragraph paragraph = (Paragraph) element;
-                assertEquals(StandardRoles.P, paragraph.getAccessibilityProperties().getRole(), "Paragraph should be tagged as H1");
+                assertEquals(StandardRoles.P, paragraph.getAccessibilityProperties().getRole(),
+                    "Paragraph should be tagged as H1");
             } else if (element instanceof Table) {
                 Table table = (Table) element;
-                assertEquals(StandardRoles.TABLE, table.getAccessibilityProperties().getRole(), "Table should be tagged as TABLE");
+                assertEquals(StandardRoles.TABLE, table.getAccessibilityProperties().getRole(),
+                    "Table should be tagged as TABLE");
             }
         }
     }
