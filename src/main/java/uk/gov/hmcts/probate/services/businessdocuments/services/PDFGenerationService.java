@@ -64,10 +64,14 @@ public class PDFGenerationService {
         // Add tagging for accessibility using iText
         ByteArrayOutputStream taggedPdfOutputStream = new ByteArrayOutputStream();
         PdfWriter writer = new PdfWriter(taggedPdfOutputStream);
-        PdfDocument pdfDocument = new PdfDocument(new PdfReader(new ByteArrayInputStream(pdfBytes)), writer);
-        pdfDocument.setTagged();
+        PdfDocument originalPdfDocument = new PdfDocument(new PdfReader(new ByteArrayInputStream(pdfBytes)));
+        PdfDocument newPdfDocument = new PdfDocument(writer);
+        newPdfDocument.setTagged();
 
-        Document document = new Document(pdfDocument);
+        // Copy pages from the original PDF to the new PDF
+        originalPdfDocument.copyPagesTo(1, originalPdfDocument.getNumberOfPages(), newPdfDocument);
+
+        Document document = new Document(newPdfDocument);
         document.setProperty(ROLE, StandardRoles.DOCUMENT);
 
         // Add tags for headings and tables
@@ -87,7 +91,8 @@ public class PDFGenerationService {
         }
 
         document.close();
-        pdfDocument.close();
+        newPdfDocument.close();
+        originalPdfDocument.close();
         writer.close();
         byte[] result = taggedPdfOutputStream.toByteArray();
         verifyPdfBytes(result); // Verify the integrity of the generated PDF bytes
