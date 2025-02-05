@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.probate.model.documents.BusinessDocument;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,15 +58,14 @@ public class PDFGenerationService {
         byte[] pdfBytes = pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
 
         // Generate PDF with tags
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(pdfBytes.length);
-        outputStream.writeBytes(pdfBytes);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfWriter writer = new PdfWriter(outputStream);
         PdfDocument pdfDocument = new PdfDocument(writer);
         pdfDocument.setTagged();
         // Configure for accessibility
         ConverterProperties props = new ConverterProperties();
         props.setTagWorkerFactory(new DefaultTagWorkerFactory());
-        HtmlConverter.convertToPdf(templateAsString, pdfDocument, props);
+        HtmlConverter.convertToPdf(new String(pdfBytes, StandardCharsets.UTF_8), pdfDocument, props);
         pdfDocument.close();
         writer.close();
         return outputStream.toByteArray();
