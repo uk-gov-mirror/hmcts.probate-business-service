@@ -64,8 +64,6 @@ public class PDFGenerationService {
         StringWriter writer = new StringWriter();
         template.evaluate(writer, paramMap);
 
-
-
         // Generate PDF with tags
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfWriter pdfwriter = new PdfWriter(outputStream);
