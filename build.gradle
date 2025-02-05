@@ -191,6 +191,7 @@ dependencies {
     implementation group: 'com.itextpdf', name: 'hyph', version: '7.2.5'
     implementation group: 'com.itextpdf', name: 'html2pdf', version: '4.0.5'
     implementation group: 'com.itextpdf', name: 'itext7-core', version: '7.2.5'
+    implementation group: 'io.pebbletemplates', name: 'pebble', version: '3.2.0'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     compileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 

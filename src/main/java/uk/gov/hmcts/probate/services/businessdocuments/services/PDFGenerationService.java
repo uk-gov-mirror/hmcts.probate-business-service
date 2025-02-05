@@ -7,6 +7,9 @@ import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.attach.impl.DefaultTagWorkerFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import io.pebbletemplates.pebble.PebbleEngine;
+import io.pebbletemplates.pebble.loader.StringLoader;
+import io.pebbletemplates.pebble.template.PebbleTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,7 +22,7 @@ import uk.gov.hmcts.reform.probate.model.documents.BusinessDocument;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import java.nio.charset.StandardCharsets;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +31,7 @@ import java.util.Map;
 @Component
 public class PDFGenerationService {
     private static final String HTML = ".html";
-    public static final int ROLE = 200;
+    //public static final int ROLE = 200;
     private final FileSystemResourceService fileSystemResourceService;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final ObjectMapper objectMapper;
@@ -55,19 +58,26 @@ public class PDFGenerationService {
 
 
         // Generate PDF using existing service
-        byte[] pdfBytes = pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
+        pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
+        PebbleEngine engine = new PebbleEngine.Builder().loader(new StringLoader()).build();
+        PebbleTemplate template = engine.getTemplate(templateAsString);
+        StringWriter writer = new StringWriter();
+        template.evaluate(writer, paramMap);
+
+
 
         // Generate PDF with tags
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfWriter writer = new PdfWriter(outputStream);
-        PdfDocument pdfDocument = new PdfDocument(writer);
+        PdfWriter pdfwriter = new PdfWriter(outputStream);
+        PdfDocument pdfDocument = new PdfDocument(pdfwriter);
         pdfDocument.setTagged();
         // Configure for accessibility
         ConverterProperties props = new ConverterProperties();
         props.setTagWorkerFactory(new DefaultTagWorkerFactory());
-        HtmlConverter.convertToPdf(new String(pdfBytes, StandardCharsets.UTF_8), pdfDocument, props);
+        HtmlConverter.convertToPdf(writer.toString(), pdfDocument, props);
         pdfDocument.close();
-        writer.close();
+        pdfwriter.close();
+
         return outputStream.toByteArray();
     }
 
