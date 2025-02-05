@@ -4,11 +4,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.html2pdf.attach.impl.DefaultTagWorkerFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.tagging.StandardRoles;
-import com.itextpdf.layout.Document;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -55,29 +54,23 @@ public class PDFGenerationService {
         String templateAsString = fileSystemResourceService.getFileFromResourceAsString(templatePath);
         Map<String, Object> paramMap = asMap(objectMapper.writeValueAsString(businessDocument));
 
+
         // Generate PDF using existing service
         byte[] pdfBytes = pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
 
-        // Add tagging for accessibility using iText
-        ByteArrayOutputStream taggedPdfOutputStream = new ByteArrayOutputStream();
-        PdfWriter writer = new PdfWriter(taggedPdfOutputStream);
+        // Generate PDF with tags
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(pdfBytes.length);
+        outputStream.writeBytes(pdfBytes);
+        PdfWriter writer = new PdfWriter(outputStream);
         PdfDocument pdfDocument = new PdfDocument(writer);
         pdfDocument.setTagged();
-        Document document = new Document(pdfDocument);
-        document.setProperty(ROLE, StandardRoles.DOCUMENT);
-
-        ConverterProperties properties = new ConverterProperties();
-        HtmlConverter.convertToPdf(new ByteArrayInputStream(pdfBytes), pdfDocument, properties);
-
-
-        // Step 6: Close the document
-        document.close();
+        // Configure for accessibility
+        ConverterProperties props = new ConverterProperties();
+        props.setTagWorkerFactory(new DefaultTagWorkerFactory());
+        HtmlConverter.convertToPdf(templateAsString, pdfDocument, props);
         pdfDocument.close();
         writer.close();
-
-        byte[] result = taggedPdfOutputStream.toByteArray();
-        verifyPdfBytes(result); // Verify the integrity of the generated PDF bytes
-        return result;
+        return outputStream.toByteArray();
     }
 
     private void verifyPdfBytes(byte[] pdfBytes) throws IOException {
