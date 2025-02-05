@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title th:remove="all" th:text="${title}">Probate application</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <style type="text/css">
     body {
       font-family: "nta", sans-serif;
@@ -25,41 +25,55 @@
       font-weight: bold;
     }
 
-    h1, h2 {
-      margin-bottom: 10px;
+    .no-page-break {
+      page-break-inside: avoid;
     }
 
-    .section-header {
-      font-weight: bold;
-      font-size: 18px;
-      padding: 10px 0;
-      border-bottom: 2px solid black;
+    .column1 {
+      width: 50%;
     }
 
-    .no-border {
-      border: none;
+    .column2 {
+      width: 10%;
     }
 
-    .answer {
-      font-weight: bold;
+    .column3 {
+      width: 40%;
     }
   </style>
 </head>
 <body>
-<h1>{{ pageTitle }}</h1>
-<p>{{ mainParagraph }}</p>
-
 <table role="table">
+  <caption>{{pageTitle}}</caption>
+  <thead>
+  <tr role="row">
+    <th scope="col" class="column1">Question</th>
+    <th scope="col" class="column2"></th>
+    <th scope="col" class="column3">Answer</th>
+  </tr>
+  </thead>
   <tbody>
+  <tr>
+    <td colspan="3" style="font-weight: bold;"><h1>{{ pageTitle }}</h1></td>
+  </tr>
+  <tr>
+    <td colspan="3">
+      <p>{{ mainParagraph }}</p>
+    </td>
+  </tr>
+
   {% for section in sections %}
   <tr>
-    <td colspan="2" class="section-header">{{ section.title }}</td>
+    <td colspan="3" class="no-page-break" style="font-weight: bold;">
+      <h2>{{ section.title }}</h2>
+    </td>
   </tr>
 
   {% for questionAndAnswerRow in section.questionAndAnswers %}
-  <tr>
-    <td class="column1">{{ questionAndAnswerRow.question }}</td>
-    <td class="column3 answer">
+  <tr role="row">
+    <td role="cell" class="column1">{{ questionAndAnswerRow.question }}</td>
+    <td role="cell" class="column2"></td>
+    <td role="cell" class="column3">
       {% for ans in questionAndAnswerRow.answers %}
       <p>{{ ans }}</p>
       {% endfor %}
