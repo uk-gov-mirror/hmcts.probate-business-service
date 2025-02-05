@@ -54,7 +54,7 @@
   </thead>
   <tbody>
   <tr>
-    <td colspan="3" style="font-weight: bold;"><h1>{{ pageTitle }}</h1></td>
+    <td colspan="3" style="font-weight: bold;">{{ pageTitle }}</td>
   </tr>
   <tr>
     <td colspan="3">
@@ -65,7 +65,7 @@
   {% for section in sections %}
   <tr>
     <td colspan="3" class="no-page-break" style="font-weight: bold;">
-      <h2>{{ section.title }}</h2>
+      {{ section.title }}
     </td>
   </tr>
 
