@@ -146,7 +146,6 @@ class PDFGenerationServiceTest {
         String templatePath = "/templates/" + templateName + ".html";
         String templateContent = "<html><body><table><tr><td>column1</td><td>column2</td></tr></table></body></html>";
         String businessDocumentJson = "{\"key\": \"value\"}";
-        Map<String, Object> paramMap = Map.of("key", "value");
         byte[] mockPdfBytes = createValidPdfBytes(templateContent);
 
         // Mock dependencies

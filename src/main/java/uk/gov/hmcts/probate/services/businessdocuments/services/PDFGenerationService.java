@@ -73,15 +73,6 @@ public class PDFGenerationService {
         return outputStream.toByteArray();
     }
 
-    private void verifyPdfBytes(byte[] pdfBytes) throws IOException {
-        try (PdfReader reader = new PdfReader(new ByteArrayInputStream(pdfBytes))) {
-            PdfDocument pdfDocument = new PdfDocument(reader);
-            if (pdfDocument.getNumberOfPages() == 0) {
-                throw new IOException("Generated PDF has no pages");
-            }
-        }
-    }
-
     public Map<String, Object> asMap(String placeholderValues) {
         try {
 
