@@ -6,10 +6,7 @@
   <style type="text/css">
     body {
       font-family: "nta", sans-serif;
-      margin-top: 25px;
-      margin-bottom: 25px;
-      margin-right: 50px;
-      margin-left: 50px;
+      margin: 25px 50px;
     }
 
     table {
@@ -28,31 +25,41 @@
       font-weight: bold;
     }
 
-    .no-page-break {
-      page-break-inside: avoid;
+    h1, h2 {
+      margin-bottom: 10px;
+    }
+
+    .section-header {
+      font-weight: bold;
+      font-size: 18px;
+      padding: 10px 0;
+      border-bottom: 2px solid black;
+    }
+
+    .no-border {
+      border: none;
+    }
+
+    .answer {
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
+<h1>{{ pageTitle }}</h1>
+<p>{{ mainParagraph }}</p>
+
 <table role="table">
-  <caption>{{pageTitle}}</caption>
-  <thead>
-  <tr>
-    <th scope="col" class="column1">Question</th>
-    <th scope="col" class="column2"></th>
-    <th scope="col" class="column3">Answer</th>
-  </tr>
-  </thead>
   <tbody>
   {% for section in sections %}
-  <tr class="border_bottom">
-    <td colspan="3" style="font-weight: bold;"><h2>{{ section.title }}</h2></td>
+  <tr>
+    <td colspan="2" class="section-header">{{ section.title }}</td>
   </tr>
+
   {% for questionAndAnswerRow in section.questionAndAnswers %}
-  <tr class="border_bottom">
+  <tr>
     <td class="column1">{{ questionAndAnswerRow.question }}</td>
-    <td class="column2"></td>
-    <td class="column3">
+    <td class="column3 answer">
       {% for ans in questionAndAnswerRow.answers %}
       <p>{{ ans }}</p>
       {% endfor %}
