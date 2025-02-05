@@ -2,13 +2,11 @@ package uk.gov.hmcts.probate.services.businessdocuments.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.html2pdf.ConverterProperties;
+import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.PdfString;
-import com.itextpdf.kernel.pdf.PdfName;
-import com.itextpdf.kernel.pdf.tagging.PdfStructElem;
-import com.itextpdf.kernel.pdf.tagging.PdfStructTreeRoot;
 import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.Document;
 import lombok.RequiredArgsConstructor;
@@ -63,35 +61,14 @@ public class PDFGenerationService {
         // Add tagging for accessibility using iText
         ByteArrayOutputStream taggedPdfOutputStream = new ByteArrayOutputStream();
         PdfWriter writer = new PdfWriter(taggedPdfOutputStream);
-        PdfDocument pdfDocument = new PdfDocument(new PdfReader(new ByteArrayInputStream(pdfBytes)), writer);
+        PdfDocument pdfDocument = new PdfDocument(writer);
         pdfDocument.setTagged();
         Document document = new Document(pdfDocument);
         document.setProperty(ROLE, StandardRoles.DOCUMENT);
 
-        // Step 1: Get the structure tree root
-        PdfStructTreeRoot structRoot = pdfDocument.getStructTreeRoot();
+        ConverterProperties properties = new ConverterProperties();
+        HtmlConverter.convertToPdf(new ByteArrayInputStream(pdfBytes), pdfDocument, properties);
 
-        // Step 2: Define the document structure
-        PdfStructElem docElem = new PdfStructElem(pdfDocument, PdfName.Document);
-
-        structRoot.addKid(docElem);
-
-        // Step 3: Create a TABLE structure inside the document
-        PdfStructElem tableElem = new PdfStructElem(pdfDocument, PdfName.Table);
-        docElem.addKid(tableElem); // Attach TABLE to the document structure
-
-        // Step 4: Add a ROW to the table
-        PdfStructElem rowElem = new PdfStructElem(pdfDocument, PdfName.TR);
-        tableElem.addKid(rowElem); // Attach ROW inside TABLE
-
-        // Step 5: Add CELLS inside the row
-        PdfStructElem cellElem1 = new PdfStructElem(pdfDocument, PdfName.TD);
-        cellElem1.getPdfObject().put(PdfName.ActualText, new PdfString("Column 1 Data"));
-        rowElem.addKid(cellElem1); // Attach CELL inside ROW
-
-        PdfStructElem cellElem2 = new PdfStructElem(pdfDocument, PdfName.TD);
-        cellElem2.getPdfObject().put(PdfName.ActualText, new PdfString("Column 2 Data"));
-        rowElem.addKid(cellElem2); // Attach CELL inside ROW
 
         // Step 6: Close the document
         document.close();

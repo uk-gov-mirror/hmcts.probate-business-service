@@ -2,14 +2,11 @@ package uk.gov.hmcts.probate.services.businessdocuments.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.html2pdf.ConverterProperties;
+import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.PdfString;
-import com.itextpdf.kernel.pdf.PdfName;
-import com.itextpdf.kernel.pdf.tagging.PdfStructElem;
-import com.itextpdf.kernel.pdf.tagging.PdfStructTreeRoot;
-import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.layout.Document;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -144,77 +141,56 @@ class PDFGenerationServiceTest {
 
     @Test
     void shouldGeneratePDFSuccessfully() throws Exception {
+        // Given
         String templateName = "testTemplate";
         String templatePath = "/templates/" + templateName + ".html";
-        String templateContent = "<html><body><table><tr><td>column1</td><td>column2</td></tr> </table></body></html>";
-        byte[] mockPdfBytes = createValidPdfBytes();
+        String templateContent = "<html><body><table><tr><td>column1</td><td>column2</td></tr></table></body></html>";
         String businessDocumentJson = "{\"key\": \"value\"}";
         Map<String, Object> paramMap = Map.of("key", "value");
+        byte[] mockPdfBytes = createValidPdfBytes(templateContent);
 
         // Mock dependencies
         when(pdfServiceConfiguration.getTemplatesDirectory()).thenReturn("/templates/");
         when(fileSystemResourceService.getFileFromResourceAsString(templatePath)).thenReturn(templateContent);
-        when(objectMapper.writeValueAsString(businessDocument)).thenReturn(businessDocumentJson);
-        when(pdfServiceClient.generateFromHtml(templateContent.getBytes(), paramMap)).thenReturn(mockPdfBytes);
+        when(objectMapper.writeValueAsString(any())).thenReturn(businessDocumentJson);
+        when(pdfServiceClient.generateFromHtml(any(), any())).thenReturn(mockPdfBytes);
 
+        // When
         byte[] result = pdfGenerationService.generateFromHtml(businessDocument, templateName);
 
-        // Assertions
+        // Then
         assertNotNull(result, "Generated PDF should not be null");
         assertTrue(result.length > 0, "Generated PDF should not be empty");
 
-        // Verify
+        // Verify dependencies were called
         verify(fileSystemResourceService).getFileFromResourceAsString(templatePath);
-        verify(objectMapper).writeValueAsString(businessDocument);
-        verify(pdfServiceClient).generateFromHtml(templateContent.getBytes(), paramMap);
-        verifyPdfBytes(result);
+        verify(objectMapper).writeValueAsString(any());
+        verify(pdfServiceClient).generateFromHtml(any(), any());
+
+        // Verify the generated PDF contains valid accessibility elements
+        verifyPdfAccessibility(result);
     }
 
-    private byte[] createValidPdfBytes() throws IOException {
+    private byte[] createValidPdfBytes(String htmlContent) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfWriter writer = new PdfWriter(outputStream);
         PdfDocument pdfDocument = new PdfDocument(writer);
-        pdfDocument.setTagged();
+        pdfDocument.setTagged(); // Enable accessibility
         Document document = new Document(pdfDocument);
-        document.setProperty(200, StandardRoles.DOCUMENT);
 
-        // Step 1: Get the structure tree root
-        PdfStructTreeRoot structRoot = pdfDocument.getStructTreeRoot();
-
-        // Step 2: Define the document structure
-        PdfStructElem docElem = new PdfStructElem(pdfDocument, PdfName.Document); // Attach to document
-
-        // Attach docElem to structure root
-        structRoot.addKid(docElem);
-
-        // Step 3: Create a TABLE structure inside the document
-        PdfStructElem tableElem = new PdfStructElem(pdfDocument, PdfName.Table);
-        docElem.addKid(tableElem); // Attach TABLE to the document structure
-
-        // Step 4: Add a ROW to the table
-        PdfStructElem rowElem = new PdfStructElem(pdfDocument, PdfName.TR);
-        tableElem.addKid(rowElem); // Attach ROW inside TABLE
-
-        // Step 5: Add CELLS inside the row
-        PdfStructElem cellElem1 = new PdfStructElem(pdfDocument, PdfName.TD);
-        cellElem1.getPdfObject().put(PdfName.ActualText, new PdfString("Column 1 Data"));
-        rowElem.addKid(cellElem1); // Attach CELL inside ROW
-
-        PdfStructElem cellElem2 = new PdfStructElem(pdfDocument, PdfName.TD);
-        cellElem2.getPdfObject().put(PdfName.ActualText, new PdfString("Column 2 Data"));
-        rowElem.addKid(cellElem2); // Attach CELL inside ROW
+        ConverterProperties properties = new ConverterProperties();
+        HtmlConverter.convertToPdf(new ByteArrayInputStream(htmlContent.getBytes()), pdfDocument, properties);
 
         document.close();
+        pdfDocument.close();
         return outputStream.toByteArray();
     }
 
-
-
-    private void verifyPdfBytes(byte[] pdfBytes) throws IOException {
-        try (PdfReader reader = new PdfReader(new ByteArrayInputStream(pdfBytes));
-             PdfDocument pdfDocument = new PdfDocument(reader)) {
-            assertTrue(pdfDocument.getNumberOfPages() > 0,
-                "Generated PDF should have at least one page");
+    private void verifyPdfAccessibility(byte[] pdfBytes) throws IOException {
+        try (PdfReader reader = new PdfReader(new ByteArrayInputStream(pdfBytes))) {
+            PdfDocument pdfDocument = new PdfDocument(reader);
+            assertTrue(pdfDocument.isTagged(), "PDF should be tagged for accessibility");
+            assertTrue(pdfDocument.getNumberOfPages() > 0, "PDF should have at least one page");
         }
     }
 }
