@@ -173,9 +173,9 @@
 <div class="content">
   {% for header in declaration.headers %}
   <div class="top-header">
-    <h2>
+    <h1>
       {{ header }}
-    </h2>
+    </h1>
   </div>
   {% endfor %}
 
@@ -183,22 +183,20 @@
   <div class="no-page-break">
     {% if section.headingType == "large" %}
     <p class="section-title-large">
+    <h2>
+      {{ section.title }}
+    </h2>
+    </p>
+    {% else %}
+    <p class="section-title-medium">
     <h3>
       {{ section.title }}
     </h3>
     </p>
-    {% else %}
-    <p class="section-title-medium">
-    <h4>
-      {{ section.title }}
-    </h4>
-    </p>
     {% endif %}
     {% for declarationItem in section.declarationItems %}
     <p class="section-title-small">
-    <h5>
       {{ declarationItem.title }}
-    </h5>
     <ul>
       {% for value in declarationItem.values %}
       <li>{{ value }}</li>
