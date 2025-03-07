@@ -172,33 +172,21 @@
 {% for declaration in declarations %}
 <div class="content">
   {% for header in declaration.headers %}
-  <div class="top-header">
-    <h1>
-      {{ header }}
-    </h1>
-  </div>
+  <h1 class="top-header"> {{ header }} </h1>
   {% endfor %}
 
   {% for section in declaration.sections %}
   <div class="no-page-break">
     {% if section.headingType == "large" %}
-    <div class="section-title-large">
-      <h2>
-        {{ section.title }}
-      </h2>
-    </div>
+    <h2 class="section-title-large"> {{ section.title }} </h2>
     {% else %}
-    <div class="section-title-medium">
-      <h3>
-        {{ section.title }}
-      </h3>
-    </div>
+    <h3 class="section-title-medium">{{ section.title }} </h3>
     {% endif %}
     {% for declarationItem in section.declarationItems %}
     <div class="section-title-small">
-      <h4>
+      <p>
         {{ declarationItem.title }}
-      </h4>
+      </p>
       <ul>
         {% for value in declarationItem.values %}
         <li>{{ value }}</li>
