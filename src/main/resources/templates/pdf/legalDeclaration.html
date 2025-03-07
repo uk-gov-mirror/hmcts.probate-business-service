@@ -182,17 +182,17 @@
   {% for section in declaration.sections %}
   <div class="no-page-break">
     {% if section.headingType == "large" %}
-    <p class="section-title-large">
-    <h2>
-      {{ section.title }}
-    </h2>
-    </p>
+    <div class="section-title-large">
+      <h2>
+        {{ section.title }}
+      </h2>
+    </div>
     {% else %}
-    <p class="section-title-medium">
-    <h3>
-      {{ section.title }}
-    </h3>
-    </p>
+    <div class="section-title-medium">
+      <h3>
+        {{ section.title }}
+      </h3>
+    </div>
     {% endif %}
     {% for declarationItem in section.declarationItems %}
     <p class="section-title-small">
