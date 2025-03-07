@@ -195,23 +195,24 @@
     </div>
     {% endif %}
     {% for declarationItem in section.declarationItems %}
-    <p class="section-title-small">
-      {{ declarationItem.title }}
-    <ul>
-      {% for value in declarationItem.values %}
-      <li>{{ value }}</li>
+    <div class="section-title-small">
+      <h4>
+        {{ declarationItem.title }}
+      </h4>
+      <ul>
+        {% for value in declarationItem.values %}
+        <li>{{ value }}</li>
+        {% endfor %}
+      </ul>
       {% endfor %}
-    </ul>
-    </p>
+    </div>
     {% endfor %}
+    {% if declaration.lastDeclaration == false %}
+    <div class="newpage"></div>
+    {% endif %}
+
   </div>
   {% endfor %}
-  {% if declaration.lastDeclaration == false %}
-  <div class="newpage"></div>
-  {% endif %}
-
-</div>
-{% endfor %}
 </body>
 </html>
 
