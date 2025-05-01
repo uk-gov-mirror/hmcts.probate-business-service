@@ -88,13 +88,15 @@ public class PinController {
             LOGGER.error("Session-Id request header not found");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        LOGGER.info("Processing session id " + sessionId);
+        LOGGER.info("session: [{}] phoneNumber: [{}]", sessionId, phoneNumber);
         phoneNumber = URLDecoder.decode(phoneNumber, StandardCharsets.UTF_8.toString());
+        LOGGER.info("decoded phoneNumber: [{}]", phoneNumber);
         phoneNumber = phoneNumber.replaceAll(INVALID_PHONENUMBER_CHARACTERS_REGEX, "");
         if (!phoneNumber.matches(VALID_PHONENUMBER_CHARACTERS_REGEX)) {
             LOGGER.error("Unable to validate phoneNumber parameter");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+        LOGGER.info("final phoneNumber:[{}]", phoneNumber);
         return ResponseEntity.ok(pinService.generateAndSend(phoneNumber, isBilingual));
     }
 
