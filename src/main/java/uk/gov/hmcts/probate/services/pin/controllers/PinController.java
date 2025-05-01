@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriUtils;
 import uk.gov.hmcts.probate.services.pin.PinService;
 import uk.gov.hmcts.probate.services.pin.exceptions.PhonePinException;
 import uk.gov.hmcts.reform.probate.model.PhonePin;
@@ -42,7 +43,7 @@ public class PinController {
     @RequestMapping(path = "/pin", method = RequestMethod.GET)
     public ResponseEntity<String> invite(@RequestParam String phoneNumber,
                                          @RequestHeader("Session-Id") String sessionId)
-        throws NotificationClientException, UnsupportedEncodingException {
+        throws NotificationClientException {
         LOGGER.warn("using unsafe GET for /pin");
         return getStringResponseEntity(phoneNumber, sessionId, Boolean.FALSE);
     }
@@ -52,7 +53,7 @@ public class PinController {
             @RequestHeader("Session-Id") final String sessionId,
             @Valid @RequestBody final PhonePin phonePin,
             BindingResult bindingResult)
-            throws NotificationClientException, UnsupportedEncodingException {
+            throws NotificationClientException {
         if (bindingResult.hasErrors()) {
             throw new PhonePinException("PhonePin invalid");
         }
@@ -65,7 +66,7 @@ public class PinController {
     @RequestMapping(path = "/pin/bilingual", method = RequestMethod.GET)
     public ResponseEntity<String> inviteBilingual(@RequestParam String phoneNumber,
                                                   @RequestHeader("Session-Id") String sessionId)
-        throws NotificationClientException, UnsupportedEncodingException {
+        throws NotificationClientException {
         LOGGER.warn("using unsafe GET for /pin/bilingual");
         return getStringResponseEntity(phoneNumber, sessionId, Boolean.TRUE);
     }
@@ -75,7 +76,7 @@ public class PinController {
         @RequestHeader("Session-Id") final String sessionId,
         @Valid @RequestBody final PhonePin phonePin,
         BindingResult bindingResult)
-        throws NotificationClientException, UnsupportedEncodingException {
+        throws NotificationClientException {
         if (bindingResult.hasErrors()) {
             throw new PhonePinException("PhonePin invalid");
         }
@@ -83,13 +84,13 @@ public class PinController {
     }
 
     private ResponseEntity<String> getStringResponseEntity(String phoneNumber, String sessionId, Boolean isBilingual)
-        throws UnsupportedEncodingException, NotificationClientException {
+        throws NotificationClientException {
         if (sessionId == null) {
             LOGGER.error("Session-Id request header not found");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         LOGGER.info("session: [{}] phoneNumber: [{}]", sessionId, phoneNumber);
-        phoneNumber = URLDecoder.decode(phoneNumber, StandardCharsets.UTF_8.toString());
+        phoneNumber = UriUtils.decode(phoneNumber, StandardCharsets.UTF_8);
         LOGGER.info("decoded phoneNumber: [{}]", phoneNumber);
         phoneNumber = phoneNumber.replaceAll(INVALID_PHONENUMBER_CHARACTERS_REGEX, "");
         if (!phoneNumber.matches(VALID_PHONENUMBER_CHARACTERS_REGEX)) {
