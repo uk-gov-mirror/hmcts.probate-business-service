@@ -22,8 +22,6 @@ import uk.gov.hmcts.probate.services.pin.exceptions.PhonePinException;
 import uk.gov.hmcts.reform.probate.model.PhonePin;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
 @RestController
