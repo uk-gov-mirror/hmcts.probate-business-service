@@ -130,6 +130,7 @@ repositories {
 }
 
 def versions = [
+        commonsBeanutils : '1.11.0',
         jacksonDatabind  : '2.19.0',
         jjwtApi          : '0.12.6',
         junit_jupiter    : '5.10.2',
@@ -220,6 +221,12 @@ dependencies {
     testContractRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.7.0'
     testContractImplementation sourceSets.main.runtimeClasspath
     testContractImplementation sourceSets.test.runtimeClasspath
+
+    constraints {
+        checkstyle group: 'commons-beanutils', name: 'commons-beanutils', version: versions.commonsBeanutils
+        implementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.commonsBeanutils
+        testFunctionalImplementation group: 'commons-beanutils', name: 'commons-beanutils', version: versions.commonsBeanutils
+    }
 }
 
 tasks.withType(JavaCompile) {
