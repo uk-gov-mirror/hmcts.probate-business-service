@@ -19,13 +19,7 @@ public class UKDateFormatter {
             LocalDate date = LocalDate.parse(dateStr);
             int day = date.getDayOfMonth();
             if (locale.equals(ENGLISH_LOCALE)) {
-                String suffix;
-                switch (day) {
-                    case 1: case 21: case 31: suffix = "st"; break;
-                    case 2: case 22: suffix = "nd"; break;
-                    case 3: case 23: suffix = "rd"; break;
-                    default: suffix = "th";
-                }
+                String suffix = getDaySuffix(day);
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy", ENGLISH_LOCALE);
                 String formattedDate = date.format(formatter);
                 return day + suffix + " " + formattedDate;
@@ -38,6 +32,18 @@ public class UKDateFormatter {
         } catch (Exception e) {
             LOGGER.error("UKDateFormatter - Error formatting date: {}", dateStr, e);
             return dateStr;
+        }
+    }
+
+    private static String getDaySuffix(int day) {
+        if (day >= 11 && day <= 13) {
+            return "th";
+        }
+        switch (day % 10) {
+            case 1:  return "st";
+            case 2:  return "nd";
+            case 3:  return "rd";
+            default: return "th";
         }
     }
 }
