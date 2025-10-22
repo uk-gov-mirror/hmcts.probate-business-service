@@ -91,7 +91,6 @@ public class DocumentNotificationService {
 
         personalisation.put("applicant_name", documentNotification.getApplicantName());
         personalisation.put("deceased_name", documentNotification.getDeceasedName());
-//        personalisation.put("deceased_dod", convertDate(documentNotification.getDeceasedDod()));
 
         personalisation.put("deceased_dod", UKDateFormatter.format(documentNotification.getDeceasedDod(),
             UKDateFormatter.ENGLISH_LOCALE));
@@ -106,9 +105,6 @@ public class DocumentNotificationService {
         personalisation.put("filename_heading", getFileName(documentNotification.getFileName(), isBilingual));
         personalisation.put("filename_heading_eng", !documentNotification.getFileName().isEmpty() ? FILE_NAME : "");
         personalisation.put("FILE NAMES", String.join("\n", documentNotification.getFileName()));
-//        personalisation.put("UPDATE DATE", isBilingual
-//            ? getSubmittedDateInWelsh(documentNotification.getExpectedResponseDate())
-//            : getSubmittedDate(documentNotification.getExpectedResponseDate()));
 
         personalisation.put("UPDATE DATE",
             UKDateFormatter.format(documentNotification.getExpectedResponseDate(),
