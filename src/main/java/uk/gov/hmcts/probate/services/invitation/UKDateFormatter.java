@@ -4,12 +4,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.services.businessdocuments.model.UKLocale;
 
+@Service
 public class UKDateFormatter {
     private static final Logger LOGGER = LoggerFactory.getLogger(UKDateFormatter.class);
 
-    public static String format(String dateStr, UKLocale ukLocale) {
+    public String format(String dateStr, UKLocale ukLocale) {
         if (dateStr == null || dateStr.isEmpty()) {
             return "";
         }
@@ -35,7 +37,7 @@ public class UKDateFormatter {
         }
     }
 
-    private static String getDaySuffix(int day) {
+    private String getDaySuffix(int day) {
         if (day >= 11 && day <= 13) {
             return "th";
         }

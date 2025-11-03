@@ -36,6 +36,9 @@ public class ExecutorNotificationService {
     @Autowired
     private NotificationClient notificationClient;
 
+    @Autowired
+    private UKDateFormatter ukDateFormatter;
+
     public void sendEmail(ExecutorNotification executorNotification, Boolean isBilingual)
         throws NotificationClientException {
         LOGGER.info("sending executor notification email");
@@ -56,9 +59,9 @@ public class ExecutorNotificationService {
         personalisation.put("executor_name", executorNotification.getExecutorName());
         personalisation.put("applicant_name", executorNotification.getApplicantName());
         personalisation.put("deceased_name", executorNotification.getDeceasedName());
-        personalisation.put("deceased_dod", UKDateFormatter.format(executorNotification.getDeceasedDod(),
+        personalisation.put("deceased_dod", ukDateFormatter.format(executorNotification.getDeceasedDod(),
             UKLocale.ENGLISH));
-        personalisation.put("deceased_dod_cy", UKDateFormatter.format(executorNotification.getDeceasedDod(),
+        personalisation.put("deceased_dod_cy", ukDateFormatter.format(executorNotification.getDeceasedDod(),
             UKLocale.WELSH));
         personalisation.put("ccd_reference", executorNotification.getCcdReference());
         return personalisation;

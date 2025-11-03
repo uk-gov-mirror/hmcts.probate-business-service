@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.services.businessvalidation.util.TestUtils;
 import uk.gov.hmcts.probate.services.invitation.ExecutorNotificationService;
+import uk.gov.hmcts.probate.services.invitation.UKDateFormatter;
 import uk.gov.hmcts.reform.probate.model.multiapplicant.ExecutorNotification;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
@@ -37,6 +38,9 @@ class ExecutorNotificationServiceTest {
 
     @Mock
     private NotificationClient notificationClient;
+
+    @Mock
+    private UKDateFormatter ukDateFormatter;
 
     @InjectMocks
     private ExecutorNotificationService executorNotificationService;

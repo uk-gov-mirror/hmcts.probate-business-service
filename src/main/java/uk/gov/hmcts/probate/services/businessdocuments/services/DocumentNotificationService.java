@@ -47,9 +47,12 @@ public class DocumentNotificationService {
 
     private final NotificationClient notificationClient;
 
+    private final UKDateFormatter ukDateFormatter;
+
     @Autowired
-    public DocumentNotificationService(NotificationClient notificationClient) {
+    public DocumentNotificationService(NotificationClient notificationClient, UKDateFormatter ukDateFormatter) {
         this.notificationClient = notificationClient;
+        this.ukDateFormatter = ukDateFormatter;
     }
 
     private static final String RESPONSE_DATE_FORMAT = "dd MMMM yyyy";
@@ -93,9 +96,9 @@ public class DocumentNotificationService {
         personalisation.put("applicant_name", documentNotification.getApplicantName());
         personalisation.put("deceased_name", documentNotification.getDeceasedName());
 
-        personalisation.put("deceased_dod", UKDateFormatter.format(documentNotification.getDeceasedDod(),
+        personalisation.put("deceased_dod", ukDateFormatter.format(documentNotification.getDeceasedDod(),
             UKLocale.ENGLISH));
-        personalisation.put("deceased_dod_cy", UKDateFormatter.format(documentNotification.getDeceasedDod(),
+        personalisation.put("deceased_dod_cy", ukDateFormatter.format(documentNotification.getDeceasedDod(),
             UKLocale.WELSH));
         personalisation.put("ccd_reference", documentNotification.getCcdReference());
         personalisation.put("response_heading", getResponse(documentNotification.getCitizenResponse(), isBilingual));
@@ -108,7 +111,7 @@ public class DocumentNotificationService {
         personalisation.put("FILE NAMES", String.join("\n", documentNotification.getFileName()));
 
         personalisation.put("UPDATE DATE",
-            UKDateFormatter.format(documentNotification.getExpectedResponseDate(),
+            ukDateFormatter.format(documentNotification.getExpectedResponseDate(),
                 isBilingual ? UKLocale.WELSH : UKLocale.ENGLISH));
         return personalisation;
     }
