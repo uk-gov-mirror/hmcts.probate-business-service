@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import uk.gov.hmcts.probate.services.businessdocuments.model.UKLocale;
 import uk.gov.hmcts.probate.services.invitation.UKDateFormatter;
 import uk.gov.hmcts.reform.probate.model.documents.DocumentNotification;
 import uk.gov.service.notify.NotificationClient;
@@ -93,9 +94,9 @@ public class DocumentNotificationService {
         personalisation.put("deceased_name", documentNotification.getDeceasedName());
 
         personalisation.put("deceased_dod", UKDateFormatter.format(documentNotification.getDeceasedDod(),
-            UKDateFormatter.ENGLISH_LOCALE));
+            UKLocale.ENGLISH));
         personalisation.put("deceased_dod_cy", UKDateFormatter.format(documentNotification.getDeceasedDod(),
-            UKDateFormatter.WELSH_LOCALE));
+            UKLocale.WELSH));
         personalisation.put("ccd_reference", documentNotification.getCcdReference());
         personalisation.put("response_heading", getResponse(documentNotification.getCitizenResponse(), isBilingual));
         personalisation.put("response_heading_eng", null != documentNotification.getCitizenResponse()
@@ -108,7 +109,7 @@ public class DocumentNotificationService {
 
         personalisation.put("UPDATE DATE",
             UKDateFormatter.format(documentNotification.getExpectedResponseDate(),
-                isBilingual ? UKDateFormatter.WELSH_LOCALE : UKDateFormatter.ENGLISH_LOCALE));
+                isBilingual ? UKLocale.WELSH : UKLocale.ENGLISH));
         return personalisation;
     }
 
