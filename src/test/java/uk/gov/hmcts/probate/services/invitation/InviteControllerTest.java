@@ -114,7 +114,7 @@ public class InviteControllerTest {
     }
 
     @Test
-    void shouldSendinviteIntestacyBilingual() throws UnsupportedEncodingException, NotificationClientException {
+    void shouldSendinviteIntestacyBilingual() throws NotificationClientException {
 
         Invitation invitation = setUpInvitationMock();
 
@@ -124,7 +124,7 @@ public class InviteControllerTest {
     }
 
     @Test
-    void shouldSendinviteIntestacy() throws UnsupportedEncodingException, NotificationClientException {
+    void shouldSendinviteIntestacy() throws NotificationClientException {
 
         Invitation invitation = setUpInvitationMock();
 
@@ -134,7 +134,7 @@ public class InviteControllerTest {
     }
 
     @Test
-    void shouldSendinviteIntestacyBilingualWithId() throws UnsupportedEncodingException, NotificationClientException {
+    void shouldSendinviteIntestacyBilingualWithId() throws NotificationClientException {
 
         Invitation invitation = setUpInvitationMock();
 
@@ -144,7 +144,7 @@ public class InviteControllerTest {
     }
 
     @Test
-    void shouldSendinviteIntestacyWithId() throws UnsupportedEncodingException, NotificationClientException {
+    void shouldSendinviteIntestacyWithId() throws NotificationClientException {
 
         Invitation invitation = setUpInvitationMock();
 

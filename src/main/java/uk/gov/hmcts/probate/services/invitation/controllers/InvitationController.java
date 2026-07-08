@@ -94,7 +94,7 @@ public class InvitationController {
     public String inviteIntestacy(@Valid @RequestBody Invitation encodedInvitation,
                          BindingResult bindingResult,
                          @RequestHeader("Session-Id") String sessionId)
-        throws NotificationClientException, UnsupportedEncodingException {
+        throws NotificationClientException {
         return sendInvitation(encodedInvitation, bindingResult, sessionId,
             Boolean.FALSE, ProbateType.INTESTACY);
     }
@@ -110,18 +110,18 @@ public class InvitationController {
 
     private String sendInvitation(Invitation encodedInvitation, BindingResult bindingResult, String sessionId,
                                   Boolean isBlingual, ProbateType probateType)
-        throws UnsupportedEncodingException, NotificationClientException {
+        throws NotificationClientException {
         LOGGER.info(SESSION_MSG, getSessionId(sessionId), bindingResult.getFieldErrors());
 
         Map<String, String> data = new HashMap<>();
-        data.put("firstName", invitation.getFirstName());
-        data.put("lastName", invitation.getLastName());
+        data.put("firstName", encodedInvitation.getFirstName());
+        data.put("lastName", encodedInvitation.getLastName());
 
         String linkId = idGeneratorService.generate(data);
         if (ProbateType.INTESTACY.equals(probateType)) {
-            invitationService.sendIntestacyEmail(linkId, invitation, isBlingual);
+            invitationService.sendIntestacyEmail(linkId, encodedInvitation, isBlingual);
         } else {
-            invitationService.sendEmail(linkId, invitation, isBlingual);
+            invitationService.sendEmail(linkId, encodedInvitation, isBlingual);
         }
 
         return linkId;
