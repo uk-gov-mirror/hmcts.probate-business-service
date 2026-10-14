@@ -27,7 +27,7 @@ The probate business service provides useful business logic to the frontend serv
 
 ## Getting Started
 ### Prerequisites
-- Java 21
+- Java 25
 - Gradle
 - Docker
 
